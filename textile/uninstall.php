@@ -18,3 +18,4 @@ $option_name = 'wptextile_options';
 $option_group = 'wptextile';
 
 unregister_setting($option_group, $option_name);
+delete_option($option_name);

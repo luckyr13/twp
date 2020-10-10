@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <title>Textile plugin</title>
+    <meta charset="utf-8">
+</head>
+<body>
+	<input type="button" id="textile_btn_login" value="LOGIN">
+	<input type="button" id="textile_btn_generate_new_identity" value="GENERATE NEW IDENTITY">
+
+	<br>
+
+	Upload Image: <input type="file" id="textile_image" >
+    <input id="textile_btn_upload" type="button" value="Upload to IPFS">
+
+	<div id="wptextile_result_area"></div>
+
+	APIKEY: <input type="text" id="apikey" /><br>
+	APISECRET: <input type="text" id="apisecret" /><br>
+	PRIVATEIDENTITY: <input type="text" id="privateidentity" /><br>
+	BUCKETKEY: <input type="text" id="bucketkey" /><br>
+	BUCKETNAME: <input type="text" id="bucketname" /><br>
+
+	<script>
+		var TEXTILE_AJAX_OBJ = {
+			// apikey: 'bcjvb6xsqtr77yd3p2dgtbfn4ne',
+			apikey: 'b5xyt2bggdm2hgjzljztsvbs7n4',
+			// apisecret: 'behrgevfnh7ekbfgnwtcohuordwdcihu374mcs4q',
+			apisecret: 'bppmefnndgsa74jus44cwpy3jfnq7hgbxfsto4la',
+			privateidentity: 'bbaareqhhidl5ow5f3e4r7ylvdetccv4ynvcwyhujzfl2jg34fomdumdshys6oithji7vhc75zpzfy46omm66gd2sywgxb6kglfykpqdioneq4',
+			bucketkey: 'bafzbeigi4ouq7zp3zdq3v4ncecxxigv4j3luqtp5b3ewc3dhidlfh6ma6e',
+			bucketname: 'bucket_test',
+		};
+
+		function loadValuesOnForm() {
+			const data = TEXTILE_AJAX_OBJ;
+			for (let key in data) {
+				if (data.hasOwnProperty(key) &&
+					document.getElementById(key)) {
+					document.getElementById(key).value = data[key];
+				}
+			}
+		}
+		// Load test data
+		window.onload = function() {
+			loadValuesOnForm();
+		}
+
+	</script>
+	<script src="./js/wptextileplugin_admin.js"></script>
+</body>
+</html>

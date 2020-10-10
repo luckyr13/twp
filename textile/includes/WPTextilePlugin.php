@@ -49,6 +49,8 @@ class WPTextilePlugin {
         $textile_config = get_option('wptextile_options');
         $apikey = !empty($textile_config['wptextile_userdata_apikey']) ?
             $textile_config['wptextile_userdata_apikey'] : '';
+        $apisecret = !empty($textile_config['wptextile_userdata_apisecret']) ?
+            $textile_config['wptextile_userdata_apisecret'] : '';
         $privateidentity = !empty($textile_config['wptextile_userdata_privateidentity']) ?
             $textile_config['wptextile_userdata_privateidentity'] : '';
         $bucketkey = !empty($textile_config['wptextile_userdata_bucketkey']) ?
@@ -60,6 +62,7 @@ class WPTextilePlugin {
            'ajax_url' => admin_url( 'admin-ajax.php' ),
            'nonce'    => $title_nonce,
            'apikey' => $apikey,
+           'apisecret' => $apisecret,
            'privateidentity' => $privateidentity,
            'bucketkey' => $bucketkey,
            'bucketname' => $bucketname,
@@ -146,6 +149,20 @@ class WPTextilePlugin {
             $section,
             array(
                 'label_for'         => 'wptextile_userdata_apikey',
+                'class'             => 'wptextile_row',
+                'wptextile_attribute' => $new_option,
+            )
+        );
+
+        // Register a new field 
+        add_settings_field(
+            'wptextile_userdata_apisecret', 
+            'API SECRET:',
+            array($this, 'admin_page_settings_add_field_userdata'),
+            $this->menu_slug,
+            $section,
+            array(
+                'label_for'         => 'wptextile_userdata_apisecret',
                 'class'             => 'wptextile_row',
                 'wptextile_attribute' => $new_option,
             )
@@ -252,13 +269,21 @@ class WPTextilePlugin {
         submit_button( __( 'Save Settings', 'textdomain' ) );
 
         echo '</form>';
-        echo 'Upload Image: <input type="file" id="textile_image" >:';
-        echo '<input id="textile_btn_upload" type="button" value="Upload to IPFS">';
+        // Image uploader
+        echo $this->admin_page_html_image_uploader();
 
+        // RESULT AREA
         echo '<div id="wptextile_result_area" class="container">';
         echo '</div>';
         echo '</div>';
 
+    }
+
+    private function admin_page_html_image_uploader() {
+        $content = '';
+        $content .= 'Upload Image: <input type="file" id="textile_image" >:';
+        $content .= '<input id="textile_btn_upload" type="button" value="Upload to IPFS">';
+        return $content;
     }
    
 
