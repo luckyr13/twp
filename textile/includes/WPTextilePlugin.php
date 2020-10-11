@@ -240,9 +240,12 @@ class WPTextilePlugin {
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
+        $img_src = plugins_url( '../admin/img/textile.svg', __FILE__ );
+        $img_logo = '<img style="float: left; margin-top: 10px" width="22px" src="'.$img_src.'" alt="Textile" />';
 
         echo '<div class="wrap">';
-        echo '<h1>';
+        echo $img_logo;
+        echo '<h1 style="margin-left: 30px">';
         echo esc_html( get_admin_page_title() );
         echo '</h1>';
         echo '<form action="options.php" method="post">';
