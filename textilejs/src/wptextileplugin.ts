@@ -305,7 +305,7 @@ export class WPTextilePlugin {
 	  await buckets.pushPath(bucketKey, path, buf)
 	}
 
-	insertFile(
+	async insertFile(
 		buckets: Buckets, 
 		bucketKey: string, 
 		file: File, path: string
@@ -387,49 +387,39 @@ export class WPTextilePlugin {
 
 
 	async uploadFile(
-		inputId: string, 
-		buckets: Buckets, 
-		bucketKey: string
+		inputId: string,
+		bucketNameForFileUpload: string
 	) {
 		const selectedFile = document.getElementById(inputId).files[0];
+		var bucketData = null;
+		var buckets = null;
+		var bucketKey = null;
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		let result = null;
+		
+		bucketData = await this.setupBucketEnvironment(
+			keyinfo, identity, bucketNameForFileUpload
+		);
 
+		buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
+		bucketKey = bucketData.hasOwnProperty('bucketKey') ? bucketData.bucketKey : null;
+		
 		if (selectedFile) {
 			const file_name = selectedFile.name;
 
-		    if (!selectedFile.type.startsWith('image/')){ 
-		    	alert('File must be an image!');
-		    	return;
+		    try {
+			    result = await this.insertFile(
+			    	buckets, bucketKey, selectedFile, file_name
+			    );
+		    } catch (err) {
+		    	throw 'Error on file upload: ' + err;
 		    }
-
-		    console.log(selectedFile);
-
-		    this.insertFile(buckets, bucketKey, selectedFile, file_name).then((data) => {
-		    	console.log(data);
-		    	alert('File uploaded succesfully!');
-		    }).catch((reason) => {
-		    	alert('Error: File not uploaded' + reason.toString());
-		    });
 		} else {
-			alert('Please select an image!');
-	    	return;
+			throw 'Please select a file!';
 		}
-	}
-
-	uploadFileBtnListener(
-		_btnId:string, _imgId:string,
-		buckets: Buckets, bucketKey: string
-	) {
-		// If button exists
-		if (document.getElementById(_btnId)) {
-			// Add action
-			document.getElementById(_btnId).onclick = () => {
-				// If image input exists
-				if (document.getElementById(_imgId)) {
-					this.uploadFile(_imgId, buckets, bucketKey);
-
-				}
-			}
-		}
+		
+		return result;
 	}
 
 }

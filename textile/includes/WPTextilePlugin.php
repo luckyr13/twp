@@ -309,7 +309,7 @@ class WPTextilePlugin {
                 <div id="wptextile_tab_content_buckets_results"></div>
 
                 <h3>Get/Create a bucket:</h3>
-                <label for="textile_txt_get_bucket_content_bname">Bucket Name:</label>
+                <label for="textile_txt_get_bucket_content_bname">Bucket name:</label>
                 <input 
                     type="text" 
                     class="regular-text" 
@@ -321,8 +321,17 @@ class WPTextilePlugin {
                 <div id="wptextile_tab_content_buckets_results_bcont"></div>
 
                 <h3>Upload a file to IPFS:</h3>
+                <label for="textile_txt_upload_file_bucketname">Bucket name:</label>
+                <input 
+                    type="text" 
+                    class="regular-text" 
+                    id="textile_txt_upload_file_bucketname"
+                    name="textile_txt_upload_file_bucketname">
                 Upload Image: <input type="file" id="textile_image" >
                 <input class="button button-primary" id="textile_btn_upload" type="button" value="Upload to IPFS">
+                <h3>Results:</h3>
+                <div id="wptextile_tab_content_buckets_results_fileupload"></div>
+
             </div>
 
             <!-- Users tab -->

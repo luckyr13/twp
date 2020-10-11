@@ -49,6 +49,35 @@ class Index {
 		chkNewIdentity.addEventListener('change', () => {
 			const txtPrivateIdentity = document.getElementById('wptextile_userdata_privateidentity');
 			txtPrivateIdentity.readOnly = !txtPrivateIdentity.readOnly;
+		}, false);
+
+		// File upload listeners 
+		const btnFileUploadId = 'textile_btn_upload';
+		const btnFileUpload = document.getElementById(btnFileUploadId);
+		btnFileUpload.addEventListener('click', () => {
+			const txtImageId = 'textile_image';
+			let bucketNameForFileUpload = document.getElementById('textile_txt_upload_file_bucketname');
+			bucketNameForFileUpload = bucketNameForFileUpload ? bucketNameForFileUpload.value : '';
+			
+			try {
+				const results_container = 
+					document.getElementById('wptextile_tab_content_buckets_results_fileupload');
+				results_container.innerText = 'Loading ...';
+				btnFileUpload.disabled = true;
+
+				this.wp.uploadFile(
+					txtImageId, bucketNameForFileUpload
+				).then(function(data) {
+					results_container.innerText = JSON.stringify(data);
+					btnFileUpload.disabled = false;
+				}).catch(function(err) {
+					results_container.innerText = 'Error: ' + err;
+					btnFileUpload.disabled = false;
+				});
+			} catch (err) {
+				alert('File upload error: ' + err);
+			}
+			
 
 		}, false);
 		
@@ -152,10 +181,7 @@ class Index {
 			const txt_bucketname = document.getElementById('textile_txt_get_bucket_content_bname');
 			const custom_bucketname = txt_bucketname ? txt_bucketname.value : '';
 
-			if (resultsContainer && custom_bucketname == '') {
-				resultsContainer.innerText = 'Please specify a bucket name';
-				return;
-			} else if (resultsContainer) {
+			if (resultsContainer) {
 				resultsContainer.innerText = 'Loading ...';
 			}
 

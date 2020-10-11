@@ -53,15 +53,9 @@ ul.wptextile_tabs_menu li a.main {
 	display: none;
 }
 
-#wptextile_tab_content_buckets_results {
-	width: 80%;
-	min-height: 100px;
-	margin: 0 auto;
-	text-align: left;
-	border: 1px solid #CCC;
-}
-
-#wptextile_tab_content_buckets_results_bcont {
+#wptextile_tab_content_buckets_results,
+#wptextile_tab_content_buckets_results_bcont,
+#wptextile_tab_content_buckets_results_fileupload {
 	width: 80%;
 	min-height: 100px;
 	margin: 0 auto;
