@@ -33,6 +33,17 @@ class WPTextilePlugin {
     public function admin_enqueue_scripts( $hook ) {
         // My custom page
         if( 'plugins_page_wptextile' != $hook ) return;
+
+        // CSS
+        $css_dependencies = array();
+        $css_version = false;
+        $css_in_footer = false;
+        wp_enqueue_style(
+            'wptextileplugin_css',
+            plugins_url( '../admin/css/wptextileplugin.css', __FILE__ ),
+            $css_dependencies,
+            $css_version
+        );
         
         // JS Scripts
         $version = false;
@@ -53,20 +64,18 @@ class WPTextilePlugin {
             $textile_config['wptextile_userdata_apisecret'] : '';
         $privateidentity = !empty($textile_config['wptextile_userdata_privateidentity']) ?
             $textile_config['wptextile_userdata_privateidentity'] : '';
-        $bucketkey = !empty($textile_config['wptextile_userdata_bucketkey']) ?
-            $textile_config['wptextile_userdata_bucketkey'] : '';
-        $bucketname = !empty($textile_config['wptextile_userdata_bucketname']) ?
-            $textile_config['wptextile_userdata_bucketname'] : '';
+        
             
-        wp_localize_script( 'wptextileplugin_admin_js', 'TEXTILE_AJAX_OBJ', array(
-           'ajax_url' => admin_url( 'admin-ajax.php' ),
-           'nonce'    => $title_nonce,
-           'apikey' => $apikey,
-           'apisecret' => $apisecret,
-           'privateidentity' => $privateidentity,
-           'bucketkey' => $bucketkey,
-           'bucketname' => $bucketname,
-        ));
+        wp_localize_script(
+            'wptextileplugin_admin_js', 'TEXTILE_AJAX_OBJ', 
+            array(
+               'ajax_url' => admin_url( 'admin-ajax.php' ),
+               'nonce'    => $title_nonce,
+               'apikey' => $apikey,
+               'apisecret' => $apisecret,
+               'privateidentity' => $privateidentity
+            )
+        );
         
     }
 
@@ -151,6 +160,7 @@ class WPTextilePlugin {
                 'label_for'         => 'wptextile_userdata_apikey',
                 'class'             => 'wptextile_row',
                 'wptextile_attribute' => $new_option,
+                'required' => true
             )
         );
 
@@ -165,22 +175,11 @@ class WPTextilePlugin {
                 'label_for'         => 'wptextile_userdata_apisecret',
                 'class'             => 'wptextile_row',
                 'wptextile_attribute' => $new_option,
+                'required' => true
             )
         );
 
-        // Register a new field
-        add_settings_field(
-            'wptextile_userdata_bucketname', 
-            'BUCKET NAME:',
-            array($this, 'admin_page_settings_add_field_userdata'),
-            $this->menu_slug,
-            $section,
-            array(
-                'label_for'         => 'wptextile_userdata_bucketname',
-                'class'             => 'wptextile_row',
-                'wptextile_attribute' => $new_option,
-            )
-        );
+       
 
         // Register a new field
         add_settings_field(
@@ -193,24 +192,12 @@ class WPTextilePlugin {
                 'label_for'         => 'wptextile_userdata_privateidentity',
                 'class'             => 'wptextile_row',
                 'wptextile_attribute' => $new_option,
-                'disabled' => true
+                'disabled' => true,
+                'required' => true
             )
         );
 
-        // Register a new field
-        add_settings_field(
-            'wptextile_userdata_bucketkey', 
-            'BUCKET KEY:',
-            array($this, 'admin_page_settings_add_field_userdata'),
-            $this->menu_slug,
-            $section,
-            array(
-                'label_for'         => 'wptextile_userdata_bucketkey',
-                'class'             => 'wptextile_row',
-                'wptextile_attribute' => $new_option,
-                'disabled' => true
-            )
-        );
+       
 
         
        
@@ -220,7 +207,7 @@ class WPTextilePlugin {
     *   Admin section
     */
     public function admin_page_settings_section_userdata_html($args) {
-        echo '<p id="'. esc_attr( $args['id'] ) . ' ">You need an API KEY to use this demo. Please follow the instructions on the next link to get your key: <a href="https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys" target="_blank">https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys</a></p>';
+        echo '<p id="'. esc_attr( $args['id'] ) . ' ">You need an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: <a href="https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys" target="_blank">https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys</a></p>';
         // esc_html_e( json_encode($args), $this->menu_slug );
     }
 
@@ -231,6 +218,7 @@ class WPTextilePlugin {
         $id = !empty($args['label_for']) ? esc_attr($args['label_for']) : '';
         $attribute = !empty($args['wptextile_attribute']) ? esc_attr($args['wptextile_attribute']) : '';
         $disabled = !empty($args['disabled']) ? ' readonly="readonly" ' : '';
+        $required = !empty($args['required']) ? ' required ' : '';
 
         $value = get_option( $attribute );
         $id_attr = $attribute.'['.$id.']';
@@ -238,7 +226,7 @@ class WPTextilePlugin {
         $apikey = !empty($value[$id]) ? esc_attr($value[$id]) : '';
 
 
-        echo '<input '. $disabled . ' name="' .
+        echo '<input '. $disabled . ' '. $required . ' name="' .
             $id_attr . '" id="' . $id .
             '" type="text" class="regular-text" value="' . $apikey .
             '" />';
@@ -268,15 +256,87 @@ class WPTextilePlugin {
         // output save settings button
         submit_button( __( 'Save Settings', 'textdomain' ) );
 
+        echo '<input class="button button-warning" type="button" id="textile_btn_generate_new_identity" value="GENERATE NEW IDENTITY">';
+        echo '<label style="cursor:pointer; margin-left: 10px;"><input type="checkbox" id="wptextile_userdata_privateidentity_chk" /> Edit private identity field</label>';
         echo '</form>';
-        // Image uploader
-        echo $this->admin_page_html_image_uploader();
 
-        // RESULT AREA
+        echo '<br>';
+        // General RESULT AREA
         echo '<div id="wptextile_result_area" class="container">';
         echo '</div>';
+
+        echo '<br>';
+        echo '<br>';
+        // Tabs
+        echo $this->admin_page_html_tabs();
+
         echo '</div>';
 
+    }
+
+    private function admin_page_html_tabs() {
+        $content = '';
+        $content .= '<div id="wptextile_tabs_area">
+        <!-- Tabs menu -->
+        <ul class="wptextile_tabs_menu">
+            <li><a data-tab="info" class="main">Info</a></li><li><a data-tab="buckets">Buckets</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+        </ul>
+        <!-- Tabs content -->
+        <div class="wptextile_tabs_container">
+            <!-- Info tab -->
+            <div class="wptextile_tab_content info">
+                <h2>Welcome</h2>
+                
+            </div>
+
+            <!-- Buckets tab -->
+            <div class="wptextile_tab_content buckets hide">
+                <h2>Buckets</h2>
+                <input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
+                <label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
+                <input 
+                    type="text" 
+                    class="regular-text" 
+                    id="textile_txt_get_buckets_list_threadid"
+                    name="textile_txt_get_buckets_list_threadid">
+                <input type="button" class="button button-primary" id="textile_btn_get_buckets_list" value="GET BUCKETS LIST">
+                
+                <br>
+                <h3>Results:</h3>
+                <div id="wptextile_tab_content_buckets_results"></div>
+
+                <h3>Get/Create a bucket:</h3>
+                <label for="textile_txt_get_bucket_content_bname">Bucket Name:</label>
+                <input 
+                    type="text" 
+                    class="regular-text" 
+                    id="textile_txt_get_bucket_content_bname"
+                    name="textile_txt_get_bucket_content_bname">
+                <input type="button" class="button button-primary" id="textile_btn_get_bucket_content" value="GET/CREATE A BUCKET">
+                <br>
+                <h3>Results:</h3>
+                <div id="wptextile_tab_content_buckets_results_bcont"></div>
+
+                <h3>Upload a file to IPFS:</h3>
+                Upload Image: <input type="file" id="textile_image" >
+                <input class="button button-primary" id="textile_btn_upload" type="button" value="Upload to IPFS">
+            </div>
+
+            <!-- Users tab -->
+            <div class="wptextile_tab_content users hide">
+                <h2>Users</h2>
+                Coming soon!
+            </div>
+
+            <!-- Threads tab -->
+            <div class="wptextile_tab_content threads hide">
+                <h2>Threads</h2>
+                Coming soon!
+            </div>
+        </div>
+        
+    </div>';
+        return $content;
     }
 
     private function admin_page_html_image_uploader() {

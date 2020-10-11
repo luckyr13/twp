@@ -3,23 +3,82 @@
 <head>
     <title>Textile plugin</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="./css/wptextileplugin.css">
 </head>
 <body>
-	<input type="button" id="textile_btn_login" value="LOGIN">
-	<input type="button" id="textile_btn_generate_new_identity" value="GENERATE NEW IDENTITY">
-
-	<br>
-
-	Upload Image: <input type="file" id="textile_image" >
-    <input id="textile_btn_upload" type="button" value="Upload to IPFS">
-
-	<div id="wptextile_result_area"></div>
+	
 
 	APIKEY: <input type="text" id="apikey" /><br>
 	APISECRET: <input type="text" id="apisecret" /><br>
-	PRIVATEIDENTITY: <input type="text" id="privateidentity" /><br>
-	BUCKETKEY: <input type="text" id="bucketkey" /><br>
-	BUCKETNAME: <input type="text" id="bucketname" /><br>
+	PRIVATEIDENTITY: <input readonly="readonly" type="text" id="wptextile_userdata_privateidentity" /> <label style="cursor:pointer"><input type="checkbox" id="wptextile_userdata_privateidentity_chk" /> Editable</label>
+	<br>
+
+	<input class="button button-warning" type="button" id="textile_btn_generate_new_identity" value="GENERATE NEW IDENTITY">
+
+	<br>
+	<!-- General results/errors area -->
+	<div id="wptextile_result_area"></div>
+	<br>
+	<div id="wptextile_tabs_area">
+		<!-- Tabs menu -->
+		<ul class="wptextile_tabs_menu">
+			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="buckets">Buckets</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+		</ul>
+		<!-- Tabs content -->
+		<div class="wptextile_tabs_container">
+			<!-- Info tab -->
+			<div class="wptextile_tab_content info">
+				<h2>Welcome</h2>
+				
+			</div>
+
+			<!-- Buckets tab -->
+			<div class="wptextile_tab_content buckets hide">
+				<h2>Buckets</h2>
+				<input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
+				<label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
+				<input 
+					type="text" 
+					class="regular-text" 
+					id="textile_txt_get_buckets_list_threadid"
+					name="textile_txt_get_buckets_list_threadid">
+				<input type="button" class="button button-primary" id="textile_btn_get_buckets_list" value="GET BUCKETS LIST">
+				
+				<br>
+				<h3>Results:</h3>
+				<div id="wptextile_tab_content_buckets_results"></div>
+
+				<h3>Get/Create a bucket:</h3>
+				<label for="textile_txt_get_bucket_content_bname">Bucket Name:</label>
+				<input 
+					type="text" 
+					class="regular-text" 
+					id="textile_txt_get_bucket_content_bname"
+					name="textile_txt_get_bucket_content_bname">
+				<input type="button" class="button button-primary" id="textile_btn_get_bucket_content" value="GET/CREATE A BUCKET">
+				<br>
+				<h3>Results:</h3>
+				<div id="wptextile_tab_content_buckets_results_bcont"></div>
+
+				<h3>Upload a file to IPFS:</h3>
+				Upload Image: <input type="file" id="textile_image" >
+	    		<input class="button button-primary" id="textile_btn_upload" type="button" value="Upload to IPFS">
+			</div>
+
+			<!-- Users tab -->
+			<div class="wptextile_tab_content users hide">
+				<h2>Users</h2>
+				Coming soon!
+			</div>
+
+			<!-- Threads tab -->
+			<div class="wptextile_tab_content threads hide">
+				<h2>Threads</h2>
+				Coming soon!
+			</div>
+		</div>
+		
+	</div>
 
 	<script>
 		var TEXTILE_AJAX_OBJ = {
@@ -27,19 +86,14 @@
 			apikey: 'b5xyt2bggdm2hgjzljztsvbs7n4',
 			// apisecret: 'behrgevfnh7ekbfgnwtcohuordwdcihu374mcs4q',
 			apisecret: 'bppmefnndgsa74jus44cwpy3jfnq7hgbxfsto4la',
-			privateidentity: 'bbaareqhhidl5ow5f3e4r7ylvdetccv4ynvcwyhujzfl2jg34fomdumdshys6oithji7vhc75zpzfy46omm66gd2sywgxb6kglfykpqdioneq4',
-			bucketkey: 'bafzbeigi4ouq7zp3zdq3v4ncecxxigv4j3luqtp5b3ewc3dhidlfh6ma6e',
-			bucketname: 'bucket_test',
+			privateidentity: 'bbaareqhhidl5ow5f3e4r7ylvdetccv4ynvcwyhujzfl2jg34fomdumdshys6oithji7vhc75zpzfy46omm66gd2sywgxb6kglfykpqdioneq4'
 		};
 
 		function loadValuesOnForm() {
 			const data = TEXTILE_AJAX_OBJ;
-			for (let key in data) {
-				if (data.hasOwnProperty(key) &&
-					document.getElementById(key)) {
-					document.getElementById(key).value = data[key];
-				}
-			}
+			document.getElementById('wptextile_userdata_privateidentity').value = data.privateidentity;
+			document.getElementById('apikey').value = data.apikey;
+			document.getElementById('apisecret').value = data.apisecret;
 		}
 		// Load test data
 		window.onload = function() {

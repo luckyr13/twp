@@ -6,6 +6,4 @@ export const TEXTILE_AJAX_OBJ_INTERNAL =
 		apikey : '',
 		apisecret : '',
 		privateidentity : '',
-		bucketname : '',
-		bucketkey : ''
 	};

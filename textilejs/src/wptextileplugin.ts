@@ -1,6 +1,6 @@
 import { PrivateKey, Client, Identity, 
 	Buckets, KeyInfo, PushPathResult, UserAuth, PublicKey, Users,
-	createUserAuth, APISig, createAPISig   } from '@textile/hub';
+	createUserAuth, APISig, createAPISig, ThreadID   } from '@textile/hub';
 import { TEXTILE_AJAX_OBJ_INTERNAL } from './textile-data';
 declare const window: any;
 declare const document: any;
@@ -9,8 +9,6 @@ export class WPTextilePlugin {
 	private _apikey: string;
 	private _apisecret: string;
 	private _privateidentity: string;
-	private _main_bucketname: string;
-	private _main_bucketkey: string;
 	private _keyinfo: any;
 
 	// GETTERS
@@ -24,14 +22,6 @@ export class WPTextilePlugin {
 
 	public get privateidentity() {
 		return this._privateidentity;
-	}
-
-	public get main_bucketname() {
-		return this._main_bucketname;
-	}
-
-	public get main_bucketkey() {
-		return this._main_bucketkey;
 	}
 
 	public get keyinfo() {
@@ -48,8 +38,6 @@ export class WPTextilePlugin {
 		this._apikey = data.hasOwnProperty('apikey') ? data.apikey : '';
 		this._apisecret = data.hasOwnProperty('apisecret') ? data.apisecret : '';
 		this._privateidentity = data.hasOwnProperty('privateidentity') ? data.privateidentity : '';
-		this._main_bucketname = data.hasOwnProperty('bucketname') ? data.bucketname : '';
-		this._main_bucketkey = data.hasOwnProperty('bucketkey') ? data.bucketkey : '';
 		this._keyinfo = { key: this._apikey, secret: this._apisecret };
 	}
 
@@ -80,6 +68,9 @@ export class WPTextilePlugin {
 		return identity
 	}
 
+	/*
+	* Generates new credentials in the form field
+	*/
 	async setNewIdentityFormFields(inputId: string) {
 		const identity = await this.generateNewIdentity();
 		const identity_s = identity.toString();
@@ -93,14 +84,23 @@ export class WPTextilePlugin {
 		}
 	}
 
-	async getBucketsContent(keyinfo: KeyInfo, identity: Identity, main_bucketname: string) {
+	async getBucketsList(buckets: Buckets) {
+	    const roots = await buckets.list();
+	    return roots;
+	}
+
+	/*
+	* Get content from bucket
+	*/
+	async getBucketsContent(main_bucketname: string) {
 		let error = '';
 		let result = {};
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
 		try {
 			var bucketData = null;
 			var buckets = null;
 			var bucketKey = null;
-			var files_links = null;
 			
 			bucketData = await this.setupBucketEnvironment(keyinfo, identity, main_bucketname);
 			buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
@@ -108,11 +108,61 @@ export class WPTextilePlugin {
 			
 			if (buckets && bucketKey) {
 				
-				files_links = await this.getLinks(buckets, bucketKey);
-				const files_msg = 'Files in bucket:' +
-					JSON.stringify(files_links);
-				result['data'] = files_msg;
+				const files_links = await this.getLinks(buckets, bucketKey);
+				result['data'] = files_links;
 			}
+		} catch (err) {
+			result['error'] = 'WPTextilePlugin Error:' + JSON.stringify(err);
+		}
+		return result;
+	}
+
+	/*
+	* Get list of buckets
+	*/
+	async getBucketsListContent(threadId: string) {
+		let error = '';
+		let result = {};
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		
+		try {
+			var buckets = await this.setupBucketEnvironmentWithThread(keyinfo, identity, threadId);
+			if (buckets) {
+				
+				const data = await this.getBucketsList(buckets);
+				result['data'] = data;
+			}
+		} catch (err) {
+			result['error'] = 'WPTextilePlugin Error:' + JSON.stringify(err);
+		}
+		return result;
+	}
+
+	/*
+	* Get list of buckets
+	*/
+	async getThreadsListContent() {
+		let error = '';
+		let result = {};
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		
+		try {
+			
+			const data = await this.getThreads(keyinfo, identity);
+			const dataLength = data.length;
+			const finalData = [];
+
+			if (dataLength && dataLength > 0) {
+				for (let k = 0; k < dataLength; k++) {
+					finalData.push({
+						id: ThreadID.fromBytes(data[k]['id']['buf']).toString(),
+						name: data[k]['name'] 
+					});
+				}
+			}
+			result['data'] = finalData;
 		} catch (err) {
 			result['error'] = 'WPTextilePlugin Error:' + JSON.stringify(err);
 		}
@@ -214,11 +264,25 @@ export class WPTextilePlugin {
 	  if (!result.root) {
 	    throw new Error('Failed to open bucket')
 	  }
-	  console.log('setupBucketEnvironment', buckets, result);
+
 	  return {
 	      buckets: buckets, 
 	      bucketKey: result.root.key,
 	  }
+	}
+
+	async setupBucketEnvironmentWithThread(
+		key: KeyInfo, identity: Identity, threadId: string
+	) {
+	  // Use the insecure key to set up the buckets client
+	  // const buckets = await Buckets.withKeyInfo(key)
+	  // await buckets.getToken(identity)
+
+	  const user = await this.magicUserAuthWithBucketsToken(key, identity);
+	  let buckets = await Buckets.withUserAuth(user);
+	  buckets.withThread(threadId);
+
+	  return buckets;
 	}
 
 	async addIndexJSONFile(buckets: Buckets, bucketKey: string, identity: Identity) {
@@ -275,11 +339,7 @@ export class WPTextilePlugin {
 		// Generate a new UserAuth
 		const user = await this.magicUserAuthWithUsersToken(key, identity);
 		const api = Users.withUserAuth(user)
-
-		console.log('api', api)
-
-		const list = api.listThreads()
-		console.log('list', list);
+		const list = await api.listThreads()
 		return list
 	}
 
