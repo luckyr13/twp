@@ -7,6 +7,9 @@ This plugin is what you need if you want to start using IPFS in a fast and easy 
 
 Imagine that you are a Writer. If you have your book in PDF format and a Wordpress site, you can use this plugin to get access to IPFS and upload your book to a permament source of storage, how could is that? Your books will live forever as long as the network exists.
 
+## Demo:
+Check out this wordpress website, the first image lives in IPFS and was uploaded using our plugin. So sweet don't you think? We can create hybrid sites using web2 and web3 technologies http://3.136.18.231/wordpress/
+
 ## Installing:
 You can install this plugin as any other Wordpress plugin. 
 1. Download a copy of this repository, compress as .zip the "textile" folder and upload the file to your Wordpress website through the Wordpress panel.
