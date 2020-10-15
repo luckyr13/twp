@@ -32,11 +32,26 @@ You can install this plugin as any other Wordpress plugin.
 5. Step 5: Once installed and activated, the plugin will appear on the main menu, under the "Plugins" section. Just go to the menu "Textile Plugin" and start exploring the plugin.
 ![Step 5](http://3.136.18.231/demoTextile/textileplugin_step7.png)
 
-6. Step 6: The first time that you get into the "Textile plugin" panel, the plugin will ask you for your Textile API key.
-![Step 6](http://3.136.18.231/demoTextile/textileplugin_step8.png)
+6. Step 6: The first time that you get into the "Textile plugin" panel, you will find a form with two editable fields called API KEY and API SECRET plus a non editable input called PRIVATE IDENTITY. 
+![Step 6](http://3.136.18.231/demoTextile/textileCool1.png)
 
-7. Step 7: You need an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys
+7. Step 7: As we said, you need to have an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys
 ![Step 7](http://3.136.18.231/demoTextile/textileplugin_step9.png)
+
+8. Step 8: You can let the plugin generate your PRIVATE IDENTITY. To do this just click the GENERATE NEW IDENTITY button.
+![Step 7](http://3.136.18.231/demoTextile/newIdentity.png)
+
+NOTE: Remember to SAVE YOUR SETTINGS when you finish.
 
 And that's it. You are ready to play with NTFS from your Wordpress website:
 ![Ready to rock n roll!](http://3.136.18.231/demoTextile/textilePluginCapture1.png)
+
+## Buckets 
+
+With this plugin you can get the list of threads created by your user, you can get the list of buckets of your threads and you can retrieve information about your bucket (like the URL of your bucket).
+
+Please take a look to the Textile docs for more information about buckets: https://docs.textile.io/buckets/
+
+![Buckets](http://3.136.18.231/demoTextile/textileCoolBuckets.png)
+
+
