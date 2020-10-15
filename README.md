@@ -28,13 +28,15 @@ You can install this plugin as any other Wordpress plugin.
 
 4. Step 4: Once the plugin has installed succesfully click on "Activate plugin"
 ![Step 4](http://3.136.18.231/demoTextile/textileplugin_step6.png)
-![Step 4](http://3.136.18.231/demoTextile/textileplugin_step7.png)
 
 5. Step 5: Once installed and activated, the plugin will appear on the main menu, under the "Plugins" section. Just go to the menu "Textile Plugin" and start exploring the plugin.
-![Step 5](http://3.136.18.231/demoTextile/textileplugin_step8.png)
+![Step 5](http://3.136.18.231/demoTextile/textileplugin_step7.png)
 
 6. Step 6: The first time that you get into the "Textile plugin" panel, the plugin will ask you for your Textile API key.
-![Step 6](http://3.136.18.231/demoTextile/textileplugin_step9.png)
+![Step 6](http://3.136.18.231/demoTextile/textileplugin_step8.png)
+
+7. Step 7: You need an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys
+![Step 7](http://3.136.18.231/demoTextile/textileplugin_step9.png)
 
 And that's it. You are ready to play with NTFS from your Wordpress website:
 ![Ready to rock n roll!](http://3.136.18.231/demoTextile/textilePluginCapture1.png)
