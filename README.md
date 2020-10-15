@@ -7,7 +7,8 @@ This plugin is what you need if you want to start using IPFS in a fast and easy 
 
 Imagine that you are a Writer. If you have your book in PDF format and a Wordpress site, you can use this plugin to get access to IPFS and upload your book to a permanent source of storage, how cool is that? Your books will live forever as long as the network exists.
 
-Using our plugin and the embedded Textile tools you can upload any kind of file to InterPlanetary File System. This includes videos as well. So no more limits imposed for your hosting provider, just use something better, like IPFS, Textile and our plugin!
+Using our plugin and the embedded Textile tools you can upload any kind of file to InterPlanetary File System. This includes videos as well. Go beyond the limits imposed by your hosting provider, if your videos are banned by YouTube or other social media sites, then you need to use something better. Try IPFS, Textile and our plugin!
+
 
 ## Demo:
 Check out this wordpress website, the first image lives in IPFS and was uploaded using our plugin. So sweet don't you think? We can create hybrid sites using web2 and web3 technologies http://3.136.18.231/wordpress/
