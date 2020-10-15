@@ -5,7 +5,7 @@ You can learn more about Textile from their official page: https://textile.io/
 
 This plugin is what you need if you want to start using IPFS in a fast and easy way. Literally, you can upload files from your Wordpress website to IPFS and share it in your same Wordpress website. This will help you to persist and share your data in new and attractive ways.
 
-Imagine that you are a Writer. If you have your book in PDF format and a Wordpress site, you can use this plugin to get access to IPFS and upload your book to a permament source of storage, how could is that? Your books will live forever as long as the network exists.
+Imagine that you are a Writer. If you have your book in PDF format and a Wordpress site, you can use this plugin to get access to IPFS and upload your book to a permanent source of storage, how cool is that? Your books will live forever as long as the network exists.
 
 ## Demo:
 Check out this wordpress website, the first image lives in IPFS and was uploaded using our plugin. So sweet don't you think? We can create hybrid sites using web2 and web3 technologies http://3.136.18.231/wordpress/
