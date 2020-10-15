@@ -11,7 +11,7 @@ Using our plugin and the embedded Textile tools you can upload any kind of file 
 
 
 ## Demo:
-Check out this wordpress website, the first image lives in IPFS and was uploaded using our plugin. So sweet don't you think? We can create hybrid sites using web2 and web3 technologies http://3.136.18.231/wordpress/
+If you want to see what you can do using IPFS and Textile Tools please check out this wordpress website. We can have a bridge between web2 and web3 technologies and update our old websites with superpowers. http://3.136.18.231/wordpress/
 
 ## Installing:
 You can install this plugin as any other Wordpress plugin. 
