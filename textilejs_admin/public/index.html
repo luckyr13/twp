@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <head>
-    <title>Textile plugin</title>
+    <title>Textile Tools: Demo</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./css/wptextileplugin.css">
+    <link rel="stylesheet" href="./css/wptextileplugin_admin.css">
 </head>
 <body>
 	
@@ -22,19 +22,44 @@
 	<div id="wptextile_tabs_area">
 		<!-- Tabs menu -->
 		<ul class="wptextile_tabs_menu">
-			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="buckets">Buckets</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets_navigator">Navigator</a></li><li><a data-tab="buckets">Buckets Query</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
 		</ul>
 		<!-- Tabs content -->
 		<div class="wptextile_tabs_container">
 			<!-- Info tab -->
 			<div class="wptextile_tab_content info">
-				<h2>Welcome</h2>
+				<h2>Welcome back!</h2>
+				<div class="wptextile_tabs_content_info_body">
+				</div>
 				
+			</div>
+
+			<!-- Archive tab -->
+			<div class="wptextile_tab_content archive hide">
+				<h2>Archive</h2>
+				<!-- Posts list -->
+				<div>
+					<h3>Posts list</h3>
+					<p>Get posts from database:</p>
+					<input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">
+					
+				</div>
+				<!-- Post results -->
+				<div id="textile_archive_div_results">
+					--
+				</div>
+				
+			</div>
+
+			<!-- Buckets v2 tab -->
+			<div class="wptextile_tab_content buckets_navigator hide">
+				<h2>Buckets Navigator</h2>
+
 			</div>
 
 			<!-- Buckets tab -->
 			<div class="wptextile_tab_content buckets hide">
-				<h2>Buckets</h2>
+				<h2>Buckets Query</h2>
 				<input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
 				<label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
 				<input 
@@ -89,17 +114,15 @@
 		
 	</div>
 
+	<!-- LOAD DEMO CREDENTIALS FIRST :) -->
+	<script src="./js/demo_credentials.js"></script>
 	<script>
-		var TEXTILE_AJAX_OBJ = {
-			// apikey: 'bcjvb6xsqtr77yd3p2dgtbfn4ne',
-			apikey: 'b5xyt2bggdm2hgjzljztsvbs7n4',
-			// apisecret: 'behrgevfnh7ekbfgnwtcohuordwdcihu374mcs4q',
-			apisecret: 'bppmefnndgsa74jus44cwpy3jfnq7hgbxfsto4la',
-			privateidentity: 'bbaareqhhidl5ow5f3e4r7ylvdetccv4ynvcwyhujzfl2jg34fomdumdshys6oithji7vhc75zpzfy46omm66gd2sywgxb6kglfykpqdioneq4'
-		};
-
 		function loadValuesOnForm() {
 			const data = TEXTILE_AJAX_OBJ;
+			if (!data) {
+				alert('Error loading credentials');
+				return;
+			}
 			document.getElementById('wptextile_userdata_privateidentity').value = data.privateidentity;
 			document.getElementById('apikey').value = data.apikey;
 			document.getElementById('apisecret').value = data.apisecret;

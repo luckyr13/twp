@@ -1,6 +1,7 @@
 import { PrivateKey, Client, Identity, 
 	Buckets, KeyInfo, PushPathResult, UserAuth, PublicKey, Users,
 	createUserAuth, APISig, createAPISig, ThreadID   } from '@textile/hub';
+import { TextileAjaxObjInternal } from './interfaces/textile-ajax-obj';
 import { TEXTILE_AJAX_OBJ_INTERNAL } from './textile-data';
 declare const window: any;
 declare const document: any;
@@ -32,9 +33,8 @@ export class WPTextilePlugin {
 	* Set initial data from external object
 	* This data includes Textile credentials
 	*/
-	constructor() {
+	constructor(data: TextileAjaxObjInternal) {
 		// Feed the plugin with Wordpress data
-		const data = TEXTILE_AJAX_OBJ_INTERNAL;
 		this._apikey = data.hasOwnProperty('apikey') ? data.apikey : '';
 		this._apisecret = data.hasOwnProperty('apisecret') ? data.apisecret : '';
 		this._privateidentity = data.hasOwnProperty('privateidentity') ? data.privateidentity : '';
@@ -84,7 +84,10 @@ export class WPTextilePlugin {
 		}
 	}
 
-	async getBucketsList(buckets: Buckets) {
+	/*
+	* Get the list of buckets (helper function)
+	*/
+	async getBucketsList_helper(buckets: Buckets) {
 	    const roots = await buckets.list();
 	    return roots;
 	}
@@ -130,7 +133,7 @@ export class WPTextilePlugin {
 			var buckets = await this.setupBucketEnvironmentWithThread(keyinfo, identity, threadId);
 			if (buckets) {
 				
-				const data = await this.getBucketsList(buckets);
+				const data = await this.getBucketsList_helper(buckets);
 				result['data'] = data;
 			}
 		} catch (err) {

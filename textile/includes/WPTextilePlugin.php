@@ -13,21 +13,33 @@ class WPTextilePlugin {
     */
     public function __construct() {
         $this->menu_slug = 'wptextile';
-        $this->page_title = 'Textile Plugin';
-        $this->menu_title = 'Textile Plugin';
+        $this->page_title = 'Textile Tools for Wordpress';
+        $this->menu_title = 'Textile Tools';
 
-        add_action('init', array($this, 'init_actions'));
+        // Ajax
+        add_action('wp_ajax_textilepostslist', array($this, 'ajax_posts_list'));
 
         // Admin
-        add_action('admin_init', array($this, 'admin_init_actions'));
-        add_action('admin_menu', array($this, 'admin_page_hook'));
-
-
+        if (is_admin()) {
+            add_action('admin_init', array($this, 'admin_init_actions'));
+            add_action('admin_menu', array($this, 'admin_page_hook'));
+        } else {
+            add_action('init', array($this, 'init_actions'));
+        }
         
+    }
+
+    public function ajax_posts_list($data) {
+        $filter = !empty($_POST['filter']) ? $_POST['filter'] : '';
+
+        var_dump($filter);
+       
+        wp_die();
     }
 
 
     /*
+    *   ADMIN SECTION
     *   Enqueues JS and CSS scripts
     */
     public function admin_enqueue_scripts( $hook ) {
@@ -40,7 +52,7 @@ class WPTextilePlugin {
         $css_in_footer = false;
         wp_enqueue_style(
             'wptextileplugin_css',
-            plugins_url( '../admin/css/wptextileplugin.css', __FILE__ ),
+            plugins_url( '../admin/css/wptextileplugin_admin.css', __FILE__ ),
             $css_dependencies,
             $css_version
         );
@@ -282,19 +294,44 @@ class WPTextilePlugin {
         $content .= '<div id="wptextile_tabs_area">
         <!-- Tabs menu -->
         <ul class="wptextile_tabs_menu">
-            <li><a data-tab="info" class="main">Info</a></li><li><a data-tab="buckets">Buckets</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+            <li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets_navigator">Navigator</a></li><li><a data-tab="buckets">Buckets Query</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
         </ul>
         <!-- Tabs content -->
         <div class="wptextile_tabs_container">
             <!-- Info tab -->
             <div class="wptextile_tab_content info">
-                <h2>Welcome</h2>
+                <h2>Welcome back!</h2>
+                <div class="wptextile_tabs_content_info_body">
+                </div>
                 
+            </div>
+
+            <!-- Archive tab -->
+            <div class="wptextile_tab_content archive hide">
+                <h2>Archive</h2>
+                <!-- Posts list -->
+                <div>
+                    <h3>Posts list</h3>
+                    <p>Get posts from database:</p>
+                    <input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">
+                    
+                </div>
+                <!-- Post results -->
+                <div id="textile_archive_div_results">
+                    --
+                </div>
+                
+            </div>
+
+            <!-- Buckets v2 tab -->
+            <div class="wptextile_tab_content buckets_navigator hide">
+                <h2>Buckets Navigator</h2>
+
             </div>
 
             <!-- Buckets tab -->
             <div class="wptextile_tab_content buckets hide">
-                <h2>Buckets</h2>
+                <h2>Buckets Query</h2>
                 <input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
                 <label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
                 <input 
@@ -309,7 +346,7 @@ class WPTextilePlugin {
                 <div id="wptextile_tab_content_buckets_results"></div>
 
                 <h3>Get/Create a bucket:</h3>
-                <label for="textile_txt_get_bucket_content_bname">Bucket name:</label>
+                <label for="textile_txt_get_bucket_content_bname">Bucket Name:</label>
                 <input 
                     type="text" 
                     class="regular-text" 
