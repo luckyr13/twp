@@ -49,6 +49,16 @@ ul.wptextile_tabs_menu li a.main {
 	padding: 20px;
 	background-color: #F0F0F0;
 }
+.wptextile_tab_content h2.tab_title {
+	height: 100px;
+	line-height: 100px;
+	background-color: #F0F0F0;
+	color: #23282D;
+	text-align: center;
+	margin: 0;
+	border: 1px dotted #23282D;
+	margin-bottom: 30px;
+}
 .wptextile_tab_content.hide {
 	display: none;
 }
@@ -61,4 +71,29 @@ ul.wptextile_tabs_menu li a.main {
 	margin: 0 auto;
 	text-align: left;
 	border: 1px solid #CCC;
+}
+
+
+.wptextile_archive_post_detail {
+	height: 250px;
+	overflow-y: auto;
+	border: 2px solid #000;
+	margin-bottom: 10px;
+}
+
+.wptextile_archive_post_detail:hover {
+	border: 2px solid #0073AA;
+}
+
+.wptextile_col_6 {
+	width: 50%;
+	float: left;
+}
+
+.wptextile_clearfix {
+	clear: both;
+}
+
+.wptextile_text-right {
+	text-align: right;
 }

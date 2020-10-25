@@ -29,14 +29,66 @@ class WPTextilePlugin {
         
     }
 
+
+    /*
+    *   Ajax call
+    *   Prints the list of posts in json
+    */
     public function ajax_posts_list($data) {
         $filter = !empty($_POST['filter']) ? $_POST['filter'] : '';
+        $res = array();
+        $posts = array();
 
-        var_dump($filter);
-       
+        // Return all posts
+        if ($filter === 'all') {
+
+            // The Query
+            $args = array(
+                'numberposts'      => 20,
+                'category'         => 0,
+                'orderby'          => 'date',
+                'order'            => 'DESC',
+                'include'          => array(),
+                'exclude'          => array(),
+                'meta_key'         => '',
+                'meta_value'       => '',
+                'post_type'        => 'post',
+                'suppress_filters' => true,
+                'post_status'    => 'publish',
+            );
+            // slug
+            // if ($slug)
+            // args['name'] = $slug;
+
+            $posts = get_posts($args);
+        }
+
+        $res = $this->ajax_post_list_template_post($posts);
+        echo json_encode($res);
+
         wp_die();
     }
 
+    /*
+    *   Format post data
+    */
+    private function ajax_post_list_template_post($posts) {
+        $res = [];
+        foreach ($posts as $post) {
+            $post = (array) $post;
+            $res[] = [
+                'id' => $post['ID'],
+                'post_date_gmt' => $post['post_date_gmt'],
+                'post_content' => $post['post_content'],
+                'post_title' => $post['post_title'],
+                'post_name' => $post['post_name'],
+                'post_modified_gmt' => $post['post_modified_gmt']
+            ];
+        }
+
+        return $res;
+        
+    }
 
     /*
     *   ADMIN SECTION
@@ -300,7 +352,7 @@ class WPTextilePlugin {
         <div class="wptextile_tabs_container">
             <!-- Info tab -->
             <div class="wptextile_tab_content info">
-                <h2>Welcome back!</h2>
+                <h2 class="tab_title">Welcome back!</h2>
                 <div class="wptextile_tabs_content_info_body">
                 </div>
                 
@@ -308,14 +360,25 @@ class WPTextilePlugin {
 
             <!-- Archive tab -->
             <div class="wptextile_tab_content archive hide">
-                <h2>Archive</h2>
+                <h2 class="tab_title">Archive: Static Site Generator</h2>
                 <!-- Posts list -->
-                <div>
+                <div class="wptextile_col_6">
                     <h3>Posts list</h3>
-                    <p>Get posts from database:</p>
-                    <input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">
-                    
+                    <p>
+                        Get last 20 posts from database:
+                        <input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">
+                    </p>
                 </div>
+                <!-- Bucket settings -->
+                <div class="wptextile_col_6 wptextile_text-right">
+                    <h3>Bucket settings</h3>
+                    <label>
+                        Bucket Name
+                        <input class="regular-text" type="text" id="textile_archive_txt_bucket_name" value="">
+                    </label>
+                </div>
+                <br>
+                <div class="wptextile_clearfix"></div>
                 <!-- Post results -->
                 <div id="textile_archive_div_results">
                     --
@@ -325,13 +388,13 @@ class WPTextilePlugin {
 
             <!-- Buckets v2 tab -->
             <div class="wptextile_tab_content buckets_navigator hide">
-                <h2>Buckets Navigator</h2>
+                <h2 class="tab_title">Buckets Navigator</h2>
 
             </div>
 
             <!-- Buckets tab -->
             <div class="wptextile_tab_content buckets hide">
-                <h2>Buckets Query</h2>
+                <h2 class="tab_title">Buckets Query</h2>
                 <input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
                 <label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
                 <input 
@@ -373,13 +436,13 @@ class WPTextilePlugin {
 
             <!-- Users tab -->
             <div class="wptextile_tab_content users hide">
-                <h2>Users</h2>
+                <h2 class="tab_title">Users</h2>
                 Coming soon!
             </div>
 
             <!-- Threads tab -->
             <div class="wptextile_tab_content threads hide">
-                <h2>Threads</h2>
+                <h2 class="tab_title">Threads</h2>
                 Coming soon!
             </div>
         </div>
