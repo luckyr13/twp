@@ -384,8 +384,12 @@ class WPTextilePlugin {
                 </div>
                 <!-- Posts list -->
                 <div id="wptextile_archive_section_post_list" class="hide">
+                    <h3>Step 2. Create and upload index files:</h3>
+                    <p>
+                        <input class="button button-primary" type="button" id="textile_archive_btn_generate_index" value="CREATE INDEX FILES">
+                    </p>
                     
-                    <h3>Posts list</h3>
+                    <h3>Step 3. Posts list</h3>
                     <p>
                         Get last 20 posts from database:
                         <input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">

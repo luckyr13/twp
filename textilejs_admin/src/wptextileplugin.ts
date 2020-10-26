@@ -308,6 +308,17 @@ export class WPTextilePlugin {
 	  await buckets.pushPath(bucketKey, path, buf)
 	}
 
+	async addHTMLFile(
+		buckets: Buckets,
+		bucketKey: string,
+		html: string,
+		path: string
+	) {
+	  // Store the html file in the root of the bucket
+	  const buf = Buffer.from(html);
+	  return await buckets.pushPath(bucketKey, path, buf);
+	}
+
 	async insertFile(
 		buckets: Buckets, 
 		bucketKey: string, 
@@ -421,6 +432,38 @@ export class WPTextilePlugin {
 		} else {
 			throw 'Please select a file!';
 		}
+		
+		return result;
+	}
+
+	async uploadHTMLFile(
+		bucketNameForFileUpload: string,
+		html: string,
+		path: string
+	) {
+		
+		var bucketData = null;
+		var buckets = null;
+		var bucketKey = null;
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		let result = null;
+		
+		bucketData = await this.setupBucketEnvironment(
+			keyinfo, identity, bucketNameForFileUpload
+		);
+
+		buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
+		bucketKey = bucketData.hasOwnProperty('bucketKey') ? bucketData.bucketKey : null;
+		
+	    try {
+		    result = await this.addHTMLFile(
+		    	buckets, bucketKey, html, path
+		    );
+	    } catch (err) {
+	    	throw 'Error on file upload: ' + err;
+	    }
+		
 		
 		return result;
 	}

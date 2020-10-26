@@ -58,6 +58,7 @@ export class WPTextilePluginTabArchive {
 	*/
 	getPosts(url) {
 		const container = document.getElementById('textile_archive_div_results');
+		const bucket_name = document.getElementById('textile_archive_txt_bucket_name').value;
 		const data = {
 			action: 'textilepostslist',
 			filter: 'all'
@@ -73,6 +74,38 @@ export class WPTextilePluginTabArchive {
 					html += this.template_post_detail(post);
 				} 
 				container.innerHTML = html;
+
+				// Add listeners 
+				const btnsUpload = document.getElementsByClassName('wptextile_archive_post_detail_btn_upload');
+
+				for (let tmp_btnUpload of btnsUpload) {
+					tmp_btnUpload.addEventListener('click', async () => {
+						const dataset = tmp_btnUpload.dataset ?
+							tmp_btnUpload.dataset : {};
+						const post_id = dataset.hasOwnProperty('id') ?
+							dataset.id : '';
+						const post_slug = dataset.hasOwnProperty('slug') ?
+							dataset.slug : '';
+						const div_post_id = 'wptextile_post_detail_html_' + post_id;
+						const post_html = document.getElementById(div_post_id) ?
+							document.getElementById(div_post_id).innerHTML :
+							'';
+						// Disable button
+						tmp_btnUpload.disabled = true;
+						 
+						try {
+							await this.uploadPostToBucket(
+								post_id, post_slug, post_html, bucket_name
+							);
+							alert('All right! File uploaded successfully!');
+						} catch (err) {
+							alert('Err: ' + err);
+						}
+
+						// Enable button
+						tmp_btnUpload.disabled = false;
+					});
+				}
 			})
 			.catch((err) => {
 				let error_msg = '';
@@ -107,13 +140,20 @@ export class WPTextilePluginTabArchive {
 		let html = '';
 
 		html += `
-		<h2>POST ID: ${post_id} / <small>Last update: ${post_modified_gmt}</small></h2>
+		<h2>POST ID: ${post_id} (${post_name}) / <small>Last update: ${post_modified_gmt}</small></h2>
 		<div class="wptextile_archive_post_detail">
 			<h2>${post_title}</h2>
-			<div class="post_detail_html">${post_content}</div>
+			<div id="wptextile_post_detail_html_${post_id}" 
+				class="post_detail_html">
+				${post_content}
+			</div>
 		</div>
 		<div class="wptextile_archive_post_detail_footer">
-			MENU
+			<input type="button" 
+				class="button button-primary wptextile_archive_post_detail_btn_upload" 
+				data-id="${post_id}"
+				data-slug="${post_name}"
+				value="UPLOAD FILE TO BUCKET" />
 		</div>
 		<hr>
 		`;
@@ -269,6 +309,20 @@ export class WPTextilePluginTabArchive {
 				reject(err);
 			}
 		});
+	}
+
+	async uploadPostToBucket(post_id, post_slug, post_html, bucket_name) {
+		const path = `${post_slug}.html`;
+		try {
+			var res = await this.wp.uploadHTMLFile(
+				bucket_name,
+				post_html,
+				path
+			);
+		} catch (err) {
+			throw err;
+		}
+		
 	}
 
 }
