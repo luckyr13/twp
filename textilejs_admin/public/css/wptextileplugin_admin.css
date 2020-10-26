@@ -6,7 +6,6 @@
 *	Tabs styles
 */
 #wptextile_tabs_area {
-	min-height: 400px;
 }
 /*
 *	Tabs menu styles
@@ -38,14 +37,14 @@ ul.wptextile_tabs_menu li a.main {
 *	Tabs content styles
 */
 .wptextile_tabs_container {
-	height: 100%;
+	margin-bottom: 20px;
 }
 .wptextile_tabs_container h2 {
 	margin: 0;
 	margin-bottom: 14px;
 }
 .wptextile_tab_content {
-	height: 100%;
+	min-height: 400px;
 	padding: 20px;
 	background-color: #F0F0F0;
 }
@@ -78,11 +77,19 @@ ul.wptextile_tabs_menu li a.main {
 	height: 250px;
 	overflow-y: auto;
 	border: 2px solid #000;
-	margin-bottom: 10px;
 }
 
 .wptextile_archive_post_detail:hover {
 	border: 2px solid #0073AA;
+}
+
+.wptextile_archive_post_detail_footer {
+	height: 50px;
+	background-color: #23282d;
+	color: #FFF;
+	margin-bottom: 20px;
+	margin-top: 0px;
+	text-align: center;
 }
 
 .wptextile_col_6 {
@@ -96,4 +103,47 @@ ul.wptextile_tabs_menu li a.main {
 
 .wptextile_text-right {
 	text-align: right;
+}
+
+
+#wptextile_archive_section_post_list {
+
+}
+
+#wptextile_archive_section_post_list.hide {
+	display: none;
+}
+
+#wptextile_archive_section_bucket_settings {
+
+}
+
+#wptextile_archive_section_bucket_settings_bucklist {
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+    
+	margin-top: 5px;
+	margin-bottom: 15px;
+	height: 180px;
+	overflow-y: auto;
+    border: 1px solid #CCC;
+}
+
+#wptextile_archive_section_bucket_settings_bucklist h3 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	text-align: center;
+
+}
+
+#wptextile_archive_section_bucket_settings_bucklist h3 small {
+	font-weight: normal;
+	font-style: italic;
+	margin-left: 10px;
+}
+
+#textile_archive_div_bucket_gen_info {
+	padding: 10px;
+	text-align: center;
 }

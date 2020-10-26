@@ -22,7 +22,7 @@
 	<div id="wptextile_tabs_area">
 		<!-- Tabs menu -->
 		<ul class="wptextile_tabs_menu">
-			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets_navigator">Navigator</a></li><li><a data-tab="buckets">Buckets Query</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets">Buckets Query</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
 		</ul>
 		<!-- Tabs content -->
 		<div class="wptextile_tabs_container">
@@ -34,40 +34,53 @@
 				
 			</div>
 
-			<!-- Archive tab -->
+			<!-- TAB: Archive -->
 			<div class="wptextile_tab_content archive hide">
 				<h2 class="tab_title">Archive: Static Site Generator</h2>
+				<!-- Bucket settings -->
+				<div id="wptextile_archive_section_bucket_settings">
+					<h3>Step 1. Configure bucket settings</h3>
+					<div>
+						<p>
+							Buckets:
+							<input class="button button-primary" type="button" id="textile_archive_btn_get_buckets" value="GET BUCKETS">
+						</p>
+						<div id="wptextile_archive_section_bucket_settings_bucklist">
+						</div>
+					</div>
+					<div style="text-align: center">
+						<label>
+							Bucket Name
+							<input class="regular-text" type="text" id="textile_archive_txt_bucket_name" value="">
+						</label>
+						<input class="button button-primary" type="button" id="textile_archive_btn_activate_posts" value="SAVE AND GO TO NEXT STEP">
+					</div>
+					<div id="textile_archive_div_bucket_gen_info"></div>
+					
+				</div>
 				<!-- Posts list -->
-				<div class="wptextile_col_6">
-					<h3>Posts list</h3>
+				<div id="wptextile_archive_section_post_list" class="hide">
+					<h3>Step 2. Create and upload index files:</h3>
+					<p>
+						<input class="button button-primary" type="button" id="textile_archive_btn_generate_index" value="CREATE INDEX FILES">
+					</p>
+					
+					<h3>Step 3. Posts list</h3>
 					<p>
 						Get last 20 posts from database:
 						<input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">
 					</p>
+						
+					<br>
+					<!-- Post results -->
+					<div id="textile_archive_div_results">
+						--
+					</div>
 				</div>
-				<!-- Bucket settings -->
-				<div class="wptextile_col_6 wptextile_text-right">
-					<h3>Bucket settings</h3>
-					<label>
-						Bucket Name
-						<input class="regular-text" type="text" id="textile_archive_txt_bucket_name" value="">
-					</label>
-				</div>
-				<br>
-				<div class="wptextile_clearfix"></div>
-				<!-- Post results -->
-				<div id="textile_archive_div_results">
-					--
-				</div>
-				
-			</div>
-
-			<!-- Buckets v2 tab -->
-			<div class="wptextile_tab_content buckets_navigator hide">
-				<h2 class="tab_title">Buckets Navigator</h2>
 
 			</div>
 
+	
 			<!-- Buckets tab -->
 			<div class="wptextile_tab_content buckets hide">
 				<h2 class="tab_title">Buckets Query</h2>
