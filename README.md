@@ -51,6 +51,12 @@ NOTE: Remember to SAVE YOUR SETTINGS when you finish.
 And that's it. You are ready to play with NTFS from your Wordpress website:
 ![Ready to rock n roll!](http://3.136.18.231/demoTextile/textilePluginCapture1.png)
 
+## Archive: Static Site Generator
+
+BETA: You can try this super cool feature to generate static html copies of your posts and to upload it to IPFS as backup.
+
+![Buckets](http://3.136.18.231/demoTextile/textile_archiveDemo.png)
+
 ## Buckets 
 
 With this plugin you can get the list of threads created by your user, you can get the list of buckets of your threads and you can retrieve information about your bucket (like the URL of your bucket).
@@ -59,9 +65,5 @@ Please take a look to the Textile docs for more information about buckets: https
 
 ![Buckets](http://3.136.18.231/demoTextile/textileCoolBuckets.png)
 
-## Archive: Static Site Generator
 
-BETA: You can try this super cool feature to generate static html copies of your posts and to upload it to IPFS as backup.
-
-![Buckets](http://3.136.18.231/demoTextile/textileCoolBuckets.png)
 
