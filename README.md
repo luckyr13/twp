@@ -3,11 +3,13 @@ With this plugin you can have an interface to IPFS, Libp2p and Filecoin from you
 
 You can learn more about Textile from their official page: https://textile.io/
 
-This plugin is what you need if you want to start using IPFS in a fast and easy way. Literally, you can upload files from your Wordpress website to IPFS and share it in your same Wordpress website. This will help you to persist and share your data in new and attractive ways.
+This plugin is what you need if you want to start using IPFS in a fast and easy way. 
 
-Imagine that you are a Writer. If you have your book in PDF format and a Wordpress site, you can use this plugin to get access to IPFS and upload your book to a permanent source of storage, how cool is that? Your books will live forever as long as the network exists.
+With our plugin you can upload files from your Wordpress website to IPFS (InterPlanetary File System). All this happens thanks to the tools created by Textile.
 
-Using our plugin and the embedded Textile tools you can upload any kind of file to InterPlanetary File System. This includes videos as well. Go beyond the limits imposed by your hosting provider, if your videos are banned by YouTube or other social media sites, then you need to use something better. Try IPFS, Textile and our plugin!
+Still not convinced? We are working on a new feature called "Archive: Static Site Generator". With this new feature any wordpress admin can create a static copy of their posts and upload it to IPFS in just a few clicks.
+
+Go beyond the limits imposed by your hosting provider. Try IPFS, Textile and our plugin!
 
 
 ## Demo:
@@ -57,4 +59,9 @@ Please take a look to the Textile docs for more information about buckets: https
 
 ![Buckets](http://3.136.18.231/demoTextile/textileCoolBuckets.png)
 
+## Archive: Static Site Generator
+
+BETA: You can try this super cool feature to generate static html copies of your posts and to upload it to IPFS as backup.
+
+![Buckets](http://3.136.18.231/demoTextile/textileCoolBuckets.png)
 
