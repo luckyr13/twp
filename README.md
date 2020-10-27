@@ -13,7 +13,12 @@ Go beyond the limits imposed by your hosting provider. Try IPFS, Textile and our
 
 
 ## Demo:
-If you want to see what you can do using IPFS and Textile Tools please check out this wordpress website. We can have a bridge between web2 and web3 technologies and update our old websites with superpowers. http://3.136.18.231/wordpress/
+
+
+## Watch our demo:
+[![Demo Textile Tools](https://hub.textile.io/thread/bafkqsos3vujuueemep3bpwdjffsdhq7smetc262gbyv2hiaw6ltqvyq/buckets/bafzbeibrmqghpohqilxu3o6wi6mkqlyvapysdoqhmqlguqebbehoxukjyu/textileToolsVid.gif)](https://hub.textile.io/thread/bafkqsos3vujuueemep3bpwdjffsdhq7smetc262gbyv2hiaw6ltqvyq/buckets/bafzbeibrmqghpohqilxu3o6wi6mkqlyvapysdoqhmqlguqebbehoxukjyu/textile-tools-demo.html)
+
+We invite you to visit our demo wordpress site as well: http://3.136.18.231/wordpress/
 
 ## Installing:
 You can install this plugin as any other Wordpress plugin. 
