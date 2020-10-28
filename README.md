@@ -16,7 +16,7 @@ Go beyond the limits imposed by your hosting provider. Try IPFS, Textile and our
 
 
 ## Watch our demo:
-[![Demo Textile Tools](https://hub.textile.io/thread/bafkqsos3vujuueemep3bpwdjffsdhq7smetc262gbyv2hiaw6ltqvyq/buckets/bafzbeibrmqghpohqilxu3o6wi6mkqlyvapysdoqhmqlguqebbehoxukjyu/textileToolsVid.gif)](https://hub.textile.io/thread/bafkqsos3vujuueemep3bpwdjffsdhq7smetc262gbyv2hiaw6ltqvyq/buckets/bafzbeibrmqghpohqilxu3o6wi6mkqlyvapysdoqhmqlguqebbehoxukjyu/textile-tools-demo.html)
+[![Demo Textile Tools](https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/textileToolsVid.gif)](https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/textile-tools-demo.html)
 
 We invite you to visit our demo wordpress site as well: http://3.136.18.231/wordpress/
 
