@@ -53,7 +53,7 @@ You can install this plugin as any other Wordpress plugin.
 
 NOTE: Remember to SAVE YOUR SETTINGS when you finish.
 
-And that's it. You are ready to play with NTFS from your Wordpress website:
+And that's it. You are ready to play with IPFS from your Wordpress website:
 ![Ready to rock n roll!](http://3.136.18.231/demoTextile/textilePluginCapture1.png)
 
 ## Archive: Static Site Generator
