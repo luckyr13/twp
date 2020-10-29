@@ -45,10 +45,9 @@ You can install this plugin as any other Wordpress plugin.
 6. Step 6: The first time that you get into the "Textile plugin" panel, you will find a form with two editable fields called API KEY and API SECRET plus a non editable input called PRIVATE IDENTITY. 
 ![Step 6](http://3.136.18.231/demoTextile/textileCool1.png)
 
-7. Step 7: As we said, you need to have an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys
-![Step 7](http://3.136.18.231/demoTextile/textileplugin_step9.png)
+7. Step 7: As we said, you need to have an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: https://docs.textile.io/hub/apis/#api-keys
 
-8. Step 8: You can let the plugin generate your PRIVATE IDENTITY. To do this just click the GENERATE NEW IDENTITY button.
+8. Step 8: Now fill with your API KEYS the form on Textile Tools admin section.
 ![Step 7](http://3.136.18.231/demoTextile/newIdentity.png)
 
 NOTE: Remember to SAVE YOUR SETTINGS when you finish.
