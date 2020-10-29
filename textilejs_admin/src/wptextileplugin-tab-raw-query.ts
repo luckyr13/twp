@@ -1,10 +1,13 @@
 import { WPTextilePlugin } from './wptextileplugin';
+import { FetchAPI } from './fetch-api';
 
 export class WPTextilePluginTabRawQuery {
 	private wp: WPTextilePlugin;
+	private fapi: FetchAPI;
 
 	constructor(_wp: WPTextilePlugin) {
 		this.wp = _wp;
+		this.fapi = new FetchAPI();
 	}
 	/*
 	*	Set listeners for components in Buckets tab
@@ -144,7 +147,15 @@ export class WPTextilePluginTabRawQuery {
 						data.data : {};
 					resultsContainer.innerHTML = this.template_buckets_table(result);
 					resultsContainer.innerHTML += '<h3>Thread id:<small>' + threadId + '</small></h3>';
-					
+					// Listeners 
+					const a_bucketKey_viewFiles: any = document.getElementsByClassName('wptextile_buckets_tbl_view_files');
+					for (let bk_vf of a_bucketKey_viewFiles) {
+						bk_vf.addEventListener('click', () => {
+							const bucketKey = bk_vf.dataset.key;
+
+							this.getFilesFromBucket(bucketKey, threadId);
+						});
+					}
 
 					btn_get_buckets.disabled = false;
 				}).catch((reason) => {
@@ -186,7 +197,10 @@ export class WPTextilePluginTabRawQuery {
 			res += `
 			<tr>
 				<td>${ bucket.name }</td>
-				<td>${ bucket.key }</td>
+				<td>
+					<a data-key="${ bucket.key }" 
+					  class="wptextile_buckets_tbl_view_files">${ bucket.key }<a>
+				</td>
 			</tr>
 			`;
 		}
@@ -195,6 +209,66 @@ export class WPTextilePluginTabRawQuery {
 		</table>`;
 
 		return res;
+	}
+
+	/*
+	*	HTML template for files table
+	*/
+	template_bucketsFiles_table(files, url) {
+		let res = `<table class="wp-list-table widefat fixed striped">
+		<thead>
+			<tr>
+				<th>Filename</th>
+				<th>Updated at</th>
+			</tr>
+		</thead>
+		<tbody>`;
+		files = files ? files : {};
+
+		for (let key in files) {
+			const updated_at = files[key].updated_at ?
+				files[key].updated_at : '';
+			res += `
+			<tr>
+				<td>
+					<a href="${url}/${key}" target="_blank">${key}<a>
+				</td>
+				<td>${ updated_at }</td>
+			</tr>
+			`;
+		}
+
+		res += `<tbody>
+		</table>`;
+
+		return res;
+	}
+
+	getFilesFromBucket(bucketKey: string, threadId: string) {
+		const url = `https://hub.textile.io/thread/${threadId}/buckets/${bucketKey}`;
+		const final_url = `${url}?json=true`;
+		const content_result = document.getElementById('wptextile_tab_content_buckets_results_bucketsAuto_files');
+		content_result.innerText = 'Loading ...';
+
+		this.fapi.get(final_url).then(async (data) => {
+			const res = JSON.parse(await data.text());
+			let files = res && res.hasOwnProperty('metadata') ? 
+				res.metadata : {};
+			let html = `
+			<h4>Bucket ${bucketKey}</h4>
+			${ this.template_bucketsFiles_table(files, url) }
+			<p style="font-size: 12px; font-style: italic">
+				View bucket:
+				<a href="${url}" target="_blank">${url}<a>
+			</p>
+			`;
+			
+
+			content_result.innerHTML = html;
+
+		}).catch((reason) => {
+			alert('Error: ' + reason);
+		});
 	}
 
 

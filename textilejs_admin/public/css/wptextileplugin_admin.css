@@ -175,3 +175,13 @@ ul.wptextile_tabs_menu li a.main {
 	font-style: italic;
 	color: #AAA;
 }
+
+.wptextile_buckets_tbl_view_files {
+	cursor: pointer;
+	font-weight: bold;
+	color: #2935FF;
+}
+
+.wptextile_buckets_tbl_view_files:hover{
+	color: #FECE07;
+}

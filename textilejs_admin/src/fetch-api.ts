@@ -16,4 +16,15 @@ export class FetchAPI {
 			}
 		});
 	}
+
+	/*
+	*	 Post request
+	*/
+	get(_url: string): Promise<Response> {
+		const url = _url.trim();
+
+		return fetch(url, { 
+			method: 'GET'
+		});
+	}
 }
