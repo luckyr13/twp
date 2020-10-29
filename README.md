@@ -62,7 +62,9 @@ BETA: You can try this super cool feature to generate static html copies of your
 
 ## Buckets 
 
-With this plugin you can get the list of threads created by your user, you can get the list of buckets of your threads and you can retrieve information about your bucket (like the URL of your bucket).
+Textile Buckets are a very powerful way to store your files on IPFS. With our plugin you can read and manage the list of buckets that you have created with your API KEYS and of course, you can upload files directly from your Wordpress admin panel.
+
+Persist and share your data in a breeze!
 
 Please take a look to the Textile docs for more information about buckets: https://docs.textile.io/buckets/
 
