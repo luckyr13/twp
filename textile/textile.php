@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Textile Tools
-Plugin URI: http://textile.io
+Plugin URI: https://github.com/luckyr13/twp
 Description: Backup your Wordpress website by creating html static copies of your posts and uploading it to IPFS thanks to Textile Tools. Create buckets, upload files to IPFS, archive your buckets in Filecoin and more. This is the all-in-one tool that you need to interact nice and easy with IPFS.
 Version: 1.0
 Author: Ricardo Guzman

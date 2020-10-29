@@ -4,6 +4,7 @@ import { WPTextilePluginTabRawQuery } from './wptextileplugin-tab-raw-query';
 import { WPTextilePluginTabArchive } from './wptextileplugin-tab-archive';
 
 declare const document: any;
+declare const window: any;
 
 class Index {
 	private wp: WPTextilePlugin;
@@ -22,6 +23,8 @@ class Index {
 
 		// Set listeners
 		this.setListeners();
+		
+		
 
 	}
 
@@ -40,10 +43,27 @@ class Index {
 	*	Set website listeners
 	*/
 	setListeners() {
+		
+		// Type of keys listeners
+		this.typeOfKeysListeners(
+			'wptextile_options[wptextile_userdata_typeofapikey]',
+			'wptextile_userdata_privateidentity',
+			'textile_btn_generate_new_identity',
+			'wptextile_userdata_privateidentity_label'
+		); 
+
 		// Identity listeners
-		this.identityListeners();
+		this.identityListeners(
+			'textile_btn_generate_new_identity',
+			'wptextile_userdata_privateidentity_chk',
+			'wptextile_userdata_privateidentity'
+		);
 		// Init tab menu listeners 
-		this.setTabsMenuListeners('wptextile_tabs_area');
+		this.setTabsMenuListeners(
+			'wptextile_tabs_area',
+			'wptextile_tabs_menu',
+			'wptextile_tab_content'
+		);
 
 		// EVENTS IN TABS COMPONENTS 
 		// Archive tab 
@@ -55,12 +75,93 @@ class Index {
 	}
 
 	/*
+	*	Listeners to show/hide elements 
+	*	if user choose between Account keys and User group keys
+	*/
+	typeOfKeysListeners(
+		radioNameTypeOfKeys: string,
+		privateIdentityId: string,
+		btnPrivateIdentityId: string,
+		labelPrivateIdentityId: string
+	) {
+		const radio_options = document.getElementsByName(radioNameTypeOfKeys);
+		// Show hide Private identity elements based 
+		// on loaded values for Type of Keys
+		this.showHidePrivateIdentityElements(
+			radioNameTypeOfKeys,
+			privateIdentityId,
+			btnPrivateIdentityId,
+			labelPrivateIdentityId
+		); 
+
+		// Add listeners
+		if (radio_options) {
+			for (let opt of radio_options) {
+				opt.addEventListener('change', () => {
+					this.showHidePrivateIdentityElements(
+						radioNameTypeOfKeys,
+						privateIdentityId,
+						btnPrivateIdentityId,
+						labelPrivateIdentityId
+					); 
+				});
+			}
+		}
+	}
+
+	/*
+	*	Show/hide private identity elements 
+	*	based on user selection for Type of keys 
+	*/
+	showHidePrivateIdentityElements(
+			radioNameTypeOfKeys: string,
+			privateIdentityId: string,
+			btnPrivateIdentityId: string,
+			labelPrivateIdentityId: string
+		) {
+		const radio_options = document.getElementsByName(radioNameTypeOfKeys);
+		const private_identity = document.getElementById(privateIdentityId);
+		const btn_private_identity = document.getElementById(btnPrivateIdentityId);
+		const label_private_identity = document.getElementById(labelPrivateIdentityId);
+		
+		if (radio_options && 
+			private_identity && 
+			btn_private_identity && 
+			labelPrivateIdentityId) {
+			// Get parent of private identity input (2 levels)
+			const containerPrivateIdentity = private_identity.parentNode.parentNode;
+
+			for (let opt of radio_options) {
+				if (opt.value === 'account_key' && opt.checked) {
+					containerPrivateIdentity.style.display = 'none';
+					btn_private_identity.style.display = 'none';
+					label_private_identity.style.display = 'none';
+					private_identity.required = false;
+					break;
+				} else if (opt.value === 'user_group_key' && opt.checked) {
+					containerPrivateIdentity.style.display = '';
+					btn_private_identity.style.display = '';
+					label_private_identity.style.display = '';
+					private_identity.required = true;
+					break
+				}
+			
+			}
+		} else {
+			alert('Missing template elements');
+		}
+	}
+
+	/*
 	*	Listeners for Generate New Identity button
 	*	and to Enable/disable identity input
 	*/
-	identityListeners() {
+	identityListeners(
+		btnNewIdentityId: string,
+		chkNewIdentityId: string, 
+		txtPrivateIdentityId: string
+		) {
 		// Button Generate New Identity
-		const btnNewIdentityId = 'textile_btn_generate_new_identity';
 		const btnNewIdentity = document.getElementById(btnNewIdentityId);
 		btnNewIdentity.addEventListener('click', () => {
 			const msg = 'Create a new identity will override any previous value.' +
@@ -72,10 +173,9 @@ class Index {
 		}, false);
 
 		// Enable/disable readonly on private identity input 
-		const chkNewIdentityId = 'wptextile_userdata_privateidentity_chk';
 		const chkNewIdentity = document.getElementById(chkNewIdentityId);
 		chkNewIdentity.addEventListener('change', () => {
-			const txtPrivateIdentity = document.getElementById('wptextile_userdata_privateidentity');
+			const txtPrivateIdentity = document.getElementById(txtPrivateIdentityId);
 			txtPrivateIdentity.readOnly = !txtPrivateIdentity.readOnly;
 		}, false);
 	}
@@ -83,9 +183,13 @@ class Index {
 	/*
 	*	Set tabs menu listeners
 	*/
-	setTabsMenuListeners(tabsContainerId: string) {
-		var container = document.getElementById('wptextile_tabs_area');
-		var ulMenu = container.getElementsByClassName('wptextile_tabs_menu')[0];
+	setTabsMenuListeners(
+		tabsContainerId: string,
+		ulMenuClassName: string,
+		tabContentClassName: string
+		) {
+		var container = document.getElementById(tabsContainerId);
+		var ulMenu = container.getElementsByClassName(ulMenuClassName)[0];
 
 		// Check if exists tabs container and menu
 		if (container && ulMenu) {
@@ -107,7 +211,7 @@ class Index {
 							// Tabs content main container
 							const selectedMainContent = 
 								container.getElementsByClassName(
-									'wptextile_tab_content ' + oldTabContentClassName
+									tabContentClassName + ' ' + oldTabContentClassName
 								)[0];
 							selectedMainContent.className = selectedMainContent.className + ' hide';
 						}
@@ -122,10 +226,10 @@ class Index {
 					// Show new tab main content
 					const newMainContentContainer = 
 						container.getElementsByClassName(
-							'wptextile_tab_content ' + newTabContentClassName
+							tabContentClassName + ' ' + newTabContentClassName
 						)[0];
 					if (newMainContentContainer) {
-						newMainContentContainer.className = 'wptextile_tab_content ' + newTabContentClassName;
+						newMainContentContainer.className = tabContentClassName + ' ' + newTabContentClassName;
 					}
 				}, false);
 			}
@@ -141,10 +245,9 @@ class Index {
 
 
 // Main 
-(
-	async () => {
+window.addEventListener('load', async () => {
 		// Initialize index page 
 		const index = new Index();
 		await index.run();
 	}
-)();
+);

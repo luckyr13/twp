@@ -7,10 +7,24 @@
 </head>
 <body>
 	
-
-	APIKEY: <input type="text" id="apikey" /><br>
-	APISECRET: <input type="text" id="apisecret" /><br>
-	PRIVATEIDENTITY: <input readonly="readonly" type="text" id="wptextile_userdata_privateidentity" /> <label style="cursor:pointer"><input type="checkbox" id="wptextile_userdata_privateidentity_chk" /> Editable</label>
+	<div class="wptextile_row">
+		APIKEY: <input type="text" id="apikey" /><br>
+		
+	</div>
+	<div class="wptextile_row">
+		APISECRET: <input type="text" id="apisecret" /><br>
+	</div>
+	<div class="wptextile_row">
+		TYPE OF KEYS: <label><input name="wptextile_options[wptextile_userdata_typeofapikey]" id="wptextile_userdata_typeofapikey_account_key" type="radio" value="account_key" checked=""> Account keys</label>&nbsp;&nbsp;<label><input name="wptextile_options[wptextile_userdata_typeofapikey]" id="wptextile_userdata_typeofapikey_user_group_key" type="radio" value="user_group_key"> User group keys</label>&nbsp;&nbsp;
+	</div>
+	<div class="wptextile_row">
+		PRIVATEIDENTITY: 
+		<div>
+			<input readonly="readonly" type="text" id="wptextile_userdata_privateidentity" /> <label id="wptextile_userdata_privateidentity_label" style="cursor:pointer"><input type="checkbox" id="wptextile_userdata_privateidentity_chk" /> Editable</label>
+		</div>
+	</div>
+	
+	
 	<br>
 
 	<input class="button button-warning" type="button" id="textile_btn_generate_new_identity" value="GENERATE NEW IDENTITY">
@@ -22,7 +36,7 @@
 	<div id="wptextile_tabs_area">
 		<!-- Tabs menu -->
 		<ul class="wptextile_tabs_menu">
-			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets">Buckets Query</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets">Buckets</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
 		</ul>
 		<!-- Tabs content -->
 		<div class="wptextile_tabs_container">
@@ -30,6 +44,11 @@
 			<div class="wptextile_tab_content info">
 				<h2 class="tab_title">Welcome back!</h2>
 				<div class="wptextile_tabs_content_info_body">
+					<img src="
+					https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/welcome.jpg" alt="Welcome!" />
+					<div class="legend">
+						Image hosted on IPFS using Textile Buckets and Textile Tools.
+					</div>
 				</div>
 				
 			</div>
@@ -83,7 +102,21 @@
 	
 			<!-- Buckets tab -->
 			<div class="wptextile_tab_content buckets hide">
-				<h2 class="tab_title">Buckets Query</h2>
+				<h2 class="tab_title">Buckets</h2>
+
+				<!-- Bucket settings -->
+				<h3>Get buckets:</h3>
+				<div>
+					<p>
+						Buckets:
+						<input class="button button-primary" type="button" id="textile_buckets_btn_get_buckets" value="GET BUCKETS">
+					</p>
+					<div id="wptextile_tab_content_buckets_results_bucketsAuto">
+					</div>
+				</div>
+				
+
+				<h3>Get buckets by Thread ID:</h3>
 				<input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
 				<label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
 				<input 

@@ -64,9 +64,10 @@ ul.wptextile_tabs_menu li a.main {
 
 #wptextile_tab_content_buckets_results,
 #wptextile_tab_content_buckets_results_bcont,
-#wptextile_tab_content_buckets_results_fileupload {
+#wptextile_tab_content_buckets_results_fileupload,
+#wptextile_tab_content_buckets_results_bucketsAuto {
 	width: 80%;
-	min-height: 100px;
+	min-height: 140px;
 	margin: 0 auto;
 	text-align: left;
 	border: 1px solid #CCC;
@@ -146,4 +147,17 @@ ul.wptextile_tabs_menu li a.main {
 #textile_archive_div_bucket_gen_info {
 	padding: 10px;
 	text-align: center;
+}
+
+.wptextile_row {
+
+}
+
+.wptextile_tabs_content_info_body {
+	text-align: center;
+}
+
+.wptextile_tabs_content_info_body .legend {
+	font-style: italic;
+	color: #AAA;
 }

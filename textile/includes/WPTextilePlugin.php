@@ -224,7 +224,8 @@ class WPTextilePlugin {
                 'label_for'         => 'wptextile_userdata_apikey',
                 'class'             => 'wptextile_row',
                 'wptextile_attribute' => $new_option,
-                'required' => true
+                'required' => true,
+                'type' => 'text'
             )
         );
 
@@ -239,11 +240,33 @@ class WPTextilePlugin {
                 'label_for'         => 'wptextile_userdata_apisecret',
                 'class'             => 'wptextile_row',
                 'wptextile_attribute' => $new_option,
-                'required' => true
+                'required' => true,
+                'type' => 'text'
             )
         );
 
-       
+        // Register a new field
+        add_settings_field(
+            'wptextile_userdata_typeofapikey',
+            'TYPE OF API KEYS:',
+            array($this, 'admin_page_settings_add_field_userdata'),
+            $this->menu_slug,
+            $section,
+            array(
+                'label_for'         => 'wptextile_userdata_typeofapikey',
+                'class'             => 'wptextile_row',
+                'wptextile_attribute' => $new_option,
+                'disabled' => true,
+                'required' => false,
+                'type' => 'radio',
+                'radio_options' => array(
+                    'account_key' => 'Account keys',
+                    'user_group_key' => 'User group keys'
+                ),
+                'radio_default_value' => 'account_key'
+            )
+        );
+
 
         // Register a new field
         add_settings_field(
@@ -257,9 +280,12 @@ class WPTextilePlugin {
                 'class'             => 'wptextile_row',
                 'wptextile_attribute' => $new_option,
                 'disabled' => true,
-                'required' => true
+                'required' => false,
+                'type' => 'text'
             )
         );
+
+        
 
        
 
@@ -271,7 +297,7 @@ class WPTextilePlugin {
     *   Admin section
     */
     public function admin_page_settings_section_userdata_html($args) {
-        echo '<p id="'. esc_attr( $args['id'] ) . ' ">You need an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: <a href="https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys" target="_blank">https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys</a></p>';
+        echo '<p id="'. esc_attr( $args['id'] ) . ' ">You need Textile API KEYS to use this demo. Please follow the instructions on the next link to get your keys: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://docs.textile.io/hub/apis/#api-keys</a></p>';
         // esc_html_e( json_encode($args), $this->menu_slug );
     }
 
@@ -286,14 +312,42 @@ class WPTextilePlugin {
 
         $value = get_option( $attribute );
         $id_attr = $attribute.'['.$id.']';
+        $value = !empty($value[$id]) ? esc_attr($value[$id]) : '';
 
-        $apikey = !empty($value[$id]) ? esc_attr($value[$id]) : '';
+        $res = '';
+        $type = !empty($args['type']) ? esc_attr($args['type']) : '';
+        if ($type === 'text') {
+            $res = '<input '. $disabled . ' '. $required . ' name="' .
+                $id_attr . '" id="' . $id .
+                '" type="' . $type . '" class="regular-text" value="' . $value .
+                '" />';
+        } else if ($type === 'radio') {
+            $radio_options = !empty($args['radio_options']) ?
+                $args['radio_options'] : [];
 
+            foreach ($radio_options as $radio_key => $radio_value) {
+                $radio_default_value = !empty($args['radio_default_value']) ?
+                    $args['radio_default_value'] : '';
 
-        echo '<input '. $disabled . ' '. $required . ' name="' .
-            $id_attr . '" id="' . $id .
-            '" type="text" class="regular-text" value="' . $apikey .
-            '" />';
+                // Default value if $value is empty
+                $checked = $value === $radio_key || 
+                    (empty($value) && $radio_key === $radio_default_value) ? 
+                    'checked' : 
+                    '';
+
+                $composed_id = $id . '_' . $radio_key;
+                $res .= '<label>';
+
+                $res .= '<input name="' . $id_attr . '" id="' . $composed_id .
+                    '" type="' . $type . '" value="' . $radio_key .
+                    '" ' . $checked . ' /> ' . $radio_value;
+                $res .= '</label>&nbsp;&nbsp;';
+            }
+            
+        }
+
+        echo $res;
+       
     }
 
     /*
@@ -324,7 +378,7 @@ class WPTextilePlugin {
         submit_button( __( 'Save Settings', 'textdomain' ) );
 
         echo '<input class="button button-warning" type="button" id="textile_btn_generate_new_identity" value="GENERATE NEW IDENTITY">';
-        echo '<label style="cursor:pointer; margin-left: 10px;"><input type="checkbox" id="wptextile_userdata_privateidentity_chk" /> Edit private identity field</label>';
+        echo '<label id="wptextile_userdata_privateidentity_label" style="cursor:pointer; margin-left: 10px;"><input type="checkbox" id="wptextile_userdata_privateidentity_chk" /> Edit private identity field</label>';
         echo '</form>';
 
         echo '<br>';
@@ -346,7 +400,7 @@ class WPTextilePlugin {
         $content .= '<div id="wptextile_tabs_area">
         <!-- Tabs menu -->
         <ul class="wptextile_tabs_menu">
-            <li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets">Buckets Query</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+            <li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets">Buckets</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
         </ul>
         <!-- Tabs content -->
         <div class="wptextile_tabs_container">
@@ -354,6 +408,11 @@ class WPTextilePlugin {
             <div class="wptextile_tab_content info">
                 <h2 class="tab_title">Welcome back!</h2>
                 <div class="wptextile_tabs_content_info_body">
+                    <img src="
+                    https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/welcome.jpg" alt="Welcome!" />
+                    <div class="legend">
+                        Image hosted on IPFS using Textile Buckets and Textile Tools.
+                    </div>
                 </div>
                 
             </div>
@@ -407,7 +466,21 @@ class WPTextilePlugin {
     
             <!-- Buckets tab -->
             <div class="wptextile_tab_content buckets hide">
-                <h2 class="tab_title">Buckets Query</h2>
+                <h2 class="tab_title">Buckets</h2>
+
+                <!-- Bucket settings -->
+                <h3>Get buckets:</h3>
+                <div>
+                    <p>
+                        Buckets:
+                        <input class="button button-primary" type="button" id="textile_buckets_btn_get_buckets" value="GET BUCKETS">
+                    </p>
+                    <div id="wptextile_tab_content_buckets_results_bucketsAuto">
+                    </div>
+                </div>
+                
+
+                <h3>Get buckets by Thread ID:</h3>
                 <input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
                 <label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
                 <input 

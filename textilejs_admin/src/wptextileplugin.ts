@@ -64,7 +64,15 @@ export class WPTextilePlugin {
 	}
 
 	getIdentity(): PrivateKey {
-		const identity = PrivateKey.fromString(this._privateidentity)
+		let identity: PrivateKey;
+
+		try {
+			identity = PrivateKey.fromString(this.privateidentity);
+		} catch (err) {
+			// identity = PrivateKey.fromRandom();
+			identity = null;
+		}
+
 		return identity
 	}
 
@@ -148,11 +156,12 @@ export class WPTextilePlugin {
 	async getThreadsListContent() {
 		let error = '';
 		let result = {};
-		const keyinfo = this.keyinfo;
-		const identity = this.getIdentity();
+		
 		
 		try {
-			
+			const keyinfo = this.keyinfo;
+			const identity = this.getIdentity();
+
 			const data = await this.getThreads(keyinfo, identity);
 			const dataLength = data.length;
 			const finalData = [];
@@ -357,7 +366,7 @@ export class WPTextilePlugin {
 		return list
 	}
 
-	async magicUserAuth(key: KeyInfo, identity: Identity) {
+	async magicUserAuth(key: KeyInfo) {
 		// Create an expiration and create a signature. 60s or less is recommended.
 		const expiration = new Date(Date.now() + 60 * 1000);
 		
@@ -369,7 +378,13 @@ export class WPTextilePlugin {
 
 	}
 
+	/*
+	*	Get token for user if needed
+	*/
 	async magicUserAuthWithUsersToken(key: KeyInfo, identity: Identity) {
+		if (!identity) {
+			return this.magicUserAuth(key);
+		}
 		// Create an expiration and create a signature. 60s or less is recommended.
 		const expiration = new Date(Date.now() + 60 * 1000);
 
@@ -385,6 +400,10 @@ export class WPTextilePlugin {
 	}
 
 	async magicUserAuthWithBucketsToken(key: KeyInfo, identity: Identity) {
+		if (!identity) {
+			return this.magicUserAuth(key);
+		}
+
 		// Create an expiration and create a signature. 60s or less is recommended.
 		const expiration = new Date(Date.now() + 60 * 1000);
 
