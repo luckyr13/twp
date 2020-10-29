@@ -36,7 +36,7 @@
 	<div id="wptextile_tabs_area">
 		<!-- Tabs menu -->
 		<ul class="wptextile_tabs_menu">
-			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets">Buckets</a></li><li><a data-tab="users" >Users</a></li><li><a data-tab="threads">Threads</a></li>
+			<li><a data-tab="info" class="main">Info</a></li><li><a data-tab="archive">Archive</a></li><li><a data-tab="buckets">Buckets</a></li>
 		</ul>
 		<!-- Tabs content -->
 		<div class="wptextile_tabs_container">
@@ -44,11 +44,7 @@
 			<div class="wptextile_tab_content info">
 				<h2 class="tab_title">Welcome back!</h2>
 				<div class="wptextile_tabs_content_info_body">
-					<img src="
-					https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/welcome.jpg" alt="Welcome!" />
-					<div class="legend">
-						Image hosted on IPFS using Textile Buckets and Textile Tools.
-					</div>
+					
 				</div>
 				
 			</div>
@@ -86,7 +82,7 @@
 					
 					<h3>Step 3. Posts list</h3>
 					<p>
-						Get last 20 posts from database:
+						Get last 30 posts from database:
 						<input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">
 					</p>
 						
@@ -106,29 +102,22 @@
 
 				<!-- Bucket settings -->
 				<h3>Get buckets:</h3>
-				<div>
-					<p>
-						Buckets:
-						<input class="button button-primary" type="button" id="textile_buckets_btn_get_buckets" value="GET BUCKETS">
-					</p>
+				<p>
+					Buckets:
+					<input class="button button-primary" type="button" id="textile_buckets_btn_get_buckets" value="GET BUCKETS">
+				</p>
+				<div class="wptextile_col_6">
+					<h3 class="wptextile_text-center">Buckets</h3>
 					<div id="wptextile_tab_content_buckets_results_bucketsAuto">
 					</div>
 				</div>
-				
-
-				<h3>Get buckets by Thread ID:</h3>
-				<input type="button" class="button button-primary" id="textile_btn_get_threads_list" value="GET THREADS LIST">
-				<label for="textile_txt_get_bucket_content_bname" style="margin-left: 40px">Thread ID:</label>
-				<input 
-					type="text" 
-					class="regular-text" 
-					id="textile_txt_get_buckets_list_threadid"
-					name="textile_txt_get_buckets_list_threadid">
-				<input type="button" class="button button-primary" id="textile_btn_get_buckets_list" value="GET BUCKETS LIST">
-				
-				<br>
-				<h3>Results:</h3>
-				<div id="wptextile_tab_content_buckets_results"></div>
+				<div class="wptextile_col_6">
+					<h3 class="wptextile_text-center">Files</h3>
+					<div id="wptextile_tab_content_buckets_results_bucketsAuto_files">
+					</div>
+				</div>
+				<div class="wptextile_clearfix"></div>
+				<hr>
 
 				<h3>Get/Create a bucket:</h3>
 				<label for="textile_txt_get_bucket_content_bname">Bucket Name:</label>
@@ -141,6 +130,7 @@
 				<br>
 				<h3>Results:</h3>
 				<div id="wptextile_tab_content_buckets_results_bcont"></div>
+				<hr>
 
 				<h3>Upload a file to IPFS:</h3>
 				<label for="textile_txt_upload_file_bucketname">Bucket name:</label>
@@ -156,17 +146,7 @@
 
 			</div>
 
-			<!-- Users tab -->
-			<div class="wptextile_tab_content users hide">
-				<h2 class="tab_title">Users</h2>
-				Coming soon!
-			</div>
-
-			<!-- Threads tab -->
-			<div class="wptextile_tab_content threads hide">
-				<h2 class="tab_title">Threads</h2>
-				Coming soon!
-			</div>
+			
 		</div>
 		
 	</div>

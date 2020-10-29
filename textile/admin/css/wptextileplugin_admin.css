@@ -49,14 +49,17 @@ ul.wptextile_tabs_menu li a.main {
 	background-color: #F0F0F0;
 }
 .wptextile_tab_content h2.tab_title {
-	height: 100px;
-	line-height: 100px;
-	background-color: #F0F0F0;
-	color: #23282D;
+	height: 60px;
+	line-height: 60px;
+	background-color: #2935FF;
+	color: #FFF;
 	text-align: center;
 	margin: 0;
 	border: 1px dotted #23282D;
 	margin-bottom: 30px;
+	font-size: 32px;
+
+  text-shadow: 1px 1px #FEB5D5;
 }
 .wptextile_tab_content.hide {
 	display: none;
@@ -64,8 +67,7 @@ ul.wptextile_tabs_menu li a.main {
 
 #wptextile_tab_content_buckets_results,
 #wptextile_tab_content_buckets_results_bcont,
-#wptextile_tab_content_buckets_results_fileupload,
-#wptextile_tab_content_buckets_results_bucketsAuto {
+#wptextile_tab_content_buckets_results_fileupload {
 	width: 80%;
 	min-height: 140px;
 	margin: 0 auto;
@@ -98,8 +100,14 @@ ul.wptextile_tabs_menu li a.main {
 	float: left;
 }
 
+.wptextile_text-center {
+	text-align: center;
+}
+
 .wptextile_clearfix {
 	clear: both;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .wptextile_text-right {
@@ -119,7 +127,9 @@ ul.wptextile_tabs_menu li a.main {
 
 }
 
-#wptextile_archive_section_bucket_settings_bucklist {
+#wptextile_archive_section_bucket_settings_bucklist,
+#wptextile_tab_content_buckets_results_bucketsAuto,
+#wptextile_tab_content_buckets_results_bucketsAuto_files  {
     width: 80%;
     margin: 0 auto;
     text-align: left;
@@ -131,14 +141,18 @@ ul.wptextile_tabs_menu li a.main {
     border: 1px solid #CCC;
 }
 
-#wptextile_archive_section_bucket_settings_bucklist h3 {
+#wptextile_archive_section_bucket_settings_bucklist h3,
+#wptextile_tab_content_buckets_results_bucketsAuto h3,
+#wptextile_tab_content_buckets_results_bucketsAuto_files h3 {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	text-align: center;
 
 }
 
-#wptextile_archive_section_bucket_settings_bucklist h3 small {
+#wptextile_archive_section_bucket_settings_bucklist h3 small,
+#wptextile_tab_content_buckets_results_bucketsAuto h3 small,
+#wptextile_tab_content_buckets_results_bucketsAuto_files h3 small {
 	font-weight: normal;
 	font-style: italic;
 	margin-left: 10px;

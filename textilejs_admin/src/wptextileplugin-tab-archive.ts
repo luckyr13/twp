@@ -162,6 +162,35 @@ export class WPTextilePluginTabArchive {
 	}
 
 	/*
+	*	HTML template for buckets table
+	*/
+	template_buckets_table(buckets) {
+		let res = `<table class="wp-list-table widefat fixed posts">
+		<thead>
+			<tr>
+				<th>Bucket name</th>
+				<th>Bucket key</th>
+			</tr>
+		</thead>
+		<tbody>`;
+		buckets = buckets ? buckets : {};
+
+		for (let bucket of buckets) {
+			res += `
+			<tr>
+				<td>${ bucket.name }</td>
+				<td>${ bucket.key }</td>
+			</tr>
+			`;
+		}
+
+		res += `<tbody>
+		</table>`;
+
+		return res;
+	}
+
+	/*
 	*	Get bucket list from IPFS
 	*/
 	getBuckets(btn_get_buckets) {
@@ -199,16 +228,15 @@ export class WPTextilePluginTabArchive {
 
 			if (threadId !== '') {
 				// Message to display
-				resultsContainer.innerHTML = '<h3>Thread id: <small>' + threadId + '</small></h3>';
-				resultsContainer.innerHTML += 'Loading ...';
+				resultsContainer.innerHTML = 'Loading ...';
 
 				// Get buckets
-				this.wp.getBucketsListContent(threadId).then((data) => {
-					const result = JSON.stringify(data);
-					resultsContainer.innerHTML = '<h3>Thread id:<small>' + threadId + '</small></h3>';
-					resultsContainer.innerHTML += '<h3>Buckets:<h3>';
-					resultsContainer.innerHTML += result;
-
+				this.wp.getBucketsListContent(threadId).then((data: any) => {
+					const result = data && data.hasOwnProperty('data') ?
+						data.data : {};
+					resultsContainer.innerHTML = this.template_buckets_table(result);
+					resultsContainer.innerHTML += '<h3>Thread id: <small>' + threadId + '</small></h3>';
+				
 					btn_get_buckets.disabled = false;
 				}).catch((reason) => {
 					// Error message
