@@ -35,7 +35,8 @@ class WPTextilePlugin {
     *   Prints the list of posts in json
     */
     public function ajax_posts_list($data) {
-        $filter = !empty($_POST['filter']) ? $_POST['filter'] : '';
+        $filter = !empty($_POST['filter']) ? 
+            sanitize_text_field($_POST['filter']) : '';
         $res = array();
         $posts = array();
 
