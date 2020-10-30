@@ -185,3 +185,23 @@ ul.wptextile_tabs_menu li a.main {
 .wptextile_buckets_tbl_view_files:hover{
 	color: #FECE07;
 }
+
+.wptextile_buckets_tbl_remove {
+	cursor: pointer;
+	font-weight: bold;
+	color: #EE2A45;
+}
+
+.wptextile_buckets_tbl_remove:hover{
+	color: #FFB6D4;
+}
+
+.wptextile_buckets_tbl_remove_file {
+	cursor: pointer;
+	font-weight: bold;
+	color: #EE2A45;
+}
+
+.wptextile_buckets_tbl_remove_file:hover{
+	color: #FFB6D4;
+}
