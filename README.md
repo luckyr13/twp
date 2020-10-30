@@ -42,33 +42,33 @@ You can install this plugin as any other Wordpress plugin.
 5. Step 5: Once installed and activated, the plugin will appear on the main menu, under the "Plugins" section. Just go to the menu "Textile Plugin" and start exploring the plugin.
 ![Step 5](http://3.136.18.231/demoTextile/textileplugin_step7.png)
 
-6. Step 6: The first time that you get into the "Textile plugin" panel, you will find a form with two editable fields called API KEY and API SECRET plus a non editable input called PRIVATE IDENTITY. 
-![Step 6](http://3.136.18.231/demoTextile/textileCool1.png)
+6. Step 6: The first time that you get into the "Textile plugin" panel, you will find a form with two fields called API KEY and API SECRET. 
 
-7. Step 7: As we said, you need to have an API KEY and SECRET to use this demo. Please follow the instructions on the next link to get your keys: https://docs.textile.io/tutorials/hub/development-mode/#create-insecure-keys
-![Step 7](http://3.136.18.231/demoTextile/textileplugin_step9.png)
-
-8. Step 8: You can let the plugin generate your PRIVATE IDENTITY. To do this just click the GENERATE NEW IDENTITY button.
-![Step 7](http://3.136.18.231/demoTextile/newIdentity.png)
+6.1. If you are new to Textile Tools please take a time to read how to install The Hub. The Hub is the best way to start using Textile Tools: https://docs.textile.io/hub/
+6.2. If you already have the Hub installed, please take a time to read how works Roles, Quotas and how to create an account: https://docs.textile.io/hub/accounts/
+6.3. Please follow the instructions on the next link to know how to create your API KEYS (HINT: We suggest you to create "Account keys"): https://docs.textile.io/hub/apis/#api-keys
+6.4. Finally, fill the main form with your credentials.
+![Step 6](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/wptextile_backend_00.png)
 
 NOTE: Remember to SAVE YOUR SETTINGS when you finish.
 
-And that's it. You are ready to play with IPFS from your Wordpress website:
-![Ready to rock n roll!](http://3.136.18.231/demoTextile/textilePluginCapture1.png)
+And that's it. You are ready to play with IPFS from your Wordpress website.
 
 ## Archive: Static Site Generator
 
 BETA: You can try this super cool feature to generate static html copies of your posts and to upload it to IPFS as backup.
 
-![Buckets](http://3.136.18.231/demoTextile/textile_archiveDemo.png)
+![Buckets](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/wptextile_backend_archive.png)
 
 ## Buckets 
 
-With this plugin you can get the list of threads created by your user, you can get the list of buckets of your threads and you can retrieve information about your bucket (like the URL of your bucket).
+Textile Buckets are a very powerful way to store your files on IPFS. With our plugin you can read and manage the list of buckets that you have created with your API KEYS and of course, you can upload files directly from your Wordpress admin panel.
+
+Persist and share your data in a breeze!
 
 Please take a look to the Textile docs for more information about buckets: https://docs.textile.io/buckets/
 
-![Buckets](http://3.136.18.231/demoTextile/textileCoolBuckets.png)
+![Buckets](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/wptextile_backend_buckets.png)
 
 
 
