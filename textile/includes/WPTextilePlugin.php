@@ -497,14 +497,14 @@ class WPTextilePlugin {
                 <hr>
 
                 <h3>Upload a file to IPFS:</h3>
-                <label for="textile_txt_upload_file_bucketname">Bucket name:</label>
+                <label for="textile_bucket_txt_upload_file_bucketname">Bucket name:</label>
                 <input 
                     type="text" 
                     class="regular-text" 
-                    id="textile_txt_upload_file_bucketname"
-                    name="textile_txt_upload_file_bucketname">
-                Upload Image: <input type="file" id="textile_image" >
-                <input class="button button-primary" id="textile_btn_upload" type="button" value="Upload to IPFS">
+                    id="textile_bucket_txt_upload_file_bucketname"
+                    name="textile_bucket_txt_upload_file_bucketname">
+                Upload Image: <input type="file" id="textile_bucket_fup_single_file" >
+                <input class="button button-primary" id="textile_bucket_btn_upload" type="button" value="Upload to IPFS">
                 <h3>Results:</h3>
                 <div id="wptextile_tab_content_buckets_results_fileupload"></div>
 

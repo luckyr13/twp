@@ -19,7 +19,10 @@ export class WPTextilePluginTabRawQuery {
 		// Click event for buckets button
 		if (btn_get_buckets) {
 			btn_get_buckets.onclick = () => {
-				this.getBuckets(btn_get_buckets);
+				this.getBuckets(
+					'textile_buckets_btn_get_buckets',
+					'wptextile_tab_content_buckets_results_bucketsAuto'
+				);
 			};
 		}
 
@@ -62,36 +65,46 @@ export class WPTextilePluginTabRawQuery {
 		}, false);
 
 		
-
-
 		// File upload listeners 
-		this.fileUploadListeners();
+		this.fileUploadListeners(
+			'textile_bucket_txt_upload_file_bucketname',
+			'textile_bucket_btn_upload',
+			'wptextile_tab_content_buckets_results_fileupload',
+			'textile_bucket_fup_single_file'
+		);
 
 	}
 
-	fileUploadListeners() {
+	fileUploadListeners(
+		bucketNameForFileUploadId: string,
+		btnFileUploadId: string,
+		resultsContainerId: string,
+		txtFileUploadId: string
+
+	) {
 		// File upload listeners 
-		const btnFileUploadId = 'textile_btn_upload';
 		const btnFileUpload: any = document.getElementById(btnFileUploadId);
 		btnFileUpload.addEventListener('click', () => {
-			const txtImageId = 'textile_image';
-			let bucketNameForFileUpload: any = document.getElementById('textile_txt_upload_file_bucketname');
-			bucketNameForFileUpload = bucketNameForFileUpload ? bucketNameForFileUpload.value : '';
+			let bucketNameForFileUpload: any = document.getElementById(bucketNameForFileUploadId);
+			const bucketNameForFileUploadValue = bucketNameForFileUpload ? bucketNameForFileUpload.value : '';
 			
 			try {
 				const results_container = 
-					document.getElementById('wptextile_tab_content_buckets_results_fileupload');
+					document.getElementById(resultsContainerId);
 				results_container.innerText = 'Loading ...';
 				btnFileUpload.disabled = true;
+				bucketNameForFileUpload.disabled = true;
 
 				this.wp.uploadFile(
-					txtImageId, bucketNameForFileUpload
+					txtFileUploadId, bucketNameForFileUploadValue
 				).then(function(data) {
 					results_container.innerText = JSON.stringify(data);
 					btnFileUpload.disabled = false;
+					bucketNameForFileUpload.disabled = false;
 				}).catch(function(err) {
 					results_container.innerText = 'Error: ' + err;
 					btnFileUpload.disabled = false;
+					bucketNameForFileUpload.disabled = false;
 				});
 			} catch (err) {
 				alert('File upload error: ' + err);
@@ -104,8 +117,9 @@ export class WPTextilePluginTabRawQuery {
 	/*
 	*	Get bucket list from IPFS
 	*/
-	getBuckets(btn_get_buckets) {
-		const resultsContainer = document.getElementById('wptextile_tab_content_buckets_results_bucketsAuto');
+	getBuckets(btnGetBucketsId: string, resultsContainerId: string) {
+		const btn_get_buckets: any = document.getElementById(btnGetBucketsId);
+		const resultsContainer = document.getElementById(resultsContainerId);
 		if (resultsContainer) {
 			resultsContainer.innerText = 'Loading ...';
 			btn_get_buckets.disabled = true;
@@ -157,6 +171,16 @@ export class WPTextilePluginTabRawQuery {
 						});
 					}
 
+					const a_bucketKey_removeBucket: any = document.getElementsByClassName('wptextile_buckets_tbl_remove');
+					for (let bk_db of a_bucketKey_removeBucket) {
+						bk_db.addEventListener('click', () => {
+							const bucketKey = bk_db.dataset.key;
+							const bucketName = bk_db.dataset.bucketName;
+							this.removeBucket(bucketKey, bucketName, threadId);
+						});
+					}
+
+
 					btn_get_buckets.disabled = false;
 				}).catch((reason) => {
 					// Error message
@@ -188,6 +212,7 @@ export class WPTextilePluginTabRawQuery {
 			<tr>
 				<th>Bucket name</th>
 				<th>Bucket key</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>`;
@@ -200,6 +225,10 @@ export class WPTextilePluginTabRawQuery {
 				<td>
 					<a data-key="${ bucket.key }" 
 					  class="wptextile_buckets_tbl_view_files">${ bucket.key }<a>
+				</td>
+				<td>
+					<a data-key="${ bucket.key }" data-bucket-name="${ bucket.name }" 
+					  class="wptextile_buckets_tbl_remove">Remove<a>
 				</td>
 			</tr>
 			`;
@@ -214,26 +243,31 @@ export class WPTextilePluginTabRawQuery {
 	/*
 	*	HTML template for files table
 	*/
-	template_bucketsFiles_table(files, url) {
+	template_bucketsFiles_table(files, url, bucketKey) {
 		let res = `<table class="wp-list-table widefat fixed striped">
 		<thead>
 			<tr>
 				<th>Filename</th>
 				<th>Updated at</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>`;
 		files = files ? files : {};
 
-		for (let key in files) {
-			const updated_at = files[key].updated_at ?
-				files[key].updated_at : '';
+		for (let fileName in files) {
+			const updated_at = files[fileName].updated_at ?
+				files[fileName].updated_at : '';
 			res += `
 			<tr>
 				<td>
-					<a href="${url}/${key}" target="_blank">${key}<a>
+					<a href="${url}/${fileName}" target="_blank">${fileName}<a>
 				</td>
 				<td>${ updated_at }</td>
+				<td>
+					<a data-file-name="${ fileName }" data-key="${ bucketKey }" 
+					  class="wptextile_buckets_tbl_remove_file">Delete<a>
+				</td>
 			</tr>
 			`;
 		}
@@ -256,7 +290,7 @@ export class WPTextilePluginTabRawQuery {
 				res.metadata : {};
 			let html = `
 			<h4>Bucket ${bucketKey}</h4>
-			${ this.template_bucketsFiles_table(files, url) }
+			${ this.template_bucketsFiles_table(files, url, bucketKey) }
 			<p style="font-size: 12px; font-style: italic">
 				View bucket:
 				<a href="${url}" target="_blank">${url}<a>
@@ -266,10 +300,49 @@ export class WPTextilePluginTabRawQuery {
 
 			content_result.innerHTML = html;
 
+			const a_bucketKey_removeFile: any = document.getElementsByClassName('wptextile_buckets_tbl_remove_file');
+			for (let bk_db of a_bucketKey_removeFile) {
+				bk_db.addEventListener('click', () => {
+					const bucketKey = bk_db.dataset.key;
+					const fileName = bk_db.dataset.fileName;
+					this.removeFile(bucketKey, fileName, threadId);
+				});
+			}
+
 		}).catch((reason) => {
 			alert('Error: ' + reason);
 		});
 	}
 
+	removeBucket(bucketKey: string, bucketName: string, threadId: string) {
+		if (confirm(`You are about to remove the bucket "${bucketName}".\nThis process is irreversible. Are you sure you want to proceed?`)) {
+			document.getElementById('wptextile_tab_content_buckets_results_bucketsAuto').innerText = 'Loading ...';
+
+			this.wp.remove(bucketKey, threadId).then((data) => {
+				this.getBuckets(
+					'textile_buckets_btn_get_buckets',
+					'wptextile_tab_content_buckets_results_bucketsAuto'
+				);
+			}).catch((reason) => {
+				alert('Error: ' + reason);
+			});
+
+		}
+		
+	}
+
+	removeFile(bucketKey: string, fileName: string, threadId: string) {
+		if (confirm(`You are about to remove the file "${fileName}".\nThis process is irreversible. Are you sure you want to proceed?`)) {
+			document.getElementById('wptextile_tab_content_buckets_results_bucketsAuto_files').innerText = 'Loading ...';
+
+			this.wp.removeFile(bucketKey, fileName, threadId).then((data) => {
+				this.getFilesFromBucket(bucketKey, threadId);
+			}).catch((reason) => {
+				alert('Error: ' + reason);
+			});
+
+		}
+		
+	}
 
 }

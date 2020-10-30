@@ -130,7 +130,7 @@ ul.wptextile_tabs_menu li a.main {
 #wptextile_archive_section_bucket_settings_bucklist,
 #wptextile_tab_content_buckets_results_bucketsAuto,
 #wptextile_tab_content_buckets_results_bucketsAuto_files  {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     text-align: left;
     
@@ -184,4 +184,24 @@ ul.wptextile_tabs_menu li a.main {
 
 .wptextile_buckets_tbl_view_files:hover{
 	color: #FECE07;
+}
+
+.wptextile_buckets_tbl_remove {
+	cursor: pointer;
+	font-weight: bold;
+	color: #EE2A45;
+}
+
+.wptextile_buckets_tbl_remove:hover{
+	color: #FFB6D4;
+}
+
+.wptextile_buckets_tbl_remove_file {
+	cursor: pointer;
+	font-weight: bold;
+	color: #EE2A45;
+}
+
+.wptextile_buckets_tbl_remove_file:hover{
+	color: #FFB6D4;
 }

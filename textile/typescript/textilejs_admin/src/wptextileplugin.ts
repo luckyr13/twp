@@ -423,16 +423,31 @@ export class WPTextilePlugin {
 		inputId: string,
 		bucketNameForFileUpload: string
 	) {
-		const selectedFile = document.getElementById(inputId).files[0];
+		const txtSelectedFile = document.getElementById(inputId);
+		const selectedFile = txtSelectedFile.files[0];
 		var bucketData = null;
 		var buckets = null;
 		var bucketKey = null;
 		const keyinfo = this.keyinfo;
 		const identity = this.getIdentity();
 		let result = null;
-		
+		txtSelectedFile.disabled = true;
+
+		const bucketPathArr = bucketNameForFileUpload.split('/');
+		const bucketName = bucketPathArr[0];
+		let proposedPath = bucketPathArr.slice(1, bucketPathArr.length).join('/');
+		if (proposedPath && proposedPath[0] !== '/') {
+			proposedPath = `/${proposedPath}`;
+		}
+		if (proposedPath && 
+			proposedPath.length && 
+			proposedPath[proposedPath.length - 1] !== '/') {
+			proposedPath = `${proposedPath}/`;
+		}
+
+	
 		bucketData = await this.setupBucketEnvironment(
-			keyinfo, identity, bucketNameForFileUpload
+			keyinfo, identity, bucketName
 		);
 
 		buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
@@ -443,12 +458,18 @@ export class WPTextilePlugin {
 
 		    try {
 			    result = await this.insertFile(
-			    	buckets, bucketKey, selectedFile, file_name
+			    	buckets,
+			    	bucketKey,
+			    	selectedFile,
+			    	proposedPath + file_name
 			    );
+			    txtSelectedFile.disabled = false;
 		    } catch (err) {
+		    	txtSelectedFile.disabled = false;
 		    	throw 'Error on file upload: ' + err;
 		    }
 		} else {
+	    	txtSelectedFile.disabled = false;
 			throw 'Please select a file!';
 		}
 		
@@ -485,6 +506,52 @@ export class WPTextilePlugin {
 		
 		
 		return result;
+	}
+
+	/*
+	*	Remove a bucket and its content
+	*/
+	async remove(key: string, threadId: string): Promise<boolean> {
+		let error = '';
+		let result = {};
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		let success = false;
+
+		try {
+			var buckets = await this.setupBucketEnvironmentWithThread(keyinfo, identity, threadId);
+			if (buckets) {
+				await buckets.remove(key);
+				success = true;
+			}
+		} catch (err) {
+			throw 'WPTextilePlugin Error:' + JSON.stringify(err);
+		}
+
+		return success;
+	}
+
+	/*
+	*	Remove a file
+	*/
+	async removeFile(key: string, fileName: string, threadId: string): Promise<boolean> {
+		let error = '';
+		let result = {};
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		let success = false;
+
+		try {
+			var buckets = await this.setupBucketEnvironmentWithThread(keyinfo, identity, threadId);
+			if (buckets) {
+				await buckets.removePath(key, fileName);
+				success = true;
+			}
+		} catch (err) {
+			throw 'WPTextilePlugin Error:' + JSON.stringify(err);
+		}
+
+		return success;
 	}
 
 }

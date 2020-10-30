@@ -10,11 +10,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^14.11.2",
-    "@types/webpack": "^4.41.22",
-    "ts-loader": "^8.0.4",
+    "@types/node": "^14.14.6",
+    "@types/webpack": "^4.41.24",
+    "ts-loader": "^8.0.7",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.3",
+    "typescript": "^4.0.5",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   },
