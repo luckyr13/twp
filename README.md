@@ -7,10 +7,9 @@ This plugin is what you need if you want to start using IPFS in a fast and easy 
 
 With our plugin you can upload files from your Wordpress website to IPFS (InterPlanetary File System). All this happens thanks to the tools created by Textile.
 
-Still not convinced? We are working on a new feature called "Archive: Static Site Generator". With this new feature any wordpress admin can create a static copy of their posts and upload it to IPFS in just a few clicks.
+We developed a feature called "Archive: Static Site Generator". With this feature any wordpress admin can create a static copy of their posts and upload it to IPFS in just a few clicks.
 
 Go beyond the limits imposed by your hosting provider. Try IPFS, Textile and our plugin!
-
 
 ## Demo:
 
@@ -58,7 +57,7 @@ And that's it. You are ready to play with IPFS from your Wordpress website.
 
 BETA: You can try this super cool feature to generate static html copies of your posts and to upload it to IPFS as backup.
 
-![Buckets](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/wptextile_backend_archive.png)
+![Archive](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/wptextile_backend_archive.png)
 
 ## Buckets 
 
