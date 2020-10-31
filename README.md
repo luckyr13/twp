@@ -17,12 +17,17 @@ Go beyond the limits imposed by your hosting provider. Try IPFS, Textile and our
 ## Watch our demo:
 [![Demo Textile Tools](https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/textileToolsVid.gif)](https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/textile-tools-demo.html)
 
-We invite you to visit our demo wordpress site as well: http://3.136.18.231/wordpress/
+Also I uploaded my personal website to a Textile Bucket using our plugin as a Proof Of Concept: https://bafzbeiahkt5dckzzsrxevmqof3e25vpv5di5rxo76p465574r7jitecei4.textile.space
 
 ## Installing:
-You can install this plugin as any other Wordpress plugin. 
-1. Download a copy of this repository, compress as .zip the "textile" folder and upload the file to your Wordpress website through the Wordpress panel.
-2. Alternatively, download a copy of this repository, and upload manually the entire "textile" folder to your /wp-content/plugins directory.
+You can install our plugin as any other Wordpress plugin. 
+
+- Option 1: Find our plugin and install it directly from your admin panel in the WordPress plugin directory. This is the best method to get the plugin working.
+[![Search for "Textile tools" in the plugin directory](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/plugindirectory_textile.png)]
+
+- Option 2: Go to our official website in the WordPress Plugin Directory and download a copy if you want to install the plugin manually: https://wordpress.org/plugins/textile-tools/
+
+- Option 3 (Experimental) Alternatively, download a copy of this repository from this GitHub repository if you want to try the latest but unstable version of the plugin. Upload manually the entire "textile" folder to your /wp-content/plugins directory.
 
 ## How to install Textile plugin on Wordpress
 1. Step 1: Go to your Wordpress admin panel and find the Plugins menu. Go to "Installed plugins" and click the "Add new" button.
