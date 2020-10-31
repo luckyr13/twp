@@ -27,7 +27,7 @@ You can install our plugin as any other Wordpress plugin.
 
 - Option 2: Go to our official website in the WordPress Plugin Directory and download a copy if you want to install the plugin manually: https://wordpress.org/plugins/textile-tools/
 
-- Option 3 (Experimental) Alternatively, download a copy of this repository from this GitHub repository if you want to try the latest but unstable version of the plugin. Upload manually the entire "textile" folder to your /wp-content/plugins directory.
+- Option 3 (Experimental) Alternatively, download a copy of this repository if you want to try the latest but unstable version of the plugin.
 
 ## How to install Textile plugin on Wordpress
 1. Step 1: Go to your Wordpress admin panel and find the Plugins menu. Go to "Installed plugins" and click the "Add new" button.
