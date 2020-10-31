@@ -23,7 +23,7 @@ Also I uploaded my personal website to a Textile Bucket using our plugin as a Pr
 You can install our plugin as any other Wordpress plugin. 
 
 - Option 1: Find our plugin and install it directly from your admin panel in the WordPress plugin directory. This is the best method to get the plugin working.
-[![Search for "Textile tools" in the plugin directory](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/plugindirectory_textile.png)]
+![Search for "Textile tools" in the plugin directory](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/plugindirectory_textile.png)
 
 - Option 2: Go to our official website in the WordPress Plugin Directory and download a copy if you want to install the plugin manually: https://wordpress.org/plugins/textile-tools/
 
