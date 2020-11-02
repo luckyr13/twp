@@ -45,7 +45,7 @@ You can install our plugin as any other Wordpress plugin.
 -Finally, fill the main form with your credentials.
 ![Step 6](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/wptextile_backend_00.png)
 
-NOTE: Remember to SAVE YOUR SETTINGS when you finish.
+NOTE: Remember to SAVE YOUR SETTINGS when you finished.
 
 And that's it. You are ready to play with IPFS from your Wordpress website.
 
