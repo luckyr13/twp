@@ -31,14 +31,14 @@ You can install our plugin as any other Wordpress plugin.
 
 
 - Once the plugin has installed succesfully click on "Activate plugin"
-![Step 4](http://3.136.18.231/demoTextile/textileplugin_step6.png)
+![Step 4](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/textileplugin_step6.png)
 
 - Once installed and activated, the plugin will appear on the main menu, under the "Plugins" section. Just go to the menu "Textile Plugin" and start exploring the plugin.
-![Step 5](http://3.136.18.231/demoTextile/textileplugin_step7.png)
+![Step 5](https://hub.textile.io/thread/bafk7d3zw2dnhonl2v32hlho2u5jfaev25466ortvqd5e2kmi4zke6mi/buckets/bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu/textileplugin_step7.png)
 
 - The first time that you get into the "Textile plugin" panel, you will find a form with two fields called API KEY and API SECRET. 
 
-1. If you are new to Textile Tools please take a time to read how to install The Hub. The Hub is the best way to start using Textile Tools: https://docs.textile.io/hub/
+1. If you are new to Textile Tools please take some time to read how to install the Hub. The Hub is the best way to start using Textile Tools: https://docs.textile.io/hub/
 2. If you already have the Hub installed, please take a time to read how works Roles, Quotas and how to create an account: https://docs.textile.io/hub/accounts/
 3. Please follow the instructions on the next link to know how to create your API KEYS (HINT: We suggest you to create "Account keys"): https://docs.textile.io/hub/apis/#api-keys
 
