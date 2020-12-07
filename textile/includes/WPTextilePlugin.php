@@ -422,7 +422,7 @@ class WPTextilePlugin {
                     <h3>Step 1. Configure bucket settings</h3>
                     <div>
                         <p>
-                            Buckets:
+                            Select or create a new bucket.
                             <input class="button button-primary" type="button" id="textile_archive_btn_get_buckets" value="GET BUCKETS">
                         </p>
                         <div id="wptextile_archive_section_bucket_settings_bucklist">

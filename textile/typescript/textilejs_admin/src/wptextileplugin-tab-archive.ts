@@ -164,12 +164,27 @@ export class WPTextilePluginTabArchive {
 	/*
 	*	HTML template for buckets table
 	*/
+	template_buckets_table_listeners() {
+		const bucketButtons = document.getElementsByClassName('btn-tbl-setBucketName');
+		for (let i = 0, max = bucketButtons.length; i < max; i++) {
+			bucketButtons[i].onclick = (data) => {
+				const button = data.target;
+				const bucketName = button.dataset.bucketName;
+				this.setTxtBucketName(bucketName);
+			};
+		}
+	}
+
+	/*
+	*	HTML template for buckets table
+	*/
 	template_buckets_table(buckets) {
-		let res = `<table class="wp-list-table widefat fixed posts">
+		let res = `<table class="wp-list-table widefat fixed">
 		<thead>
 			<tr>
 				<th>Bucket name</th>
 				<th>Bucket key</th>
+				<th style="text-align: center">Actions</th>
 			</tr>
 		</thead>
 		<tbody>`;
@@ -180,6 +195,14 @@ export class WPTextilePluginTabArchive {
 			<tr>
 				<td>${ bucket.name }</td>
 				<td>${ bucket.key }</td>
+				<td style="text-align: center">
+					<button 
+						data-bucket-name="${ bucket.name }"
+						data-bucket-key="${ bucket.key }"
+						type="button" 
+						class="button button-primary btn-tbl-setBucketName"
+						>Select</button>
+				</td>
 			</tr>
 			`;
 		}
@@ -188,6 +211,25 @@ export class WPTextilePluginTabArchive {
 		</table>`;
 
 		return res;
+	}
+
+	/*
+	*	Set bucket's name input field value
+	*/
+	setTxtBucketName(_name: string) {
+		const txt_bucket_name = document.getElementById('textile_archive_txt_bucket_name');
+		const name = String.prototype.trim.call(_name);
+		let isNextStepButtonDisabled = document.getElementById(
+			'textile_archive_btn_activate_posts'
+		);
+		isNextStepButtonDisabled = isNextStepButtonDisabled ?
+			isNextStepButtonDisabled.disabled : false;
+
+		if (txt_bucket_name && !isNextStepButtonDisabled) {
+			txt_bucket_name.value = name;
+		} else if (!txt_bucket_name) {
+			console.error('textile_archive_txt_bucket_name not found');
+		}
 	}
 
 	/*
@@ -235,6 +277,11 @@ export class WPTextilePluginTabArchive {
 					const result = data && data.hasOwnProperty('data') ?
 						data.data : {};
 					resultsContainer.innerHTML = this.template_buckets_table(result);
+					// Set listeners 
+					window.setTimeout(() => {
+						this.template_buckets_table_listeners();
+					}, 600);
+					
 					resultsContainer.innerHTML += '<h3>Thread id: <small>' + threadId + '</small></h3>';
 				
 					btn_get_buckets.disabled = false;
@@ -314,12 +361,23 @@ export class WPTextilePluginTabArchive {
 						content.ipns : '';
 
 					const msg = 
-					`
-					<h3>Bucket Info: </h3>
-					Url: <a target="_blank" href="${url}">${url}</a><br>
-					WWW: <a target="_blank" href="${www}">${www}</a><br>
-					IPNS: <a target="_blank" href="${ipns}">${ipns}</a><br>
-					`;
+					`<table class="wp-list-table widefat fixed">
+						<thead><tr><th colspan="2">Bucket Info</th></tr></thead> 
+						<tbody>
+							<tr>
+								<td>Url</td>
+								<td><a target="_blank" href="${url}">${url}</a></td>
+							</tr>
+							<tr>
+								<td>WWW</td>
+								<td><a target="_blank" href="${www}">${www}</a></td>
+							</tr>
+							<tr>
+								<td>IPNS</td>
+								<td><a target="_blank" href="${ipns}">${ipns}</a></td>
+							</tr>
+						</tbody>
+					</table>`;
 
 					const section_post_list = document.getElementById('wptextile_archive_section_post_list');
 					if (!section_post_list) {

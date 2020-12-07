@@ -228,6 +228,9 @@ export class WPTextilePluginTabRawQuery {
 				</td>
 				<td>
 					<a data-key="${ bucket.key }" data-bucket-name="${ bucket.name }" 
+					  class="wptextile_buckets_tbl_view_files">View<a>
+					&nbsp;
+					<a data-key="${ bucket.key }" data-bucket-name="${ bucket.name }" 
 					  class="wptextile_buckets_tbl_remove">Remove<a>
 				</td>
 			</tr>
@@ -265,6 +268,8 @@ export class WPTextilePluginTabRawQuery {
 				</td>
 				<td>${ updated_at }</td>
 				<td>
+					<a href="${url}/${fileName}" style="color: #2935FF" target="_blank">View<a>
+					&nbsp;
 					<a data-file-name="${ fileName }" data-key="${ bucketKey }" 
 					  class="wptextile_buckets_tbl_remove_file">Delete<a>
 				</td>
