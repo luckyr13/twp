@@ -409,6 +409,16 @@ class WPTextilePlugin {
             <div class="wptextile_tab_content info">
                 <h2 class="tab_title">Welcome back!</h2>
                 <div class="wptextile_tabs_content_info_body">
+                    <p>
+                        Welcome to Textile Tools for Wordpress.
+                    </p>
+                    <h3>
+                        Demo video (hosted using Textile buckets 😎)
+                    </h3>
+                    <video width="50%"  controls>
+                      <source src="https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/textileToolsF.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                     
                 </div>
                 

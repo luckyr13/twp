@@ -3,6 +3,7 @@ import { PrivateKey, Client, Identity,
 	createUserAuth, APISig, createAPISig, ThreadID   } from '@textile/hub';
 import { TextileAjaxObjInternal } from './interfaces/textile-ajax-obj';
 import { TEXTILE_AJAX_OBJ_INTERNAL } from './textile-data';
+import { Buffer } from 'buffer';
 declare const window: any;
 declare const document: any;
 
@@ -324,7 +325,8 @@ export class WPTextilePlugin {
 		path: string
 	) {
 	  // Store the html file in the root of the bucket
-	  const buf = Buffer.from(html);
+	  const final_html = String.prototype.trim.call(html);
+	  const buf = Buffer.from(final_html).buffer;
 	  return await buckets.pushPath(bucketKey, path, buf);
 	}
 
@@ -496,14 +498,13 @@ export class WPTextilePlugin {
 		buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
 		bucketKey = bucketData.hasOwnProperty('bucketKey') ? bucketData.bucketKey : null;
 		
-	    try {
-		    result = await this.addHTMLFile(
-		    	buckets, bucketKey, html, path
-		    );
-	    } catch (err) {
-	    	throw 'Error on file upload: ' + err;
-	    }
-		
+    try {
+	    result = await this.addHTMLFile(
+	    	buckets, bucketKey, html, path
+	    );
+    } catch (err) {
+    	console.error('Error on file upload: ' + err);
+    }
 		
 		return result;
 	}
