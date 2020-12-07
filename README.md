@@ -11,13 +11,16 @@ We developed a feature called "Archive: Static Site Generator". With this featur
 
 Go beyond the limits imposed by your hosting provider. Try IPFS, Textile and our plugin!
 
-## Demo:
+## Demos:
 
-
-## Watch our demo:
+## Watch our demo video:
 [![Demo Textile Tools](https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/textileToolsVid.gif)](https://bafzbeidcrhu46dzy55ya4j3pb7iqkzqrppr4j5dxvdwxxpzyxn6fgu2dgu.textile.space/textile-tools-demo.html)
 
-Also I uploaded my personal website to a Textile Bucket using our plugin as a Proof Of Concept: https://bafzbeiahkt5dckzzsrxevmqof3e25vpv5di5rxo76p465574r7jitecei4.textile.space
+## Static sites hosted on a Textile Bucket
+I uploaded my personal website to a Textile Bucket using our plugin as a Proof Of Concept. If you are a React or Angular developer, you can upload your website to a bucket and it will work as well as Amazon. I have to say that this is a very powerful plugin: https://bafzbeiahkt5dckzzsrxevmqof3e25vpv5di5rxo76p465574r7jitecei4.textile.space
+
+## You can host dApps on Textile buckets as well
+If you are a blockchain developer I'm pretty sure that you will find very useful the potential to host static websites on Textile Buckets to connect to decentralized services, like the Ethereum blockchain.  Please check this demo of a Vending Machine dApp for a POC: https://bafzbeiepgv3dzvvnvj2vgfjodgctjlypdixz6yxefkzbuonlevstjvq7cu.textile.space/
 
 ## Installing:
 You can install our plugin as any other Wordpress plugin. 
