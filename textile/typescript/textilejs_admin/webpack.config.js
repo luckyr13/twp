@@ -9,6 +9,10 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".json"],
+    alias: {
+      'util': 'util',
+      'buffer': 'buffer',
+    }
   },
   module: {
     rules: [
