@@ -170,14 +170,15 @@ export class WPTextilePlugin {
 			if (dataLength && dataLength > 0) {
 				for (let k = 0; k < dataLength; k++) {
 					finalData.push({
-						id: ThreadID.fromBytes(data[k]['id']['buf']).toString(),
+						// id: ThreadID.fromBytes(data[k]['id']['buf']).toString(),
+						id: data[k]['id'],
 						name: data[k]['name'] 
 					});
 				}
 			}
 			result['data'] = finalData;
 		} catch (err) {
-			result['error'] = 'WPTextilePlugin Error:' + JSON.stringify(err);
+			result['error'] = 'WPTextilePlugin Error:' + err;
 		}
 		return result;
 	}
