@@ -169,14 +169,24 @@ ul.wptextile_tabs_menu li a.main {
     border: 1px solid #CCC;
 }
 
-#wptextile_archive_section_bucket_create_index_res,
-#textile_archive_div_results {
+#wptextile_archive_section_bucket_create_index_res {
 	  width: 90%;
     margin: 0 auto;
     text-align: left;
 	margin-top: 5px;
 	margin-bottom: 15px;
 	height: 100px;
+	overflow-y: auto;
+    border: 1px solid #CCC;
+}
+
+#textile_archive_div_results {
+	  padding: 20px;
+    margin: 0 auto;
+    text-align: left;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	height: 420px;
 	overflow-y: auto;
     border: 1px solid #CCC;
 }
