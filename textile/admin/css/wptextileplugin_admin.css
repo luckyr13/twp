@@ -33,6 +33,13 @@ ul.wptextile_tabs_menu li a:hover,
 ul.wptextile_tabs_menu li a.main {
 	background-color: #0073AA;
 }
+.wptextile_tabs_menu_icon {
+	width: 40px;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 4px;
+
+}
 /*
 *	Tabs content styles
 */
@@ -95,6 +102,23 @@ ul.wptextile_tabs_menu li a.main {
 	text-align: center;
 }
 
+.wptextile_archive_h3 {
+	color: #2935FF;
+	background-color: #FFB6D4;
+}
+
+.wptextile_red {
+	color: #EE2A45;
+}
+
+.wptextile_content_no_results_text {
+	color: #23282D;
+	font-style: italic;
+	font-size: 14px;
+	text-align: center;
+	padding: 20px;
+}
+
 .wptextile_col_6 {
 	width: 50%;
 	float: left;
@@ -112,6 +136,10 @@ ul.wptextile_tabs_menu li a.main {
 
 .wptextile_text-right {
 	text-align: right;
+}
+
+.wptextile_text-left {
+	text-align: left;
 }
 
 
@@ -137,6 +165,28 @@ ul.wptextile_tabs_menu li a.main {
 	margin-top: 5px;
 	margin-bottom: 15px;
 	height: 180px;
+	overflow-y: auto;
+    border: 1px solid #CCC;
+}
+
+#wptextile_archive_section_bucket_create_index_res {
+	  width: 90%;
+    margin: 0 auto;
+    text-align: left;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	height: 100px;
+	overflow-y: auto;
+    border: 1px solid #CCC;
+}
+
+#textile_archive_div_results {
+	  padding: 20px;
+    margin: 0 auto;
+    text-align: left;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	height: 420px;
 	overflow-y: auto;
     border: 1px solid #CCC;
 }
