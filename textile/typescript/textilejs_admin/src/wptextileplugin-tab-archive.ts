@@ -16,11 +16,13 @@ export class WPTextilePluginTabArchive {
 	*/
 	setTabListeners(url) {
 		// Button: "GET BUCKETS"
-		const btn_get_buckets: HTMLElement = document.getElementById('textile_archive_btn_get_buckets');
+		const btn_get_buckets = document.getElementById('textile_archive_btn_get_buckets');
 		// Button "ACTIVATE POSTS"
-		const btn_activate_posts: any = document.getElementById('textile_archive_btn_activate_posts');
+		const btn_activate_posts = document.getElementById('textile_archive_btn_activate_posts');
 		// Button: "GET POSTS"
-		const btn_get_posts: HTMLElement = document.getElementById('textile_archive_btn_get_posts');
+		const btn_get_posts = document.getElementById('textile_archive_btn_get_posts');
+		// Button "RESET FORM"
+		const btn_reset = document.getElementById('textile_archive_btn_reset');
 		
 
 		// Click event for buckets button
@@ -44,13 +46,64 @@ export class WPTextilePluginTabArchive {
 			};
 		}
 
-
 		// Click event for posts button
 		if (btn_get_posts) {
 			btn_get_posts.onclick = () => {
 				this.getPosts(url);
 			};
 		}
+
+		// Click event to reset the form 
+		if (btn_reset) {
+			btn_reset.onclick = () => {
+				this.reset();
+				
+			}
+		}
+
+		// Init filter dates
+		// Set From and To values to current date
+		this.initFilterDates();
+	}
+
+	/*
+	*	RESET FORM
+	*/
+	reset() {
+		const txt_bucket_name = document.getElementById('textile_archive_txt_bucket_name');
+		const div_create_index_res = document.getElementById('wptextile_archive_section_bucket_create_index_res');
+		const div_create_posts_res = document.getElementById('textile_archive_div_results');
+		const div_get_buckets = document.getElementById('wptextile_archive_section_bucket_settings_bucklist');
+		const btn_activate_posts = document.getElementById('textile_archive_btn_activate_posts');
+		const empty_res = '<div class="wptextile_content_no_results_text">Results</div>';
+		const step2And3Container = document.getElementById('wptextile_archive_section_post_list');
+		const div_bucketInfo = document.getElementById('textile_archive_div_bucket_gen_info');
+
+		txt_bucket_name.value = '';
+		txt_bucket_name.disabled = false;
+		btn_activate_posts.disabled = false;
+		div_bucketInfo.innerText = '';
+		div_create_index_res.innerHTML = empty_res;
+		div_create_posts_res.innerHTML = empty_res;
+		div_get_buckets.innerHTML = empty_res;
+		step2And3Container.className = 'hide';
+		this.initFilterDates();
+						
+	}
+
+	/*
+	*	From and To dates as current date
+	*/
+	initFilterDates() {
+		const txt_from = document.getElementById('textile_archive_txt_date_from');
+		const txt_to = document.getElementById('textile_archive_txt_date_to');
+		const today = new Date();
+		const dateBefore = new Date();
+		dateBefore.setMonth(dateBefore.getMonth() - 3);
+		var todayFinal = today.toISOString().slice(0, -14);
+		var dateBeforeFinal = dateBefore.toISOString().slice(0, -14);
+		txt_from.value = dateBeforeFinal;
+		txt_to.value = todayFinal;
 	}
 
 	/*
@@ -59,9 +112,13 @@ export class WPTextilePluginTabArchive {
 	getPosts(url) {
 		const container = document.getElementById('textile_archive_div_results');
 		const bucket_name = document.getElementById('textile_archive_txt_bucket_name').value;
+		const txt_from = document.getElementById('textile_archive_txt_date_from');
+		const txt_to = document.getElementById('textile_archive_txt_date_to');
+
 		const data = {
 			action: 'textilepostslist',
-			filter: 'all'
+			from: txt_from.value,
+			to: txt_to.value
 		};
 		container.innerText = 'Loading ...';
 
@@ -69,6 +126,13 @@ export class WPTextilePluginTabArchive {
 			.then(async (response) => {
 				const content = JSON.parse(await response.text());
 				let html = '';
+
+				// Check for errors 
+				if (content === 0 || (content && content.error != '')) {
+					container.innerText = content ? content.error : 'Wordpress error :)';
+					return false;
+				}
+
 
 				for (let post of content) {
 					html += this.template_post_detail(post);

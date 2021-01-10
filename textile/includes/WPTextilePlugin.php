@@ -35,39 +35,74 @@ class WPTextilePlugin {
     *   Prints the list of posts in json
     */
     public function ajax_posts_list($data) {
-        $filter = !empty($_POST['filter']) ? 
-            sanitize_text_field($_POST['filter']) : '';
+        $filter_from = !empty($_POST['from']) ? 
+            sanitize_text_field($_POST['from']) : '';
+        $filter_to = !empty($_POST['to']) ? 
+            sanitize_text_field($_POST['to']) : '';
         $res = array();
         $posts = array();
 
-        // Return all posts
-        if ($filter === 'all') {
-
-            // The Query
-            $args = array(
-                'numberposts'      => 30,
-                'category'         => 0,
-                'orderby'          => 'date',
-                'order'            => 'DESC',
-                'include'          => array(),
-                'exclude'          => array(),
-                'meta_key'         => '',
-                'meta_value'       => '',
-                'post_type'        => 'post',
-                'suppress_filters' => true,
-                'post_status'    => 'publish',
-            );
-            // slug
-            // if ($slug)
-            // args['name'] = $slug;
-
-            $posts = get_posts($args);
+        if (!$this->validateDate($filter_from) ||
+            !$this->validateDate($filter_to)) {
+            $err = array('error' => 'Invalid date!');
+            echo json_encode($err);
+            die();
         }
+
+        /*
+        // Return all posts
+        // The Query
+        $args = array(
+            'numberposts'      => -1,
+            'category'         => 0,
+            'orderby'          => 'date',
+            'order'            => 'DESC',
+            'include'          => array(),
+            'exclude'          => array(),
+            'meta_key'         => '',
+            'meta_value'       => '',
+            'post_type'        => 'post',
+            'suppress_filters' => true,
+            'post_status'    => 'publish',
+        );
+        // slug
+        // if ($slug)
+        // args['name'] = $slug;
+        $posts = get_posts($args);
+        */
+        $args = array(
+            'date_query' => array(
+                array(
+                    'after'     => $filter_from,
+                    'before'    => $filter_to,
+                    'inclusive' => true,
+                ),
+            ),
+            'posts_per_page' => -1,
+        );
+        $posts = new WP_Query( $args );
 
         $res = $this->ajax_post_list_template_post($posts);
         echo json_encode($res);
 
         wp_die();
+    }
+
+    private function validateDate($d) {
+        $d_arr = explode($d);
+        if (count($d_arr) != 3) {
+            return false;
+        }
+
+        $year = (int)$d_arr[0];
+        $month = (int)$d_arr[1];
+        $date = (int)$d_arr[2];
+
+        if (!checkdate($month, $date, $year)) {
+            return false;
+        }
+
+        return true;
     }
 
     /*

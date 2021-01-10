@@ -77,6 +77,7 @@
 							<input class="regular-text" type="text" id="textile_archive_txt_bucket_name" value="">
 						</label>
 						<input class="button button-primary" type="button" id="textile_archive_btn_activate_posts" value="SAVE AND GO TO NEXT STEP">
+						<input class="button button-primary" type="button" id="textile_archive_btn_reset" value="RESET">
 					</div>
 					<p class="wptextile_text-center wptextile_content_no_results_text">
 						*A new bucket will be created by default if bucket doesn't exist.
@@ -96,7 +97,15 @@
 					</div>
 					<h3 class="wptextile_archive_h3">Step 3. Posts list</h3>
 					<p>
-						Get last 30 posts from database:
+						<label>
+							From:
+							<input class="regular-text" type="text" id="textile_archive_txt_date_from" value="">
+						</label>
+						<label>
+							To:
+							<input class="regular-text" type="text" id="textile_archive_txt_date_to" value="">
+						</label>
+
 						<input class="button button-primary" type="button" id="textile_archive_btn_get_posts" value="GET POSTS">
 					</p>
 						
