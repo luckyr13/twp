@@ -42,39 +42,34 @@ class WPTextilePlugin {
         $res = array();
         $posts = array();
 
-        if (!$this->validateDate($filter_from) ||
-            !$this->validateDate($filter_to)) {
-            $err = array('error' => 'Invalid date!');
+        if ( !( $filter_from = $this->validateDate($filter_from)) ) {
+            $err = array('error' => 'Invalid "from" date!');
+            echo json_encode($err);
+            die();
+        }
+        if ( !( $filter_to = $this->validateDate($filter_to)) ) {
+            $err = array('error' => 'Invalid "to" date!');
             echo json_encode($err);
             die();
         }
 
-        /*
-        // Return all posts
-        // The Query
         $args = array(
-            'numberposts'      => -1,
-            'category'         => 0,
-            'orderby'          => 'date',
-            'order'            => 'DESC',
-            'include'          => array(),
-            'exclude'          => array(),
-            'meta_key'         => '',
-            'meta_value'       => '',
-            'post_type'        => 'post',
-            'suppress_filters' => true,
-            'post_status'    => 'publish',
-        );
-        // slug
-        // if ($slug)
-        // args['name'] = $slug;
-        $posts = get_posts($args);
-        */
-        $args = array(
+            'post_type' => 'post',
+            'post_status' => array(
+                'publish'
+            ),
             'date_query' => array(
                 array(
-                    'after'     => $filter_from,
-                    'before'    => $filter_to,
+                    'after' => array(
+                        'year' => $filter_from['year'],
+                        'month' => $filter_from['month'],
+                        'day' => $filter_from['day']
+                    ),
+                    'before'    => array(
+                        'year' => $filter_to['year'],
+                        'month' => $filter_to['month'],
+                        'day' => $filter_to['day']
+                    ),
                     'inclusive' => true,
                 ),
             ),
@@ -89,9 +84,10 @@ class WPTextilePlugin {
     }
 
     private function validateDate($d) {
-        $d_arr = explode($d);
+        $res = [];
+        $d_arr = explode('-', $d);
         if (count($d_arr) != 3) {
-            return false;
+            return NULL;
         }
 
         $year = (int)$d_arr[0];
@@ -99,10 +95,15 @@ class WPTextilePlugin {
         $date = (int)$d_arr[2];
 
         if (!checkdate($month, $date, $year)) {
-            return false;
+            return NULL;
         }
+        $res = array(
+            'year' => $year,
+            'month' => $month,
+            'day' => $date
+        );
 
-        return true;
+        return $res;
     }
 
     /*
@@ -110,6 +111,8 @@ class WPTextilePlugin {
     */
     private function ajax_post_list_template_post($posts) {
         $res = [];
+        $posts = (array) $posts;
+        $posts = array_key_exists('posts', $posts) ? $posts['posts'] : array();
         foreach ($posts as $post) {
             $post = (array) $post;
             $res[] = [
@@ -121,6 +124,8 @@ class WPTextilePlugin {
                 'post_modified_gmt' => $post['post_modified_gmt']
             ];
         }
+
+        $res = $posts;
 
         return $res;
         

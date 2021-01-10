@@ -128,11 +128,16 @@ export class WPTextilePluginTabArchive {
 				let html = '';
 
 				// Check for errors 
-				if (content === 0 || (content && content.error != '')) {
+				if (content === 0 || (content && content.error)) {
 					container.innerText = content ? content.error : 'Wordpress error :)';
 					return false;
 				}
 
+				// Count number of posts, return if zero
+				if (!content || !content.length) {
+					container.innerText = 'No results found.';
+					return false;
+				}
 
 				for (let post of content) {
 					html += this.template_post_detail(post);
