@@ -144,9 +144,8 @@ export class WPTextilePluginTabArchive {
 				} 
 				container.innerHTML = html;
 
-				// Add listeners 
+				// Add listeners for shallow upload
 				const btnsUpload = document.getElementsByClassName('wptextile_archive_post_detail_btn_upload');
-
 				for (let tmp_btnUpload of btnsUpload) {
 					tmp_btnUpload.addEventListener('click', async () => {
 						const dataset = tmp_btnUpload.dataset ?
@@ -155,6 +154,8 @@ export class WPTextilePluginTabArchive {
 							dataset.id : '';
 						const post_slug = dataset.hasOwnProperty('slug') ?
 							dataset.slug : '';
+						const post_date = dataset.hasOwnProperty('date') ?
+							dataset.date : '';
 						const div_post_id = 'wptextile_post_detail_html_' + post_id;
 						const post_html = document.getElementById(div_post_id) ?
 							document.getElementById(div_post_id).innerHTML :
@@ -164,7 +165,7 @@ export class WPTextilePluginTabArchive {
 						 
 						try {
 							await this.uploadPostToBucket(
-								post_id, post_slug, post_html, bucket_name
+								post_id, post_slug, post_html, post_date, bucket_name
 							);
 							alert('All right! File uploaded successfully!');
 						} catch (err) {
@@ -175,6 +176,40 @@ export class WPTextilePluginTabArchive {
 						tmp_btnUpload.disabled = false;
 					});
 				}
+
+				// Add listener for deep upload 
+				const btnsDeepUpload = document.getElementsByClassName('wptextile_archive_post_detail_btn_upload_deep');
+				for (let tmp_btnDeepUpload of btnsDeepUpload) {
+					tmp_btnDeepUpload.addEventListener('click', async () => {
+						const dataset = tmp_btnDeepUpload.dataset ?
+							tmp_btnDeepUpload.dataset : {};
+						const post_id = dataset.hasOwnProperty('id') ?
+							dataset.id : '';
+						const post_slug = dataset.hasOwnProperty('slug') ?
+							dataset.slug : '';
+						const post_date = dataset.hasOwnProperty('date') ?
+							dataset.date : '';
+						const div_post_id = 'wptextile_post_detail_html_' + post_id;
+						const post_html = document.getElementById(div_post_id) ?
+							document.getElementById(div_post_id).innerHTML :
+							'';
+						// Disable button
+						tmp_btnDeepUpload.disabled = true;
+						 
+						try {
+							await this.deepUploadPostToBucket(
+								post_id, post_slug, post_html, post_date, bucket_name, div_post_id
+							);
+							alert('All right! Files uploaded successfully!');
+						} catch (err) {
+							alert('Err: ' + err);
+						}
+
+						// Enable button
+						tmp_btnDeepUpload.disabled = false;
+					});
+				}
+	
 			})
 			.catch((err) => {
 				let error_msg = '';
@@ -210,6 +245,7 @@ export class WPTextilePluginTabArchive {
 
 		html += `
 		<h2>POST ID: ${post_id} (${post_name}) / <small>Last update: ${post_modified_gmt}</small></h2>
+		<h3>POST DATE: ${post_date_gmt}</h3>
 		<div class="wptextile_archive_post_detail">
 			<h2>${post_title}</h2>
 			<div id="wptextile_post_detail_html_${post_id}" 
@@ -222,7 +258,17 @@ export class WPTextilePluginTabArchive {
 				class="button button-primary wptextile_archive_post_detail_btn_upload" 
 				data-id="${post_id}"
 				data-slug="${post_name}"
-				value="UPLOAD FILE TO BUCKET" />
+				data-date="${post_date_gmt}"
+				value="SHALLOW UPLOAD" />
+				&nbsp;
+				<input type="button" style="background-color: purple; color: #FFF"
+				class="button button-primary wptextile_archive_post_detail_btn_upload_deep" 
+				data-id="${post_id}"
+				data-slug="${post_name}"
+				data-date="${post_date_gmt}"
+				value="DEEP UPLOAD" />
+		</div>
+		<div id="wptextile_archive_post_detail_deepupl_ls_${post_id}">
 		</div>
 		<hr>
 		`;
@@ -466,8 +512,22 @@ export class WPTextilePluginTabArchive {
 		});
 	}
 
-	async uploadPostToBucket(post_id, post_slug, post_html, bucket_name) {
-		const path = `${post_slug}.html`;
+	async uploadPostToBucket(
+			post_id,
+			post_slug,
+			post_html,
+			post_date,
+			bucket_name
+		) {
+		const pdate = this.dateFormat(post_date);
+		const path = `${pdate}/${post_slug}/index.html`;
+
+		// Si error
+		if (!pdate) {
+			alert('Error creating destination path');
+			return;
+		}
+
 		try {
 			var res = await this.wp.uploadHTMLFile(
 				bucket_name,
@@ -478,6 +538,90 @@ export class WPTextilePluginTabArchive {
 			throw err;
 		}
 		
+	}
+
+	async deepUploadPostToBucket(
+			post_id,
+			post_slug,
+			post_html,
+			post_date,
+			bucket_name,
+			div_post_id
+		) {
+		const pdate = this.dateFormat(post_date);
+		const path = `${pdate}/${post_slug}/index.html`;
+
+		// Si error
+		if (!pdate) {
+			alert('Error creating destination path');
+			return;
+		}
+		
+		try {
+			// Enumerate files 
+			const assets = this.enumerateFiles(div_post_id);
+			this.displayListOfFiles(`wptextile_archive_post_detail_deepupl_ls_${post_id}`, assets);
+
+			// UPLOAD FILES
+			alert(path);
+			alert(bucket_name);
+		} catch (err) {
+			throw err;
+		}
+		
+	}
+
+	private dateFormat(post_date: string) {
+		let fdate = post_date.substr(0, 10);
+		if (fdate.length != 10) {
+			fdate = '';
+		} else {
+			fdate = fdate.replace(/-/g, '/');
+		}
+
+		return fdate;
+	}
+
+	private enumerateFiles(div_id) {
+		const files = {
+			images: [],
+			videos: []
+		};
+		const container = document.getElementById(div_id);
+		const images = container.getElementsByTagName('img');
+		const videos = container.getElementsByTagName('video');
+
+		for (const img of images) {
+			files.images.push({
+				DOM: img,
+				src: img.src
+			});
+		}
+		for (const video of videos) {
+			files.videos.push({
+				DOM: video,
+				src: video.src
+			});
+		}
+		return files;
+	}
+
+	private displayListOfFiles(div_container_id, files) {
+		const container = document.getElementById(div_container_id);
+		container.innerHTML = 'List of files to be uploaded:';
+
+		if (container) {
+			for (const img of files.images) {
+				container.innerText += img.src;
+				container.innerHTML += '<br>';
+			}
+			for (const vid of files.videos) {
+				container.innerText += vid.src;
+				container.innerHTML += '<br>';
+			}
+		} else {
+			alert('No container to display results')
+		}
 	}
 
 }

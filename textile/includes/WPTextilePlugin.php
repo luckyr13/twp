@@ -125,7 +125,7 @@ class WPTextilePlugin {
             ];
         }
 
-        $res = $posts;
+        // $res = $posts;
 
         return $res;
         
@@ -444,7 +444,7 @@ class WPTextilePlugin {
         $content .= '<div id="wptextile_tabs_area">
         <!-- Tabs menu -->
         <ul class="wptextile_tabs_menu">
-            <li><a data-tab="info" class="main"><img class="wptextile_tabs_menu_icon" src="'.$img_src.'home.svg" alt="Home"/> Dashboard</a></li><li><a data-tab="archive"><img class="wptextile_tabs_menu_icon"  src="'.$img_src.'archive.svg" alt="Buckets"/> Archive</a></li><li><a data-tab="buckets"><img class="wptextile_tabs_menu_icon"  src="'.$img_src.'red-bucket.svg" alt="Buckets"/> Buckets</a></li><li><a data-tab="filecoin"><img class="wptextile_tabs_menu_icon" src="'.$img_src.'filecoin-logo.svg" alt="Filecoin"/> Filecoin</a></li>
+            <li><a data-tab="info" class="main"><img class="wptextile_tabs_menu_icon" src="' . $img_src . 'home.svg" alt="Home"/> Dashboard</a></li><li><a data-tab="archive"><img class="wptextile_tabs_menu_icon"  src="' . $img_src . 'archive.svg" alt="Buckets"/> Archive</a></li><li><a data-tab="buckets"><img class="wptextile_tabs_menu_icon"  src="' . $img_src . 'red-bucket.svg" alt="Buckets"/> Buckets</a></li><li><a data-tab="filecoin"><img class="wptextile_tabs_menu_icon" src="' . $img_src . 'filecoin-logo.svg" alt="Filecoin"/> Filecoin</a></li>
         </ul>
         <!-- Tabs content -->
         <div class="wptextile_tabs_container">
