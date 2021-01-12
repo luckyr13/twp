@@ -1,10 +1,14 @@
 import { WPTextilePlugin } from './wptextileplugin';
 import { FetchAPI } from './fetch-api';
+import { LOADER1 } from './loader';
 declare const document: any;
 
 export class WPTextilePluginTabArchive {
 	private wp: WPTextilePlugin;
 	private fapi: FetchAPI;
+	private bucketURL;
+	private bucketWWW;
+	private bucketIPNS;
 
 	constructor(_wp: WPTextilePlugin) {
 		this.wp = _wp;
@@ -148,32 +152,10 @@ export class WPTextilePluginTabArchive {
 				const btnsUpload = document.getElementsByClassName('wptextile_archive_post_detail_btn_upload');
 				for (let tmp_btnUpload of btnsUpload) {
 					tmp_btnUpload.addEventListener('click', async () => {
-						const dataset = tmp_btnUpload.dataset ?
-							tmp_btnUpload.dataset : {};
-						const post_id = dataset.hasOwnProperty('id') ?
-							dataset.id : '';
-						const post_slug = dataset.hasOwnProperty('slug') ?
-							dataset.slug : '';
-						const post_date = dataset.hasOwnProperty('date') ?
-							dataset.date : '';
-						const div_post_id = 'wptextile_post_detail_html_' + post_id;
-						const post_html = document.getElementById(div_post_id) ?
-							document.getElementById(div_post_id).innerHTML :
-							'';
-						// Disable button
-						tmp_btnUpload.disabled = true;
-						 
-						try {
-							await this.uploadPostToBucket(
-								post_id, post_slug, post_html, post_date, bucket_name
-							);
-							alert('All right! File uploaded successfully!');
-						} catch (err) {
-							alert('Err: ' + err);
-						}
-
-						// Enable button
-						tmp_btnUpload.disabled = false;
+						this.uploadPostToBucket_helper(
+							tmp_btnUpload,
+							bucket_name
+						);
 					});
 				}
 
@@ -181,32 +163,7 @@ export class WPTextilePluginTabArchive {
 				const btnsDeepUpload = document.getElementsByClassName('wptextile_archive_post_detail_btn_upload_deep');
 				for (let tmp_btnDeepUpload of btnsDeepUpload) {
 					tmp_btnDeepUpload.addEventListener('click', async () => {
-						const dataset = tmp_btnDeepUpload.dataset ?
-							tmp_btnDeepUpload.dataset : {};
-						const post_id = dataset.hasOwnProperty('id') ?
-							dataset.id : '';
-						const post_slug = dataset.hasOwnProperty('slug') ?
-							dataset.slug : '';
-						const post_date = dataset.hasOwnProperty('date') ?
-							dataset.date : '';
-						const div_post_id = 'wptextile_post_detail_html_' + post_id;
-						const post_html = document.getElementById(div_post_id) ?
-							document.getElementById(div_post_id).innerHTML :
-							'';
-						// Disable button
-						tmp_btnDeepUpload.disabled = true;
-						 
-						try {
-							await this.deepUploadPostToBucket(
-								post_id, post_slug, post_html, post_date, bucket_name, div_post_id
-							);
-							alert('All right! Files uploaded successfully!');
-						} catch (err) {
-							alert('Err: ' + err);
-						}
-
-						// Enable button
-						tmp_btnDeepUpload.disabled = false;
+						this.deepUploadPostToBucket_helper(tmp_btnDeepUpload, bucket_name);
 					});
 				}
 	
@@ -268,7 +225,11 @@ export class WPTextilePluginTabArchive {
 				data-date="${post_date_gmt}"
 				value="DEEP UPLOAD" />
 		</div>
-		<div id="wptextile_archive_post_detail_deepupl_ls_${post_id}">
+		<div id="wptextile_archive_post_detail_deepupl_loader_${post_id}" 
+				class="wptextile_archive_post_detail_deepupl_loader_s">
+		</div>
+		<div class="wptextile_archive_post_detail_footer_results" id="wptextile_archive_post_detail_deepupl_ls_${post_id}">
+			Results
 		</div>
 		<hr>
 		`;
@@ -475,6 +436,11 @@ export class WPTextilePluginTabArchive {
 					const ipns = content.hasOwnProperty('ipns') ?
 						content.ipns : '';
 
+					// SAVE BUCKET GLOBAL PROPERTIES 
+					this.bucketURL = url;
+					this.bucketWWW = www;
+					this.bucketIPNS = ipns;
+
 					const msg = 
 					`<table class="wp-list-table widefat fixed">
 						<thead><tr><th colspan="2">Bucket Info</th></tr></thead> 
@@ -512,32 +478,121 @@ export class WPTextilePluginTabArchive {
 		});
 	}
 
-	async uploadPostToBucket(
-			post_id,
-			post_slug,
-			post_html,
-			post_date,
-			bucket_name
-		) {
-		const pdate = this.dateFormat(post_date);
-		const path = `${pdate}/${post_slug}/index.html`;
+	private async uploadPostToBucket_helper(
+		tmp_btnUpload, bucket_name
+	) {
+		const dataset = tmp_btnUpload.dataset ?
+			tmp_btnUpload.dataset : {};
+		const post_id = dataset.hasOwnProperty('id') ?
+			dataset.id : '';
+		const post_slug = dataset.hasOwnProperty('slug') ?
+			dataset.slug : '';
+		const post_date = dataset.hasOwnProperty('date') ?
+			dataset.date : '';
+		const div_post_id = `wptextile_post_detail_html_${post_id}`;
+		const post_html = document.getElementById(div_post_id) ?
+			document.getElementById(div_post_id).innerHTML :
+			'';
+		const div_post_resquery = document.getElementById(
+			`wptextile_archive_post_detail_deepupl_ls_${post_id}`
+		);
+		// Disable button
+		tmp_btnUpload.disabled = true;
+		// Loading msg
+		div_post_resquery.innerHTML = LOADER1;
+		 
+		try {
+			const pdate = this.dateFormat(post_date);
 
-		// Si error
-		if (!pdate) {
-			alert('Error creating destination path');
-			return;
+			// Si error
+			if (!pdate) {
+				throw 'Invalid date!!!';
+			}
+
+			const destination_path = `${pdate}/${post_slug}/index.html`;
+			const up_res = await this.uploadPostToBucket(
+				post_id, post_html, post_date, bucket_name, destination_path
+			);
+			if (up_res['success']) {
+				const tmp_path = `${this.bucketWWW}/${destination_path}`;
+				div_post_resquery.innerText = 'All right! File uploaded successfully!';
+				div_post_resquery.innerHTML = `
+					<div style="text-align: center">
+						Preview:
+						<a style="color: #FFFFFF" href="${tmp_path}" target="_blank">${tmp_path}</a>
+					</div>
+				`;
+			} else {
+				div_post_resquery.innerText = `Error: ${up_res['error']}`;
+			}
+
+		} catch (err) {
+			div_post_resquery.innerHTML = 'Err: ' + err;;
 		}
 
+		// Enable button
+		tmp_btnUpload.disabled = false;
+	}
+
+	async uploadPostToBucket(
+			post_id,
+			post_html,
+			post_date,
+			bucket_name,
+			path
+		) {
+		const res = {
+			success: false,
+			error: ''
+		};
+
 		try {
-			var res = await this.wp.uploadHTMLFile(
+			// Returns IPFS root
+			const upl_res = await this.wp.uploadHTMLFile(
 				bucket_name,
 				post_html,
 				path
 			);
+			res['success'] = true;
 		} catch (err) {
-			throw err;
+			res['error'] = err;
 		}
+
+		return res;
 		
+	}
+
+	async deepUploadPostToBucket_helper(tmp_btnDeepUpload, bucket_name) {
+		const dataset = tmp_btnDeepUpload.dataset ?
+			tmp_btnDeepUpload.dataset : {};
+		const post_id = dataset.hasOwnProperty('id') ?
+			dataset.id : '';
+		const post_slug = dataset.hasOwnProperty('slug') ?
+			dataset.slug : '';
+		const post_date = dataset.hasOwnProperty('date') ?
+			dataset.date : '';
+		const div_post_id = 'wptextile_post_detail_html_' + post_id;
+		const post_html = document.getElementById(div_post_id) ?
+			document.getElementById(div_post_id).innerHTML :
+			'';
+		const div_post_resquery = document.getElementById(
+			`wptextile_archive_post_detail_deepupl_ls_${post_id}`
+		);
+		// Disable button
+		tmp_btnDeepUpload.disabled = true;
+		 
+		try {
+			await this.deepUploadPostToBucket(
+				post_id, post_slug, post_html,
+				post_date, bucket_name, div_post_id,
+				div_post_resquery
+			);
+		} catch (err) {
+			div_post_resquery.innerHTML = 'Err: ' + err;
+		}
+
+		// Enable button
+		tmp_btnDeepUpload.disabled = false;
 	}
 
 	async deepUploadPostToBucket(
@@ -546,26 +601,37 @@ export class WPTextilePluginTabArchive {
 			post_html,
 			post_date,
 			bucket_name,
-			div_post_id
+			div_post_id,
+			div_post_resquery
 		) {
 		const pdate = this.dateFormat(post_date);
-		const path = `${pdate}/${post_slug}/index.html`;
-
+		const path = `${pdate}/${post_slug}/assets/`;
 		// Si error
 		if (!pdate) {
-			alert('Error creating destination path');
-			return;
+			throw 'Wrong date format';
 		}
-		
-		try {
-			// Enumerate files 
-			const assets = this.enumerateFiles(div_post_id);
-			this.displayListOfFiles(`wptextile_archive_post_detail_deepupl_ls_${post_id}`, assets);
 
-			// UPLOAD FILES
-			alert(path);
-			alert(bucket_name);
+		// Loader 
+		const loading = document.getElementById(
+			`wptextile_archive_post_detail_deepupl_loader_${post_id}`
+		);
+		loading.innerHTML = LOADER1;
+
+		try {
+			// Get DOM object from current post HTML
+			const assets = this.enumerateFiles(div_post_id);
+			// Display list of assets
+			await this.uploadFiles(
+				div_post_resquery,
+				assets,
+				bucket_name,
+				path
+			);
+
+			loading.innerHTML = '';
+
 		} catch (err) {
+			loading.innerHTML = '';
 			throw err;
 		}
 		
@@ -606,22 +672,45 @@ export class WPTextilePluginTabArchive {
 		return files;
 	}
 
-	private displayListOfFiles(div_container_id, files) {
-		const container = document.getElementById(div_container_id);
-		container.innerHTML = 'List of files to be uploaded:';
+	private async uploadFiles(
+		div_post_resquery,
+		files,
+		bucket_name,
+		path
+	) {
+		const allFiles = [].concat(files.images).concat(files.videos);
 
-		if (container) {
-			for (const img of files.images) {
-				container.innerText += img.src;
-				container.innerHTML += '<br>';
+		for (const f of allFiles) {
+			const file_url = f.src;
+
+			div_post_resquery.innerHTML += `
+			<div style="text-align: center">
+					- Uploading ${file_url} ...
+			</div>`;
+			div_post_resquery.innerHTML += '<br>';
+			try {
+				const filename = file_url.split('/').slice(-1)[0];
+				const upl_res = await this.wp.uploadFileFromHTTPServer(
+					file_url, bucket_name, path, filename
+				);
+				const tmp_path = `${this.bucketWWW}/${path + filename}`;
+				div_post_resquery.innerHTML += `
+					<div style="text-align: center">
+						Preview:
+						<a style="color: #FFFFFF" href="${tmp_path}" target="_blank">${tmp_path}</a>
+					</div>
+				`;;
+
+			} catch (err) {
+				div_post_resquery.innerText += 'Error: ' + err;
+				div_post_resquery.innerHTML += `
+				<div style="text-align: center">
+						!!! Error: ${err} ...
+				</div>`;
+				div_post_resquery.innerHTML += '<br>';
 			}
-			for (const vid of files.videos) {
-				container.innerText += vid.src;
-				container.innerHTML += '<br>';
-			}
-		} else {
-			alert('No container to display results')
 		}
+		
 	}
 
 }

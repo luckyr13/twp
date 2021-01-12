@@ -3,6 +3,7 @@ import { PrivateKey, Client, Identity,
 	createUserAuth, APISig, createAPISig, ThreadID   } from '@textile/hub';
 import { TextileAjaxObjInternal } from './interfaces/textile-ajax-obj';
 import { TEXTILE_AJAX_OBJ_INTERNAL } from './textile-data';
+import { FetchAPI } from './fetch-api';
 import { Buffer } from 'buffer';
 declare const window: any;
 declare const document: any;
@@ -12,6 +13,7 @@ export class WPTextilePlugin {
 	private _apisecret: string;
 	private _privateidentity: string;
 	private _keyinfo: any;
+	private _fapi: FetchAPI;
 
 	// GETTERS
 	public get apikey() {
@@ -40,6 +42,7 @@ export class WPTextilePlugin {
 		this._apisecret = data.hasOwnProperty('apisecret') ? data.apisecret : '';
 		this._privateidentity = data.hasOwnProperty('privateidentity') ? data.privateidentity : '';
 		this._keyinfo = { key: this._apikey, secret: this._apisecret };
+		this._fapi = new FetchAPI();
 	}
 
 	/*
@@ -554,6 +557,49 @@ export class WPTextilePlugin {
 		}
 
 		return success;
+	}
+
+
+	/*
+	*	GET file from Server
+	*  and upload it to IPFS bucket
+	*/
+	async uploadFileFromHTTPServer(
+		file_url: string,
+		bucket_name: string,
+		path: string,
+		filename: string
+	) {
+		var bucketData = null;
+		var buckets = null;
+		var bucketKey = null;
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		let result = null;
+
+		bucketData = await this.setupBucketEnvironment(
+			keyinfo, identity, bucket_name
+		);
+
+		buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
+		bucketKey = bucketData.hasOwnProperty('bucketKey') ? bucketData.bucketKey : null;
+		
+    try {
+    	const fup_res = await this._fapi.get(file_url);
+    	const fileBlob = await fup_res.blob();
+    	var file = new File([fileBlob], filename);
+    	
+	    result = await this.insertFile(
+	    	buckets,
+	    	bucketKey,
+	    	file,
+	    	path + filename
+	    );
+	  } catch (err) {
+    	throw 'Error on super file upload: ' + err;
+    }
+		
+		return result;
 	}
 
 }

@@ -1,0 +1,1 @@
+export const LOADER1 = `<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>`;

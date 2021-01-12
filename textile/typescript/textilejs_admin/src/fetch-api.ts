@@ -27,4 +27,5 @@ export class FetchAPI {
 			method: 'GET'
 		});
 	}
+
 }
