@@ -9,6 +9,7 @@ export class WPTextilePluginTabArchive {
 	private bucketURL;
 	private bucketWWW;
 	private bucketIPNS;
+	private ajax_url;
 
 	constructor(_wp: WPTextilePlugin) {
 		this.wp = _wp;
@@ -28,6 +29,8 @@ export class WPTextilePluginTabArchive {
 		// Button "RESET FORM"
 		const btn_reset = document.getElementById('textile_archive_btn_reset');
 		
+		// Save ajax url 
+		this.ajax_url = url;
 
 		// Click event for buckets button
 		if (btn_get_buckets) {
@@ -511,7 +514,7 @@ export class WPTextilePluginTabArchive {
 
 			const destination_path = `${pdate}/${post_slug}/index.html`;
 			const up_res = await this.uploadPostToBucket(
-				post_id, post_html, post_date, bucket_name, destination_path
+				post_html, bucket_name, destination_path
 			);
 			if (up_res['success']) {
 				const tmp_path = `${this.bucketWWW}/${destination_path}`;
@@ -535,9 +538,7 @@ export class WPTextilePluginTabArchive {
 	}
 
 	async uploadPostToBucket(
-			post_id,
 			post_html,
-			post_date,
 			bucket_name,
 			path
 		) {
@@ -605,7 +606,8 @@ export class WPTextilePluginTabArchive {
 			div_post_resquery
 		) {
 		const pdate = this.dateFormat(post_date);
-		const path = `${pdate}/${post_slug}/assets/`;
+		const path_assets = `${pdate}/${post_slug}/assets/`;
+		const path_index = `${pdate}/${post_slug}/`;
 		// Si error
 		if (!pdate) {
 			throw 'Wrong date format';
@@ -620,13 +622,23 @@ export class WPTextilePluginTabArchive {
 		try {
 			// Get DOM object from current post HTML
 			const assets = this.enumerateFiles(div_post_id);
-			// Display list of assets
-			await this.uploadFiles(
+			// Upload files to bucket
+			const uploaded_files = await this.uploadFiles(
 				div_post_resquery,
 				assets,
 				bucket_name,
-				path
+				path_assets
 			);
+
+			// Upload post index 
+			await this.deepCp_uploadPostIndex(
+				div_post_resquery,
+				div_post_id,
+				uploaded_files,
+				bucket_name,
+				path_index
+			);
+			
 
 			loading.innerHTML = '';
 
@@ -635,6 +647,57 @@ export class WPTextilePluginTabArchive {
 			throw err;
 		}
 		
+	}
+
+	private async deepCp_uploadPostIndex(
+		div_post_resquery,
+		div_post_id,
+		allFiles,
+		bucket_name,
+		path
+	) {
+		const div_post = document.getElementById(div_post_id);
+		const file_url = '';
+		const filename = 'index.html';
+		// Save a copy of original HTML post
+		const copy = div_post.innerHTML;
+
+		div_post_resquery.innerHTML += `
+		<div style="text-align: center">
+				- Uploading index file ${filename} to bucket ...
+		</div>`;
+		div_post_resquery.innerHTML += '<br>';
+
+		// Update original post content directly (assets only)
+		// change src with bucket urls
+		for (const f of allFiles) {
+			const dom_element = f.DOM;
+			dom_element.src = f.bucket_url;
+		}
+
+		try {
+			// Upload post to bucket
+			await this.uploadPostToBucket(
+					div_post.innerHTML,
+					bucket_name,
+					path + filename
+			);
+
+			const tmp_path = `${this.bucketWWW}/${path + filename}`;
+			div_post_resquery.innerHTML += `
+				<div style="text-align: center">
+					Preview:
+					<a style="color: #FFFFFF" href="${tmp_path}" target="_blank">${tmp_path}</a>
+				</div>
+			`;
+
+			// Restore original post content on UI
+			div_post.innerHTML = copy;
+
+		} catch (err) {
+			throw err;
+		}
+
 	}
 
 	private dateFormat(post_date: string) {
@@ -679,9 +742,10 @@ export class WPTextilePluginTabArchive {
 		path
 	) {
 		const allFiles = [].concat(files.images).concat(files.videos);
+		const numFiles = allFiles.length;
 
-		for (const f of allFiles) {
-			const file_url = f.src;
+		for (let i = 0; i < numFiles; i++) {
+			const file_url = allFiles[i].src;
 
 			div_post_resquery.innerHTML += `
 			<div style="text-align: center">
@@ -699,7 +763,11 @@ export class WPTextilePluginTabArchive {
 						Preview:
 						<a style="color: #FFFFFF" href="${tmp_path}" target="_blank">${tmp_path}</a>
 					</div>
-				`;;
+				`;
+
+				// Save bucket url in files array 
+				allFiles[i].bucket_url = tmp_path;
+
 
 			} catch (err) {
 				div_post_resquery.innerText += 'Error: ' + err;
@@ -710,6 +778,8 @@ export class WPTextilePluginTabArchive {
 				div_post_resquery.innerHTML += '<br>';
 			}
 		}
+
+		return allFiles;
 		
 	}
 
