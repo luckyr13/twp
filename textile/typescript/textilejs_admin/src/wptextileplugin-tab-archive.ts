@@ -801,7 +801,8 @@ export class WPTextilePluginTabArchive {
 		const data = {
 			action: 'textileindextemplate',
 			template: 'default',
-			site_name: site_name
+			site_name: site_name,
+			bucket_url: this.bucketURL
 		};
 		const container_res = document.getElementById(
 			'wptextile_archive_section_bucket_create_index_res'

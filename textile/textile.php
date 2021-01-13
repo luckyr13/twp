@@ -2,8 +2,8 @@
 /*
 Plugin Name: Textile Tools
 Plugin URI: https://github.com/luckyr13/twp
-Description: Backup your Wordpress website in IPFS and Filecoin thanks to Textile Tools. This tool works great as GUI tool to navigate in your Textile buckets.
-Version: 1.5
+Description: Create a Static Site copy/backup of your Wordpress site. Upload it to IPFS and Filecoin with Textile Tools.
+Version: 1.8
 Author: Ricardo Guzman
 Author URI: http://criptoalfa.com
 License:           GPL v2 or later
