@@ -194,6 +194,11 @@ ul.wptextile_tabs_menu li a.main {
 	height: 100px;
 	overflow-y: auto;
     border: 1px solid #CCC;
+    text-align: center;
+}
+
+#wptextile_archive_section_bucket_create_index_res a {
+	color: blue;
 }
 
 #textile_archive_div_results {
@@ -293,9 +298,17 @@ LOADER
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #fff;
   margin: -4px 0 0 -4px;
 }
+
+.lds-roller.blue-spin div:after {
+  background: #2935FF;
+}
+
+.lds-roller.white-spin div:after {
+  background: #fff;
+}
+
 .lds-roller div:nth-child(1) {
   animation-delay: -0.036s;
 }

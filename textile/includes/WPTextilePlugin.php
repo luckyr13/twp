@@ -18,6 +18,10 @@ class WPTextilePlugin {
 
         // Ajax
         add_action('wp_ajax_textilepostslist', array($this, 'ajax_posts_list'));
+        add_action(
+            'wp_ajax_textileindextemplate',
+            array($this, 'ajax_get_index_template')
+        );
 
         // Admin
         if (is_admin()) {
@@ -28,7 +32,6 @@ class WPTextilePlugin {
         }
         
     }
-
 
     /*
     *   Ajax call
@@ -80,6 +83,35 @@ class WPTextilePlugin {
         $res = $this->ajax_post_list_template_post($posts);
         echo json_encode($res);
 
+        wp_die();
+    }
+
+    /*
+    *   Ajax call
+    *   Get index template (HTML file)
+    */
+    public function ajax_get_index_template($data) {
+        $filter_template = !empty($_POST['template']) ? 
+            sanitize_text_field($_POST['template']) : 'default';
+        $site_name = !empty($_POST['site_name']) ? 
+            trim(sanitize_text_field($_POST['site_name'])) : '';
+        $res = '';
+
+        switch ($filter_template) {
+            case 'default':
+                include_once __DIR__ . DIRECTORY_SEPARATOR . 'templates' .
+                    DIRECTORY_SEPARATOR . 'index_default.php';
+                $res = trim($TEMPLATE_INDEX);
+            break;
+
+            default:
+                include_once __DIR__ . DIRECTORY_SEPARATOR . 'templates' .
+                    DIRECTORY_SEPARATOR . 'index_default.php';
+                $res = trim($TEMPLATE_INDEX);
+            break;
+        }
+        
+        echo $res;
         wp_die();
     }
 

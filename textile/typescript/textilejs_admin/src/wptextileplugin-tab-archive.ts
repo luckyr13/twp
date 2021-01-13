@@ -1,6 +1,6 @@
 import { WPTextilePlugin } from './wptextileplugin';
 import { FetchAPI } from './fetch-api';
-import { LOADER1 } from './loader';
+import { LOADER1, LOADER2 } from './loader';
 declare const document: any;
 
 export class WPTextilePluginTabArchive {
@@ -28,7 +28,9 @@ export class WPTextilePluginTabArchive {
 		const btn_get_posts = document.getElementById('textile_archive_btn_get_posts');
 		// Button "RESET FORM"
 		const btn_reset = document.getElementById('textile_archive_btn_reset');
-		
+		// Button "CREATE INDEX"
+		const btn_create_index = document.getElementById('textile_archive_btn_generate_index');
+
 		// Save ajax url 
 		this.ajax_url = url;
 
@@ -65,6 +67,14 @@ export class WPTextilePluginTabArchive {
 			btn_reset.onclick = () => {
 				this.reset();
 				
+			}
+		}
+
+		// Click event to Create Index file 
+		// (create index and upload it to bucket)
+		if (btn_create_index) {
+			btn_create_index.onclick = () => {
+				this.createIndexForBucket(url);
 			}
 		}
 
@@ -127,11 +137,11 @@ export class WPTextilePluginTabArchive {
 			from: txt_from.value,
 			to: txt_to.value
 		};
-		container.innerText = 'Loading ...';
+		container.innerHTML = LOADER2;
 
 		this.fapi.post(url, data)
 			.then(async (response) => {
-				const content = JSON.parse(await response.text());
+				const content = await response.json();
 				let html = '';
 
 				// Check for errors 
@@ -317,7 +327,7 @@ export class WPTextilePluginTabArchive {
 	getBuckets(btn_get_buckets) {
 		const resultsContainer = document.getElementById('wptextile_archive_section_bucket_settings_bucklist');
 		if (resultsContainer) {
-			resultsContainer.innerText = 'Loading ...';
+			resultsContainer.innerHTML = LOADER2;
 			btn_get_buckets.disabled = true;
 		} else {
 			alert('Missing template elements');
@@ -349,7 +359,7 @@ export class WPTextilePluginTabArchive {
 
 			if (threadId !== '') {
 				// Message to display
-				resultsContainer.innerHTML = 'Loading ...';
+				resultsContainer.innerHTML = LOADER2;
 
 				// Get buckets
 				this.wp.getBucketsListContent(threadId).then((data: any) => {
@@ -781,6 +791,63 @@ export class WPTextilePluginTabArchive {
 
 		return allFiles;
 		
+	}
+
+	/*
+	*	Create index file
+	*/
+	private createIndexForBucket(url) {
+		const site_name = document.getElementById('textile_archive_txt_site_name').value;
+		const data = {
+			action: 'textileindextemplate',
+			template: 'default',
+			site_name: site_name
+		};
+		const container_res = document.getElementById(
+			'wptextile_archive_section_bucket_create_index_res'
+		);
+		const bucket_name = document.getElementById(
+			'textile_archive_txt_bucket_name'
+		).value;
+
+		container_res.innerHTML = LOADER2;
+
+		this.fapi.post(url, data)
+			.then(async (response) => {
+				const content = await response.text();
+				const tmp_path = `${this.bucketWWW}/index.html`;
+
+				// Check for errors 
+				if (!content) {
+					container_res.innerText = 'No template found';
+					return false;
+				}
+
+				// Upload index to bucket
+				await this.uploadPostToBucket(
+						content,
+						bucket_name,
+						'index.html'
+				);
+				container_res.innerHTML = 'Index file successfully created!';
+				container_res.innerHTML += `
+					<div style="text-align: center">
+						Preview:
+						<a href="${tmp_path}" target="_blank">${tmp_path}</a>
+					</div>
+				`;
+
+			})
+			.catch((err) => {
+				let error_msg = '';
+				if (typeof err === 'object') {
+					error_msg = 'Error : ' + JSON.stringify(err);
+				} else {
+					error_msg =  'Error: ' + err;
+				}
+
+				container_res.innerText = error_msg;
+			});
 	}
 
 }
