@@ -1,5 +1,6 @@
 import { WPTextilePlugin } from './wptextileplugin';
 import { FetchAPI } from './fetch-api';
+import { LOADER1, LOADER2 } from './loader';
 
 export class WPTextilePluginTabRawQuery {
 	private wp: WPTextilePlugin;
@@ -35,7 +36,7 @@ export class WPTextilePluginTabRawQuery {
 			const custom_bucketname: string = txt_bucketname ? txt_bucketname.value : '';
 
 			if (resultsContainer) {
-				resultsContainer.innerText = 'Loading ...';
+				resultsContainer.innerHTML = LOADER2;
 			}
 
 			this.wp.getBucketsContent(custom_bucketname).then((data: any) => {
@@ -50,7 +51,7 @@ export class WPTextilePluginTabRawQuery {
 
 				const msg = 'Bucket data: <br>' +
 					'Url: <a target="_blank" href="' + url + '">' + url + '</a><br>' +
-					'WWW: ' + www + '<br>' +
+					'WWW: <a target="_blank" href="' + www + '">' + www + '</a><br>' +
 					'IPNS: ' + ipns;
 
 				if (resultsContainer) {
@@ -91,7 +92,7 @@ export class WPTextilePluginTabRawQuery {
 			try {
 				const results_container = 
 					document.getElementById(resultsContainerId);
-				results_container.innerText = 'Loading ...';
+				results_container.innerHTML = LOADER2;
 				btnFileUpload.disabled = true;
 				bucketNameForFileUpload.disabled = true;
 
@@ -121,7 +122,7 @@ export class WPTextilePluginTabRawQuery {
 		const btn_get_buckets: any = document.getElementById(btnGetBucketsId);
 		const resultsContainer = document.getElementById(resultsContainerId);
 		if (resultsContainer) {
-			resultsContainer.innerText = 'Loading ...';
+			resultsContainer.innerHTML = LOADER2;
 			btn_get_buckets.disabled = true;
 		} else {
 			alert('Missing template elements');
@@ -153,7 +154,7 @@ export class WPTextilePluginTabRawQuery {
 
 			if (threadId !== '') {
 				// Message to display
-				resultsContainer.innerHTML = 'Loading ...';
+				resultsContainer.innerHTML = LOADER2;
 
 				// Get buckets
 				this.wp.getBucketsListContent(threadId).then((data: any) => {
@@ -287,10 +288,10 @@ export class WPTextilePluginTabRawQuery {
 		const url = `https://hub.textile.io/thread/${threadId}/buckets/${bucketKey}`;
 		const final_url = `${url}?json=true`;
 		const content_result = document.getElementById('wptextile_tab_content_buckets_results_bucketsAuto_files');
-		content_result.innerText = 'Loading ...';
+		content_result.innerHTML = LOADER2;
 
 		this.fapi.get(final_url).then(async (data) => {
-			const res = JSON.parse(await data.text());
+			const res = await data.json();
 			let files = res && res.hasOwnProperty('metadata') ? 
 				res.metadata : {};
 			let html = `
@@ -321,7 +322,7 @@ export class WPTextilePluginTabRawQuery {
 
 	removeBucket(bucketKey: string, bucketName: string, threadId: string) {
 		if (confirm(`You are about to remove the bucket "${bucketName}".\nThis process is irreversible. Are you sure you want to proceed?`)) {
-			document.getElementById('wptextile_tab_content_buckets_results_bucketsAuto').innerText = 'Loading ...';
+			document.getElementById('wptextile_tab_content_buckets_results_bucketsAuto').innerHTML = LOADER2;
 
 			this.wp.remove(bucketKey, threadId).then((data) => {
 				this.getBuckets(
