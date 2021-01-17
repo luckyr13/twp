@@ -2,8 +2,8 @@
 /*
 Plugin Name: Textile Tools
 Plugin URI: https://github.com/luckyr13/twp
-Description: Create a Static Site copy/backup of your Wordpress site. Upload it to IPFS and Filecoin with Textile Tools.
-Version: 1.8
+Description: Create a Static Site copy/backup of your Wordpress site. Host a static copy of your website in IPFS and Filecoin with Textile Tools. Decentralized storage is very powerful. Are you ready?
+Version: 2.0
 Author: Ricardo Guzman
 Author URI: http://criptoalfa.com
 License:           GPL v2 or later

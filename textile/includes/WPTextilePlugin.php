@@ -372,7 +372,7 @@ class WPTextilePlugin {
     *   Admin section
     */
     public function admin_page_settings_section_userdata_html($args) {
-        echo '<p id="'. esc_attr( $args['id'] ) . ' ">You need Textile API KEYS to use this demo. Please follow the instructions on the next link to get your keys: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://docs.textile.io/hub/apis/#api-keys</a></p>';
+        echo '<p id="'. esc_attr( $args['id'] ) . ' ">You need Textile API KEYS to use this plugin. Please follow the instructions on the next link to get your keys: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://docs.textile.io/hub/apis/#api-keys</a></p>';
         // esc_html_e( json_encode($args), $this->menu_slug );
     }
 
@@ -478,7 +478,7 @@ class WPTextilePlugin {
         $content .= '<div id="wptextile_tabs_area">
         <!-- Tabs menu -->
         <ul class="wptextile_tabs_menu">
-            <li><a data-tab="info" class="main"><img class="wptextile_tabs_menu_icon" src="'.$img_src.'home.svg" alt="Home"/> Dashboard</a></li><li><a data-tab="archive"><img class="wptextile_tabs_menu_icon"  src="'.$img_src.'archive.svg" alt="Archive"/> Archive</a></li><li><a data-tab="buckets"><img class="wptextile_tabs_menu_icon"  src="'.$img_src.'red-bucket.svg" alt="Buckets"/> Buckets</a></li><li><a data-tab="filecoin"><img class="wptextile_tabs_menu_icon" src="'.$img_src.'filecoin-logo.svg" alt="Filecoin"/> Filecoin</a></li>
+            <li><a data-tab="info" class="main"><img class="wptextile_tabs_menu_icon" src="'.$img_src.'img/home.svg" alt="Home"/> Dashboard</a></li><li><a data-tab="archive"><img class="wptextile_tabs_menu_icon"  src="'.$img_src.'img/archive.svg" alt="Archive"/> Archive</a></li><li><a data-tab="buckets"><img class="wptextile_tabs_menu_icon"  src="'.$img_src.'img/red-bucket.svg" alt="Buckets"/> Buckets</a></li><li><a data-tab="filecoin"><img class="wptextile_tabs_menu_icon" src="'.$img_src.'img/filecoin-logo.svg" alt="Filecoin"/> Filecoin</a></li>
         </ul>
         <!-- Tabs content -->
         <div class="wptextile_tabs_container">
@@ -492,8 +492,23 @@ class WPTextilePlugin {
                     <p class="wptextile_text-left">
                         Welcome to Textile Tools for Wordpress.
                     </p>
-                    
-                    
+                    <p class="wptextile_text-left">
+                        You need Textile API KEYS to use this plugin. To get your keys you will need The Hub. The Hub is your portal to the IPFS network and the fastest way to start building and experimenting with Textile technologies. 
+                    <p class="wptextile_text-left">
+                        Please follow the instructions on the next link to get your keys: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://docs.textile.io/hub/apis/#api-keys</a>
+                    </p>
+                    <h3 class="wptextile_archive_h3 wptextile_text-left">
+                        Useful links
+                    </h3>
+                    <p class="wptextile_text-left">
+                        Textile official site: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://www.textile.io</a>
+                    </p>
+                    <p class="wptextile_text-left">
+                        Textile documentation: <a href="https://docs.textile.io/" target="_blank">https://docs.textile.io/</a>
+                    </p>
+                    <p class="wptextile_text-left">
+                        Github site: <a href="https://github.com/luckyr13/twp" target="_blank">https://github.com/luckyr13/twp</a>
+                    </p>
                 </div>
                 
             </div>
@@ -618,7 +633,7 @@ class WPTextilePlugin {
                     class="regular-text" 
                     id="textile_bucket_txt_upload_file_bucketname"
                     name="textile_bucket_txt_upload_file_bucketname">
-                Upload Image: <input type="file" id="textile_bucket_fup_single_file" >
+                Upload file: <input type="file" id="textile_bucket_fup_single_file" >
                 <input class="button button-primary" id="textile_bucket_btn_upload" type="button" value="Upload to IPFS">
                 <h3>Results:</h3>
                 <div id="wptextile_tab_content_buckets_results_fileupload">
@@ -629,11 +644,28 @@ class WPTextilePlugin {
 
             <!-- Filecoin tab -->
             <div class="wptextile_tab_content filecoin hide">
-                <h2 class="tab_title">Filecoin archive</h2>
+                <h2 class="tab_title">Filecoin archive (BETA)</h2>
                 <div class="wptextile_tabs_content_filecoin_body">
+                    <!-- Filecoin archive explorer -->
+                    <h3 class="wptextile_archive_h3">Filecoin archive explorer (Experimental)</h3>
                     <p>
-                        Filecoin!
+                        Get buckets:
+                        <input class="button button-primary" type="button" id="textile_filecoin_btn_get_buckets" value="GET BUCKETS">
                     </p>
+                    <div class="wptextile_col_6">
+                        <h3 class="wptextile_text-center">Buckets</h3>
+                        <div id="wptextile_tab_content_filecoin_results_bucketsAuto">
+                            <div class="wptextile_content_no_results_text">Results</div>
+                        </div>
+                    </div>
+                    <div class="wptextile_col_6">
+                        <h3 class="wptextile_text-center">Filecoin archive</h3>
+                        <div id="wptextile_tab_content_filecoin_results_bucketsAuto_archive">
+                            <div class="wptextile_content_no_results_text">Results</div>
+                        </div>
+                    </div>
+                    <div class="wptextile_clearfix"></div>
+                    <hr>
                     
                 </div>
             </div>

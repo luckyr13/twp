@@ -140,6 +140,12 @@ ul.wptextile_tabs_menu li a.main {
 	float: left;
 }
 
+@media only screen and (max-width: 768px) {
+  .wptextile_col_6 {
+		width: 100%;
+	}
+}
+
 .wptextile_text-center {
 	text-align: center;
 }
@@ -184,6 +190,20 @@ ul.wptextile_tabs_menu li a.main {
 	overflow-y: auto;
     border: 1px solid #CCC;
 }
+
+#wptextile_tab_content_filecoin_results_bucketsAuto,
+#wptextile_tab_content_filecoin_results_bucketsAuto_archive  {
+    width: 90%;
+    margin: 0 auto;
+    text-align: left;
+    
+	margin-top: 5px;
+	margin-bottom: 15px;
+	height: 180px;
+	overflow-y: auto;
+    border: 1px solid #CCC;
+}
+
 
 #wptextile_archive_section_bucket_create_index_res {
 	  width: 90%;
@@ -374,3 +394,25 @@ LOADER
   }
 }
 
+/* FILECOIN TAB STYLES */
+
+
+.wptextile_filecoin_tbl_view_archives {
+	cursor: pointer;
+	font-weight: bold;
+	color: #2935FF;
+}
+
+.wptextile_filecoin_tbl_view_archives:hover{
+	color: #FECE07;
+}
+
+.wptextile_filecoin_tbl_archive {
+	cursor: pointer;
+	font-weight: bold;
+	color: #EE2A45;
+}
+
+.wptextile_filecoin_tbl_archive:hover{
+	color: #FFB6D4;
+}

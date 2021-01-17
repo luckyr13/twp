@@ -653,8 +653,8 @@ export class WPTextilePluginTabArchive {
 			loading.innerHTML = '';
 
 		} catch (err) {
-			loading.innerHTML = '';
-			throw err;
+			loading.innerHTML = err;
+			// throw err;
 		}
 		
 	}

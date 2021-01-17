@@ -50,8 +50,23 @@
 					<p class="wptextile_text-left">
 						Welcome to Textile Tools for Wordpress.
 					</p>
-					
-					
+					<p class="wptextile_text-left">
+						You need Textile API KEYS to use this plugin. To get your keys you will need The Hub. The Hub is your portal to the IPFS network and the fastest way to start building and experimenting with Textile technologies. 
+					<p class="wptextile_text-left">
+						Please follow the instructions on the next link to get your keys: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://docs.textile.io/hub/apis/#api-keys</a>
+					</p>
+					<h3 class="wptextile_archive_h3 wptextile_text-left">
+						Useful links
+					</h3>
+					<p class="wptextile_text-left">
+						Textile official site: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://www.textile.io</a>
+					</p>
+					<p class="wptextile_text-left">
+						Textile documentation: <a href="https://docs.textile.io/" target="_blank">https://docs.textile.io/</a>
+					</p>
+					<p class="wptextile_text-left">
+						Github site: <a href="https://github.com/luckyr13/twp" target="_blank">https://github.com/luckyr13/twp</a>
+					</p>
 				</div>
 				
 			</div>
@@ -176,7 +191,7 @@
                     class="regular-text" 
                     id="textile_bucket_txt_upload_file_bucketname"
                     name="textile_bucket_txt_upload_file_bucketname">
-				Upload Image: <input type="file" id="textile_bucket_fup_single_file" >
+				Upload file: <input type="file" id="textile_bucket_fup_single_file" >
 	    		<input class="button button-primary" id="textile_bucket_btn_upload" type="button" value="Upload to IPFS">
 	    		<h3>Results:</h3>
 				<div id="wptextile_tab_content_buckets_results_fileupload">
@@ -187,11 +202,28 @@
 
 			<!-- Filecoin tab -->
 			<div class="wptextile_tab_content filecoin hide">
-				<h2 class="tab_title">Filecoin archive</h2>
+				<h2 class="tab_title">Filecoin archive (BETA)</h2>
 				<div class="wptextile_tabs_content_filecoin_body">
+					<!-- Filecoin archive explorer -->
+					<h3 class="wptextile_archive_h3">Filecoin archive explorer (Experimental)</h3>
 					<p>
-						Filecoin!
+						Get buckets:
+						<input class="button button-primary" type="button" id="textile_filecoin_btn_get_buckets" value="GET BUCKETS">
 					</p>
+					<div class="wptextile_col_6">
+						<h3 class="wptextile_text-center">Buckets</h3>
+						<div id="wptextile_tab_content_filecoin_results_bucketsAuto">
+							<div class="wptextile_content_no_results_text">Results</div>
+						</div>
+					</div>
+					<div class="wptextile_col_6">
+						<h3 class="wptextile_text-center">Filecoin archive</h3>
+						<div id="wptextile_tab_content_filecoin_results_bucketsAuto_archive">
+							<div class="wptextile_content_no_results_text">Results</div>
+						</div>
+					</div>
+					<div class="wptextile_clearfix"></div>
+					<hr>
 					
 				</div>
 			</div>

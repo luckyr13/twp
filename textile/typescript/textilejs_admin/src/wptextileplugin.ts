@@ -348,6 +348,8 @@ export class WPTextilePlugin {
 	      // Finally, push the full file to the bucket
 	      buckets.pushPath(bucketKey, path, binaryStr).then((raw) => {
 	        resolve(raw)
+	      }).catch((err) => {
+	      	throw err;
 	      })
 	    }
 	    reader.readAsArrayBuffer(file)
@@ -601,5 +603,74 @@ export class WPTextilePlugin {
 		
 		return result;
 	}
+
+	/*
+	* Get bucket's archives
+	*/
+	async getBucketArchives(main_bucketname: string) {
+		let error = '';
+		let result = {};
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		try {
+			var bucketData = null;
+			var buckets = null;
+			var bucketKey = null;
+			
+			bucketData = await this.setupBucketEnvironment(keyinfo, identity, main_bucketname);
+			buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
+			bucketKey = bucketData.hasOwnProperty('bucketKey') ? bucketData.bucketKey : null;
+			
+			if (buckets && bucketKey) {
+				
+				const { current, history } = await buckets.archives(bucketKey);
+				result['data'] = { current: current, history: history };
+			}
+		} catch (err) {
+			result['error'] = 'WPTextilePlugin Error:' + JSON.stringify(err);
+		}
+		return result;
+	}
+
+	/*
+	* Archive bucket in Filecoin
+	*/
+	async filecoinArchive(main_bucketname: string) {
+		let error = '';
+		let result = {};
+		const keyinfo = this.keyinfo;
+		const identity = this.getIdentity();
+		try {
+			var bucketData = null;
+			var buckets = null;
+			var bucketKey = null;
+			
+			bucketData = await this.setupBucketEnvironment(keyinfo, identity, main_bucketname);
+			buckets = bucketData.hasOwnProperty('buckets') ? bucketData.buckets : null;
+			bucketKey = bucketData.hasOwnProperty('bucketKey') ? bucketData.bucketKey : null;
+			
+			if (buckets && bucketKey) {
+				console.log('Archiving bucket ...');
+				await buckets.archive(bucketKey);
+				await this.logArchiveChanges(buckets, bucketKey);
+			}
+		} catch (err) {
+			result['error'] = 'WPTextilePlugin Error:' + JSON.stringify(err);
+		}
+		return result;
+	}
+
+	/*
+	* Watch archive bucket in Filecoin
+	*/
+	async logArchiveChanges(buckets: Buckets, key: string) {
+	   const log = (reply?: {id?: string, msg: string}, err?: Error | undefined) => {
+	       if (err || !reply) return console.log(err)
+	       console.log('Archive status: ', reply.id, reply.msg)
+	   }
+	   console.log('Archive watch ...');
+	   await buckets.archiveWatch(key, log);
+	}
+
 
 }

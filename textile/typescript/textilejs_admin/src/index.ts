@@ -2,6 +2,7 @@ import { TEXTILE_AJAX_OBJ_INTERNAL } from './textile-data';
 import { WPTextilePlugin } from './wptextileplugin';
 import { WPTextilePluginTabRawQuery } from './wptextileplugin-tab-raw-query';
 import { WPTextilePluginTabArchive } from './wptextileplugin-tab-archive';
+import { WPTextilePluginTabFilecoin } from './wptextileplugin-tab-filecoin';
 
 declare const document: any;
 declare const window: any;
@@ -10,12 +11,14 @@ class Index {
 	private wp: WPTextilePlugin;
 	private wp_raw_query: WPTextilePluginTabRawQuery;
 	private wp_archive: WPTextilePluginTabArchive;
+	private wp_filecoin: WPTextilePluginTabFilecoin;
 	private ajax_url: string;
 	
 	constructor() {
 		this.wp = new WPTextilePlugin(TEXTILE_AJAX_OBJ_INTERNAL);
 		this.wp_raw_query = new WPTextilePluginTabRawQuery(this.wp);
 		this.wp_archive = new WPTextilePluginTabArchive(this.wp);
+		this.wp_filecoin = new WPTextilePluginTabFilecoin(this.wp);
 		this.ajax_url = TEXTILE_AJAX_OBJ_INTERNAL.ajax_url;
 	}
 
@@ -23,7 +26,6 @@ class Index {
 
 		// Set listeners
 		this.setListeners();
-		
 		
 
 	}
@@ -71,6 +73,9 @@ class Index {
 
 		// Buckets query Tab 
 		this.wp_raw_query.setBucketsTabListeners();
+
+		// Filecoin tab
+		this.wp_filecoin.setTabListeners();
 
 	}
 

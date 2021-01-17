@@ -13,11 +13,19 @@ With this plugin you can have an interface to IPFS, Libp2p and Filecoin from you
 
 == Description ==
 
-With our plugin you can upload files from your Wordpress website to IPFS (InterPlanetary File System). All this happens thanks to the tools created by Textile company.
+Host a static copy of your Wordpress website to IPFS (InterPlanetary File System). All this happens thanks to the tools created by Textile.
 
-We developed a feature called "Archive: Static Site Generator". With this feature any wordpress admin can create a static copy of their posts and upload it to IPFS in just a few clicks.
+The plugin has a module called "Static Site Generator". With this feature any wordpress admin can create a static copy of their posts and upload it directly to IPFS in just a few clicks. You can chose between making a shallow copy or a deep copy.
 
-Go beyond the limits imposed by your hosting provider. Try IPFS, Textile and our plugin!
+A shallow copy only will backup your html post data, maybe not very interesting but useful if your post have only text and no other media.
+
+A deep copy will try to backup all the images and videos present in the post. Very powerful.
+
+The plugin has a lot of other modules. For example we have a Bucket explorer if you want to browse your files or upload new ones directly to your buckets.
+
+Finally, we inclue a BETA functionality to upload your buckets to Filecoin mainnet. This is a very handy tool.
+
+Go beyond the limits imposed by your hosting provider. Try decentralized hosting with IPFS, Textile and our plugin!
 
 == Frequently Asked Questions ==
 
@@ -44,6 +52,9 @@ The typescript files that we developed are on the typescript folder.
 2. Buckets example buckets_example.png
 
 == Changelog ==
+
+= 2.0 =
+* Filecoin upload functionality added
 
 = 1.8 =
 * Deep upload functionality added
