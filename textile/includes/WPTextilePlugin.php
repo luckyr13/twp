@@ -472,9 +472,7 @@ class WPTextilePlugin {
 
     private function admin_page_html_tabs() {
         $content = '';
-
         $img_src = plugins_url( '../admin/img/', __FILE__ );
-
         $content .= '<div id="wptextile_tabs_area">
         <!-- Tabs menu -->
         <ul class="wptextile_tabs_menu">
