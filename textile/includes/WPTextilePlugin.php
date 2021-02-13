@@ -499,6 +499,9 @@ class WPTextilePlugin {
                         Useful links
                     </h3>
                     <p class="wptextile_text-left">
+                        How to install The Hub: <a href="https://docs.textile.io/hub/accounts/" target="_blank">https://docs.textile.io/hub/accounts/</a>
+                    </p>
+                    <p class="wptextile_text-left">
                         Textile official site: <a href="https://docs.textile.io/hub/apis/#api-keys" target="_blank">https://www.textile.io</a>
                     </p>
                     <p class="wptextile_text-left">
@@ -532,7 +535,7 @@ class WPTextilePlugin {
                             <input class="regular-text" type="text" id="textile_archive_txt_bucket_name" value="">
                         </label>
                         <input class="button button-primary" type="button" id="textile_archive_btn_activate_posts" value="SAVE AND GO TO NEXT STEP">
-                        <input class="button button-primary" type="button" id="textile_archive_btn_reset" value="RESET">
+                        <input class="button button-cancel" type="button" id="textile_archive_btn_reset" value="RESET">
                     </div>
                     <p class="wptextile_text-center wptextile_content_no_results_text">
                         *A new bucket will be created by default if bucket does not exist.
@@ -557,6 +560,11 @@ class WPTextilePlugin {
                             class="button button-primary" 
                             type="button" id="textile_archive_btn_generate_index" 
                             value="CREATE INDEX FILE">
+                        &nbsp;
+                        <input 
+                            class="button button-link" 
+                            type="button" id="textile_archive_btn_download_index" 
+                            value="DOWNLOAD INDEX FILE">
                     </div>
                         
                     <div id="wptextile_archive_section_bucket_create_index_res">

@@ -3,8 +3,8 @@ Contributors: criptoalfa
 Donate link: https://paypal.me/criptoalfa
 Tags: textile, ipfs, buckets, backups, snapshots, s3, filecoin
 Requires at least: 4.7
-Tested up to: 5.6
-Stable tag: 5.6
+Tested up to: 5.6.1
+Stable tag: 2.5
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -47,11 +47,15 @@ The typescript files that we developed are on the typescript folder.
 
 == Screenshots ==
 
-1. Archive example archive_example.png
+1. Archive example assets/archive_example.png
 
-2. Buckets example buckets_example.png
+2. Buckets example assets/buckets_example.png
 
 == Changelog ==
+
+= 2.5 =
+* Textile library update
+* Now you can download a static copy of any post as .zip
 
 = 2.0 =
 * Filecoin upload functionality added

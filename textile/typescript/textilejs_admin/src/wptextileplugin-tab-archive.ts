@@ -1,6 +1,8 @@
 import { WPTextilePlugin } from './wptextileplugin';
 import { FetchAPI } from './fetch-api';
 import { LOADER1, LOADER2 } from './loader';
+import JSZip from 'jszip';
+
 declare const document: any;
 
 export class WPTextilePluginTabArchive {
@@ -30,6 +32,8 @@ export class WPTextilePluginTabArchive {
 		const btn_reset = document.getElementById('textile_archive_btn_reset');
 		// Button "CREATE INDEX"
 		const btn_create_index = document.getElementById('textile_archive_btn_generate_index');
+		// Button "DOWNLOAD INDEX"
+		const btn_download_index = document.getElementById('textile_archive_btn_download_index');
 
 		// Save ajax url 
 		this.ajax_url = url;
@@ -75,6 +79,14 @@ export class WPTextilePluginTabArchive {
 		if (btn_create_index) {
 			btn_create_index.onclick = () => {
 				this.createIndexForBucket(url);
+			}
+		}
+
+		// Click event to Create Index file 
+		// (create index and upload it to bucket)
+		if (btn_download_index) {
+			btn_download_index.onclick = () => {
+				this.downloadIndexForBucket(url);
 			}
 		}
 
@@ -179,6 +191,14 @@ export class WPTextilePluginTabArchive {
 						this.deepUploadPostToBucket_helper(tmp_btnDeepUpload, bucket_name);
 					});
 				}
+
+				// Add listener for download button
+				const btnsDownloadCopy = document.getElementsByClassName('wptextile_archive_post_detail_btn_download_copy');
+				for (let tmp_btnDownloadCopy of btnsDownloadCopy) {
+					tmp_btnDownloadCopy.addEventListener('click', async () => {
+						this.downloadDeepCopy(tmp_btnDownloadCopy);
+					});
+				}
 	
 			})
 			.catch((err) => {
@@ -230,13 +250,20 @@ export class WPTextilePluginTabArchive {
 				data-slug="${post_name}"
 				data-date="${post_date_gmt}"
 				value="SHALLOW UPLOAD" />
-				&nbsp;
-				<input type="button" style="background-color: purple; color: #FFF"
+			&nbsp;
+			<input type="button" style="background-color: purple; color: #FFF"
 				class="button button-primary wptextile_archive_post_detail_btn_upload_deep" 
 				data-id="${post_id}"
 				data-slug="${post_name}"
 				data-date="${post_date_gmt}"
 				value="DEEP UPLOAD" />
+			&nbsp;
+			<input type="button" style="background-color: #32edff; color: #005159"
+				class="button button-primary wptextile_archive_post_detail_btn_download_copy" 
+				data-id="${post_id}"
+				data-slug="${post_name}"
+				data-date="${post_date_gmt}"
+				value="DOWNLOAD AS ZIP FILE" />
 		</div>
 		<div id="wptextile_archive_post_detail_deepupl_loader_${post_id}" 
 				class="wptextile_archive_post_detail_deepupl_loader_s">
@@ -710,6 +737,9 @@ export class WPTextilePluginTabArchive {
 
 	}
 
+	/*
+	*	Special format for dates (this generates a nicest url)
+	*/
 	private dateFormat(post_date: string) {
 		let fdate = post_date.substr(0, 10);
 		if (fdate.length != 10) {
@@ -721,6 +751,9 @@ export class WPTextilePluginTabArchive {
 		return fdate;
 	}
 
+	/*
+	*	Search for files parsing html segment
+	*/
 	private enumerateFiles(div_id) {
 		const files = {
 			images: [],
@@ -849,6 +882,304 @@ export class WPTextilePluginTabArchive {
 
 				container_res.innerText = error_msg;
 			});
+	}
+
+	/*
+	*	Download index file
+	*/
+	private downloadIndexForBucket(url) {
+		const site_name = document.getElementById('textile_archive_txt_site_name').value;
+		const data = {
+			action: 'textileindextemplate',
+			template: 'default',
+			site_name: site_name,
+			bucket_url: this.bucketURL
+		};
+		const container_res = document.getElementById(
+			'wptextile_archive_section_bucket_create_index_res'
+		);
+
+		container_res.innerHTML = LOADER2;
+
+		this.fapi.post(url, data)
+			.then(async (response) => {
+				const content = await response.blob();
+				const tmp_path = `${this.bucketWWW}/index.html`;
+
+				// Check for errors 
+				if (!content) {
+					container_res.innerText = 'No template found';
+					return false;
+				}
+
+				// Download index
+				await this.downloadIndexForBucket_helper(
+						content,
+						'index.html'
+				);
+
+				container_res.innerHTML = 'Index file successfully created!';
+
+			})
+			.catch((err) => {
+				let error_msg = '';
+				if (typeof err === 'object') {
+					error_msg = 'Error : ' + JSON.stringify(err);
+				} else {
+					error_msg =  'Error: ' + err;
+				}
+
+				container_res.innerText = error_msg;
+			});
+	}
+
+	/*
+	*	Helper function
+	*/
+	async downloadIndexForBucket_helper(
+			htmlAsBlob,
+			path
+		) {
+		const res = {
+			success: false,
+			error: ''
+		};
+
+		try {
+			// Create File (from blob) with path 
+		  const final_html = String.prototype.trim.call(htmlAsBlob);
+    	var file = new File([htmlAsBlob], path);
+		  this.download(file, path);
+
+			res['success'] = true;
+		} catch (err) {
+			res['error'] = err;
+		}
+
+		return res;
+		
+	}
+
+	/*
+	*	Download file from browser
+	*/
+	download(blob, filename) {
+		if(window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, filename);
+    }
+    else{
+        var elem = window.document.createElement('a');
+        elem.href = window.URL.createObjectURL(blob);
+        elem.download = filename;        
+        document.body.appendChild(elem);
+        elem.click();        
+        document.body.removeChild(elem);
+    }
+	}
+
+	/*
+	*	 Download a compressed copy of a post
+	*/
+	async downloadDeepCopy(tmp_btnDownloadCopy) {
+		const dataset = tmp_btnDownloadCopy.dataset ?
+			tmp_btnDownloadCopy.dataset : {};
+		const post_id = dataset.hasOwnProperty('id') ?
+			dataset.id : '';
+		const post_slug = dataset.hasOwnProperty('slug') ?
+			dataset.slug : '';
+		const post_date = dataset.hasOwnProperty('date') ?
+			dataset.date : '';
+		const div_post_id = 'wptextile_post_detail_html_' + post_id;
+		const post_html = document.getElementById(div_post_id) ?
+			document.getElementById(div_post_id).innerHTML :
+			'';
+		const div_post_resquery = document.getElementById(
+			`wptextile_archive_post_detail_deepupl_ls_${post_id}`
+		);
+		// Disable button
+		tmp_btnDownloadCopy.disabled = true;
+		 
+		try {
+			await this.downloadDeepCopy_helper(
+				post_id, post_slug, post_html,
+				post_date, div_post_id,
+				div_post_resquery
+			);
+		} catch (err) {
+			div_post_resquery.innerHTML = 'Err: ' + err;
+		}
+
+		// Enable button
+		tmp_btnDownloadCopy.disabled = false;
+	}
+
+	/*
+	*	 Download a compressed copy (helper function)
+	*/
+	async downloadDeepCopy_helper(
+			post_id,
+			post_slug,
+			post_html,
+			post_date,
+			div_post_id,
+			div_post_resquery
+		) {
+
+		const zip_name = `${post_date}-${post_slug}.zip`;
+		const path_assets = `assets/`;
+		const path_index = ``;
+	
+
+		// Loader 
+		const loading = document.getElementById(
+			`wptextile_archive_post_detail_deepupl_loader_${post_id}`
+		);
+		loading.innerHTML = LOADER1;
+
+		try {
+			// Get DOM object from current post HTML
+			const assets = this.enumerateFiles(div_post_id);
+
+			// Compress files
+			this._compressFiles(
+				div_post_resquery,
+				div_post_id,
+				assets,
+				path_assets,
+				post_slug
+			);
+
+			loading.innerHTML = '';
+
+		} catch (err) {
+			loading.innerHTML = err;
+			// throw err;
+		}
+		
+	}
+
+
+	private async _compressFiles(
+		div_post_resquery,
+		div_post_id,
+		files,
+		path_assets,
+		slug
+	) {
+		const allFiles = [].concat(files.images).concat(files.videos);
+		const numFiles = allFiles.length;
+		let zip = new JSZip();
+
+		for (let i = 0; i < numFiles; i++) {
+			const file_url = allFiles[i].src;
+
+			div_post_resquery.innerHTML += `
+			<div style="text-align: center">
+					- Downloading ${file_url} ...
+			</div>`;
+			try {
+				const filename = file_url.split('/').slice(-1)[0];
+				const tmp_path = `${path_assets + filename}`;
+
+				try {
+		    	const fup_res = await this.fapi.get(file_url);
+		    	const fileBlob = await fup_res.blob();
+		    	var file = new File([fileBlob], filename);
+		    	
+		    	// Add to zip
+					zip.file(tmp_path, file);
+					
+			    div_post_resquery.innerHTML += `
+						<div style="text-align: center">
+							- File successfully added to zip file.
+						</div>
+					`;
+
+			  } catch (err) {
+		    	throw 'Error on super file download: ' + err;
+		    }
+
+				// Save bucket url in files array 
+				allFiles[i].bucket_url = tmp_path;
+
+
+			} catch (err) {
+				div_post_resquery.innerText += 'Error: ' + err;
+				div_post_resquery.innerHTML += `
+				<div style="text-align: center">
+						!!! Error: ${err} ...
+				</div>`;
+				div_post_resquery.innerHTML += '<br>';
+			}
+		}
+
+		// Add index to zip file
+		try {
+			let new_post_html = this.generateNewHTMLParseNewFiles(
+				div_post_id,
+				allFiles
+			);
+			zip.file("index.html", new_post_html);
+		} catch (err) {
+			div_post_resquery.innerHTML += `
+			<div style="text-align: center">
+					!!! Error Gen Index: ${err} ...
+			</div>`;
+			div_post_resquery.innerHTML += '<br>';
+		}
+		
+
+		// Download ZIP FILE
+		try {
+			div_post_resquery.innerHTML += `
+			<div style="text-align: center">
+					- Creating zip file please wait (it may take some time) ...
+			</div>`;
+
+			const content = await zip.generateAsync({type: "blob"});
+			this.download(content, `${slug}.zip`);
+
+		} catch (err) {
+			div_post_resquery.innerHTML += `
+			<div style="text-align: center">
+					!!! Error Zip: ${err} ...
+			</div>`;
+			div_post_resquery.innerHTML += '<br>';
+		}
+		
+
+		return allFiles;
+	}
+
+	private async generateNewHTMLParseNewFiles(
+		div_post_id,
+		allFiles
+	) {
+		const div_post = document.getElementById(div_post_id);
+		// Save a copy of original HTML post
+		const copy = div_post.innerHTML;
+		let new_html = '';
+
+		// Update original post content directly (assets only)
+		// change src with bucket urls
+		for (const f of allFiles) {
+			const dom_element = f.DOM;
+			dom_element.src = f.bucket_url;
+		}
+
+		try {
+			// Save new post copy
+			new_html = div_post.innerHTML;
+
+			// Restore original post content on UI
+			div_post.innerHTML = copy;
+
+		} catch (err) {
+			throw err;
+		}
+
+		return new_html;
+
 	}
 
 }
