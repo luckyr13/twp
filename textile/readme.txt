@@ -3,8 +3,8 @@ Contributors: criptoalfa
 Donate link: https://paypal.me/criptoalfa
 Tags: textile, ipfs, buckets, backups, snapshots, s3, filecoin
 Requires at least: 4.7
-Tested up to: 5.6.1
-Stable tag: 2.5
+Tested up to: 5.7
+Stable tag: 2.6
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
