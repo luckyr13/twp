@@ -1,5 +1,5 @@
 # Textile Wordpress Plugin.
-With this plugin you can have an interface to IPFS, Libp2p and Filecoin from your Wordpress website using the Textile tools.
+An easy interface to IPFS, Libp2p and Filecoin from your Wordpress website using the Textile tools.
 
 You can learn more about Textile from their official page: https://textile.io/
 

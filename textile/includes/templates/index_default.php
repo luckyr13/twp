@@ -12,18 +12,14 @@ $TEMPLATE_INDEX = '
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>'.$site_name.'</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<style>
 		* {
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
-		}
-		#top_bar {
-			height: 50px;
-			background-color: #000;
-			color: #FFF;
-			padding: 10px
 		}
 		#post_content {
 			padding: 40px;
@@ -32,29 +28,36 @@ $TEMPLATE_INDEX = '
 	
 </head>
 <body>
-	<div id="top_bar">
-		<div class="col-6">
-			<h1>'.$site_name.'</h1>
+	<nav class="navbar navbar-dark bg-dark sticky-top">
+	  <div id="search_bar" class="container-fluid">
+	  	<span class="navbar-brand mb-0 h1">'.$site_name.'</span>
+			<div class="d-flex row">
+	  		<div class="col">
+	  			<select class="form-select" id="search_year">
+						<option value="">- YEAR -</option>
+					</select>
+	  		</div>
+	  		<div class="col">
+	  			<select class="form-select" id="search_month">
+						<option value="">- MONTH -</option>
+					</select>
+	  		</div>
+	  		<div class="col">
+	  			<select class="form-select" id="search_day">
+						<option value="">- DAY -</option>
+					</select>
+	  		</div>
+	  		<div class="col">
+	  			<select class="form-select" id="search_slug">
+						<option value="">- POST -</option>
+					</select>
+	  		</div>
+			</div>
 		</div>
-		<div class="col-6">
-		</div>
-	</div>
-	<div id="search_bar">
-		<select id="search_year">
-			<option value="">- YEAR -</option>
-		</select>
-		<select id="search_month">
-			<option value="">- MONTH -</option>
-		</select>
-		<select id="search_day">
-			<option value="">- DAY -</option>
-		</select>
-		<select id="search_slug">
-			<option value="">- POST -</option>
-		</select>
-	</div>
+	</nav>
 	<div id="post_content">
 	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<script>
 		var BUCKET_URL = "' . $bucket_url . '";
 		window.onload = function() {

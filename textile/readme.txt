@@ -2,8 +2,8 @@
 Contributors: criptoalfa
 Donate link: https://paypal.me/criptoalfa
 Tags: textile, ipfs, buckets, backups, snapshots, s3, filecoin
-Requires at least: 4.7
-Tested up to: 5.7
+Requires at least: 5.7
+Tested up to: 5.7.2
 Stable tag: 2.6
 Requires PHP: 7.0
 License: GPLv2 or later
@@ -47,11 +47,15 @@ The typescript files that we developed are on the typescript folder.
 
 == Screenshots ==
 
-1. Archive example assets/archive_example.png
+1. Archive example archive_example.png
 
-2. Buckets example assets/buckets_example.png
+2. Buckets example buckets_example.png
 
 == Changelog ==
+
+= 2.6 =
+* Textile/hub library and js libs updated to their latest versions
+* Static archive generator: Now the generated index file imports Bootstrap by default!
 
 = 2.5 =
 * Textile library update
@@ -71,6 +75,9 @@ The typescript files that we developed are on the typescript folder.
 
 
 == Upgrade Notice ==
+
+= 2.0 =
+* The version 1.0 stop working because outdated libraries.
 
 = 1.0 =
 * This is our first fully functional version and includes advanced control over buckets
