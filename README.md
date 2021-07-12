@@ -1,4 +1,4 @@
-# Textile Wordpress Plugin.
+# Textile Wordpress Plugin
 <p align="center">
   <img src="./textile/admin/img/textile.svg" width="200">
 </p>
