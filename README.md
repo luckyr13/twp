@@ -1,4 +1,8 @@
 # Textile Wordpress Plugin.
+<p align="center">
+  <img src="./textile/admin/img/textile.svg" width="200">
+</p>
+
 An easy interface to IPFS, Libp2p and Filecoin from your Wordpress website using the Textile tools.
 
 You can learn more about Textile from their official page: https://textile.io/
