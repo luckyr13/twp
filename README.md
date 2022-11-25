@@ -1,7 +1,19 @@
+## Textile Hub is shutting down
+
+```
+We’re sad to let the Hub go, but it was never meant to be a long-term solution for folks to build on.
+It was meant to be an on-ramp for developers, and it no longer serves that purpose in a sustainable way.
+As it turns out, centralized on-ramps tend to be sticky!
+```
+
+### This repository is no longer active!
+
+
 # Textile Tools for Wordpress (WP Plugin)
 <p align="center">
   <img src="./textile/admin/img/textile.svg" width="200">
 </p>
+
 
 An easy interface to IPFS, Libp2p and Filecoin from your Wordpress website using the Textile tools.
 
